@@ -5,7 +5,9 @@ namespace OverCloudAirways.BuildingBlocks.Domain.Models;
 
 public interface IAggregateRoot
 {
-
+    public TypedId Id { get; }
+    public int Version { get; }
+    public IReadOnlyCollection<DomainEvent> DomainEvents { get; }
 }
 
 public class AggregateRoot<TKey> : Entity<TKey>, IAggregateRoot
@@ -14,6 +16,7 @@ public class AggregateRoot<TKey> : Entity<TKey>, IAggregateRoot
     private readonly Queue<DomainEvent> _domainEvents;
     public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.ToList().AsReadOnly();
     public int Version { get; private set; }
+    TypedId IAggregateRoot.Id => base.Id;
 
     protected AggregateRoot()
     {

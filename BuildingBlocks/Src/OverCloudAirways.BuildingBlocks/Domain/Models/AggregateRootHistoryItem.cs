@@ -23,7 +23,7 @@ public class AggregateRootHistoryItem
         Guid userId,
         string username,
         string eventType,
-        DateTime dateTime,
+        DateTimeOffset dateTime,
         string type,
         string data)
         : this()
@@ -45,7 +45,7 @@ public class AggregateRootHistoryItem
         Guid userId,
         string username,
         string eventType,
-        DateTime dateTime,
+        DateTimeOffset dateTime,
         string type,
         string data)
     {

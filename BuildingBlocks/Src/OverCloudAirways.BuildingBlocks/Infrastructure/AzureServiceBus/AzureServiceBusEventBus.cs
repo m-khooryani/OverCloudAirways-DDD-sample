@@ -12,29 +12,30 @@ internal class AzureServiceBusEventBus : IEventBus
     private readonly ILogger _logger;
 
     public AzureServiceBusEventBus(
-        IServiceBusSenderFactory senderFactory, 
+        IServiceBusSenderFactory senderFactory,
         ILogger logger)
     {
         _senderFactory = senderFactory;
         _logger = logger;
     }
 
-    private Task Publish(string queueOrTopicName, string sessionId, string data)
+    private Task Publish(string queueOrTopicName, string? sessionId, string data)
     {
         _logger.LogInformation("Publishing message to queue");
         _logger.LogInformation($"QueueOrTopicName: {queueOrTopicName}");
         _logger.LogInformation($"SessionId: {sessionId}");
         _logger.LogInformation($"Data: {data}");
-        var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(data))
+        var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(data));
+        if (sessionId is not null)
         {
-            SessionId = sessionId
+            message.SessionId = sessionId;
         };
 
         var sender = _senderFactory.CreateSender(queueOrTopicName);
         return sender.SendMessageAsync(message);
     }
 
-    public async Task PublishAsync(IntegrationEvent @event) 
+    public async Task PublishAsync(IntegrationEvent @event)
     {
         var eventType = @event.GetType();
         _logger.LogInformation($"Publishing {eventType.FullName}...");
@@ -43,7 +44,7 @@ internal class AzureServiceBusEventBus : IEventBus
         await Publish(@event.IntegrationEventName, @event.AggregateId.ToString()!, json);
     }
 
-    async Task IEventBus.PublishAsync(string queue, string sessionId, OutboxMessage outboxMessage)
+    async Task IEventBus.PublishAsync(string queue, string? sessionId, OutboxMessage outboxMessage)
     {
         await Publish(queue, sessionId, JsonConvert.SerializeObject(outboxMessage, Formatting.Indented));
     }
