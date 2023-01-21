@@ -1,5 +1,4 @@
 ﻿using DArch.Infrastructure.CleanArchitecture;
-using DArch.UnitOfWork.EFCore;
 using DArch.UnitOfWorks.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

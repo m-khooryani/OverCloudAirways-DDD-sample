@@ -1,6 +1,5 @@
 ﻿using DArch.AzureServiceBus;
 using DArch.Infrastructure.EventBus;
-using DArch.UnitOfWork.EFCore;
 using DArch.UnitOfWorks.EFCore;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;

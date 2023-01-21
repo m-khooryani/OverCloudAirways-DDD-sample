@@ -36,11 +36,6 @@ public class EfCoreUnitOfWorkModule<T> : Autofac.Module
             .AsImplementedInterfaces()
             .InstancePerLifetimeScope();
 
-        builder
-            .RegisterType<AggregateRepository>()
-            .As<IAggregateRepository>()
-            .InstancePerLifetimeScope();
-
         // UnitOfWork
         builder.RegisterType<UnitOfWork>()
             .As<IUnitOfWork>()
