@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace OverCloudAirways.IdentityService.Application.Users.Register;
+namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;
 
 internal class RegisterUserCommandValidator : CommandValidator<RegisterUserCommand>
 {

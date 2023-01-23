@@ -3,7 +3,7 @@ using OverCloudAirways.BuildingBlocks.Domain.DomainEvents;
 
 namespace OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 
-public class DomainEventPolicy<T> : INotification
+public class DomainEventPolicy<T> : DomainEventPolicy
     where T : DomainEvent
 {
     public Guid Id { get; }
@@ -13,5 +13,12 @@ public class DomainEventPolicy<T> : INotification
     {
         Id = Guid.NewGuid();
         DomainEvent = domainEvent;
+    }
+}
+
+public class DomainEventPolicy : INotification
+{
+    internal DomainEventPolicy()
+    {
     }
 }

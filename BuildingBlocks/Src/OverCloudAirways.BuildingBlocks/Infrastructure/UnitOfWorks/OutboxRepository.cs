@@ -16,6 +16,7 @@ internal class OutboxRepository : IOutboxRepository
 
     public async Task AddAsync(OutboxMessage message)
     {
+        _context.SetPartitionKey(message, message.Id.ToString());
         await _context.OutboxMessages.AddAsync(message);
     }
 

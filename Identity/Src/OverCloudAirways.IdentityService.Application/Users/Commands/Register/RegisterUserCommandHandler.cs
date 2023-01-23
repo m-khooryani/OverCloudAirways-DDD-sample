@@ -7,7 +7,7 @@ using DArch.Application.Configuration.Commands;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.IdentityService.Domain.Users;
 
-namespace OverCloudAirways.IdentityService.Application.Users.Register;
+namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;
 
 internal class RegisterUserCommandHandler : CommandHandler<RegisterUserCommand>
 {

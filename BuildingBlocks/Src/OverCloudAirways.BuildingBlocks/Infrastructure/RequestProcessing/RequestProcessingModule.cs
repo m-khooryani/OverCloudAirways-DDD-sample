@@ -22,11 +22,18 @@ public class RequestProcessingModule : Autofac.Module
             .As<ICommandsScheduler>()
             .InstancePerLifetimeScope();
 
+        // Command Pipelines
         builder.RegisterGeneric(typeof(CommandLoggingBehavior<,>))
             .As(typeof(IPipelineBehavior<,>));
         builder.RegisterGeneric(typeof(CommandValidationBehavior<,>))
             .As(typeof(IPipelineBehavior<,>));
         builder.RegisterGeneric(typeof(CommandUnitOfWorkBehavior<,>))
+            .As(typeof(IPipelineBehavior<,>));
+
+        // Query Pipelines
+        builder.RegisterGeneric(typeof(QueryLoggingBehavior<,>))
+            .As(typeof(IPipelineBehavior<,>));
+        builder.RegisterGeneric(typeof(QueryValidationBehavior<,>))
             .As(typeof(IPipelineBehavior<,>));
 
         builder.RegisterAssemblyTypes(_applicationAssembly)

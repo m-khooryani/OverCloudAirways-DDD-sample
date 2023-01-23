@@ -5,6 +5,7 @@ using DArch.Infrastructure.RetryPolicy;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
@@ -47,13 +48,14 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
         var policy = Policy
             .Handle<Exception>()
             .WaitAndRetryAsync(_pollyConfig.SleepDurations);
-        var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommandAndDeleteAsync(outboxMessage));
-        if (result.Outcome == OutcomeType.Failure)
-        {
-            _logger.LogError("failed to process outbox message.");
-            outboxMessage.Error = result.FinalException.ToString();
-            outboxMessage.ProcessedDate = Clock.Now;
-        }
+        await ProcessCommandAndDeleteAsync(outboxMessage);
+        //var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommandAndDeleteAsync(outboxMessage));
+        //if (result.Outcome == OutcomeType.Failure)
+        //{
+        //    _logger.LogError("failed to process outbox message.");
+        //    outboxMessage.Error = result.FinalException.ToString();
+        //    outboxMessage.ProcessedDate = Clock.Now;
+        //}
 
         return Unit.Value;
     }
@@ -67,7 +69,14 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
 
         using var scope = CompositionRoot.BeginLifetimeScope();
         var mediator = scope.Resolve<IMediator>();
-        await mediator.Send(commandToProcess);
+        if (!outboxMessage.Type.Contains("Policy"))
+        {
+            await mediator.Send(commandToProcess);
+        }
+        else
+        {
+            await mediator.Publish(commandToProcess as DomainEventPolicy);
+        }
 
         _outboxRepository.Remove(outboxMessage);
     }

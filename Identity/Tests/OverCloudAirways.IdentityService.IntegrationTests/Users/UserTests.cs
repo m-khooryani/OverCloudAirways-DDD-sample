@@ -1,6 +1,6 @@
 ﻿using DArch.Infrastructure;
 using DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
-using OverCloudAirways.IdentityService.Application.Users.Register;
+using OverCloudAirways.IdentityService.Application.Users.Commands.Register;
 using OverCloudAirways.IdentityService.Domain.Users;
 using Xunit;
 using Xunit.Abstractions;
@@ -29,5 +29,10 @@ public class UserTests
 
         var registerUserCommand = new RegisterUserCommand(userId, username);
         await _invoker.CommandAsync(registerUserCommand);
+
+        // 
+        await _testFixture.ProcessLastOutboxMessageAsync();
+
+
     }
 }

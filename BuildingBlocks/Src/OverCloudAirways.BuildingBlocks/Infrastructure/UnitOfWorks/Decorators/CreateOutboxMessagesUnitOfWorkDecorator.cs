@@ -51,20 +51,20 @@ internal class CreateOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
             }
 
             var data = JsonConvert.SerializeObject(domainPolicy);
-            var outboxMessage = new OutboxMessage(Clock.Now, domainPolicy.GetType().Name, data, aggregate.Id.ToString());
+            var outboxMessage = new OutboxMessage(Clock.Now, domainPolicy.GetType().FullName, data, aggregate.Id.ToString());
             await _repository.AddAsync(outboxMessage);
         }
     }
 
-    private DomainEventPolicy<DomainEvent>? GetDomainEventPolicy(DomainEvent domainEvent)
+    private DomainEventPolicy? GetDomainEventPolicy(DomainEvent domainEvent)
     {
         var domainEvenPolicyType = typeof(DomainEventPolicy<>);
         var domainPolicyWithGenericType = domainEvenPolicyType.MakeGenericType(domainEvent.GetType());
         var domainPolicy = _scope.ResolveOptional(domainPolicyWithGenericType, new List<Parameter>
         {
-            new NamedParameter("DomainEvent", domainEvent)
+            new NamedParameter("domainEvent", domainEvent)
         });
 
-        return domainPolicy as DomainEventPolicy<DomainEvent>;
+        return domainPolicy as DomainEventPolicy;
     }
 }
