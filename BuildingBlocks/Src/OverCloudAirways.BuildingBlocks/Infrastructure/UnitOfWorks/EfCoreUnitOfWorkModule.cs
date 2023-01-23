@@ -11,13 +11,13 @@ public class EfCoreUnitOfWorkModule<T> : Autofac.Module
     where T : BuildingBlocksDbContext
 {
     private readonly DbContextOptionsBuilder<T> _dbContextOptions;
-    private readonly Assembly _assembly;
+    private readonly Assembly _infrastructureAssembly;
 
     public EfCoreUnitOfWorkModule(DbContextOptionsBuilder<T> dbContextOptions,
         Assembly infrastructureAssembly)
     {
         _dbContextOptions = dbContextOptions;
-        _assembly = infrastructureAssembly;
+        _infrastructureAssembly = infrastructureAssembly;
     }
 
     protected override void Load(ContainerBuilder builder)
@@ -31,7 +31,17 @@ public class EfCoreUnitOfWorkModule<T> : Autofac.Module
             .As<BuildingBlocksDbContext>()
             .InstancePerLifetimeScope();
 
-        builder.RegisterAssemblyTypes(_assembly)
+        builder
+            .RegisterType<AggregateRepository>()
+            .As<IAggregateRepository>()
+            .InstancePerLifetimeScope();
+
+        builder
+            .RegisterType<OutboxRepository>()
+            .As<IOutboxRepository>()
+            .InstancePerLifetimeScope();
+
+        builder.RegisterAssemblyTypes(_infrastructureAssembly)
             .Where(type => type.Name.EndsWith("Repository"))
             .AsImplementedInterfaces()
             .InstancePerLifetimeScope();

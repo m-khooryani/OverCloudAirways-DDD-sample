@@ -23,6 +23,7 @@ public class AzureServiceBusModule : Module
         builder
             .RegisterInstance(_config)
             .AsSelf()
+            .As<ServiceBusConfig>()
             .SingleInstance();
 
         if (_serviceBusSenderFactory is not null)

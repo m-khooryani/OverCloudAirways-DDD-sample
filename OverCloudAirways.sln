@@ -7,7 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7F4E9029-C7C4-406F-BC1A-8AC85623A98B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.BuildingBlocks", "BuildingBlocks\Src\OverCloudAirways.BuildingBlocks\OverCloudAirways.BuildingBlocks.csproj", "{C47DF1A9-54C6-4199-888C-A2DEC22ABCA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.BuildingBlocks", "BuildingBlocks\Src\OverCloudAirways.BuildingBlocks\OverCloudAirways.BuildingBlocks.csproj", "{C47DF1A9-54C6-4199-888C-A2DEC22ABCA7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{9F4A355C-54C9-4B6B-8556-B3F9E574C45F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.IdentityService.Domain", "Identity\Src\OverCloudAirways.IdentityService.Domain\OverCloudAirways.IdentityService.Domain.csproj", "{EDDF5D5D-5288-456E-9056-DFDC4FAEA746}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.IdentityService.Application", "Identity\Src\OverCloudAirways.IdentityService.Application\OverCloudAirways.IdentityService.Application.csproj", "{438858AE-F577-4EB6-8CBE-413040B09817}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.IdentityService.Infrastructure", "Identity\Src\OverCloudAirways.IdentityService.Infrastructure\OverCloudAirways.IdentityService.Infrastructure.csproj", "{F7E2BF5B-899D-461C-BAAA-A5AFA15C421D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1C2EA234-22F2-496A-85BD-34D979884D31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.IdentityService.IntegrationTests", "Identity\Tests\OverCloudAirways.IdentityService.IntegrationTests\OverCloudAirways.IdentityService.IntegrationTests.csproj", "{C863379A-1FAE-41F8-8711-AA64B33323C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +33,22 @@ Global
 		{C47DF1A9-54C6-4199-888C-A2DEC22ABCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C47DF1A9-54C6-4199-888C-A2DEC22ABCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C47DF1A9-54C6-4199-888C-A2DEC22ABCA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDDF5D5D-5288-456E-9056-DFDC4FAEA746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDDF5D5D-5288-456E-9056-DFDC4FAEA746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDDF5D5D-5288-456E-9056-DFDC4FAEA746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDDF5D5D-5288-456E-9056-DFDC4FAEA746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{438858AE-F577-4EB6-8CBE-413040B09817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{438858AE-F577-4EB6-8CBE-413040B09817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{438858AE-F577-4EB6-8CBE-413040B09817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{438858AE-F577-4EB6-8CBE-413040B09817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7E2BF5B-899D-461C-BAAA-A5AFA15C421D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7E2BF5B-899D-461C-BAAA-A5AFA15C421D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7E2BF5B-899D-461C-BAAA-A5AFA15C421D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7E2BF5B-899D-461C-BAAA-A5AFA15C421D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C863379A-1FAE-41F8-8711-AA64B33323C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C863379A-1FAE-41F8-8711-AA64B33323C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C863379A-1FAE-41F8-8711-AA64B33323C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C863379A-1FAE-41F8-8711-AA64B33323C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -26,6 +56,12 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7F4E9029-C7C4-406F-BC1A-8AC85623A98B} = {D206D7EA-BC0D-4600-8A5F-A7BFA3CF4842}
 		{C47DF1A9-54C6-4199-888C-A2DEC22ABCA7} = {7F4E9029-C7C4-406F-BC1A-8AC85623A98B}
+		{03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE} = {9F4A355C-54C9-4B6B-8556-B3F9E574C45F}
+		{EDDF5D5D-5288-456E-9056-DFDC4FAEA746} = {03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE}
+		{438858AE-F577-4EB6-8CBE-413040B09817} = {03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE}
+		{F7E2BF5B-899D-461C-BAAA-A5AFA15C421D} = {03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE}
+		{1C2EA234-22F2-496A-85BD-34D979884D31} = {9F4A355C-54C9-4B6B-8556-B3F9E574C45F}
+		{C863379A-1FAE-41F8-8711-AA64B33323C2} = {1C2EA234-22F2-496A-85BD-34D979884D31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}

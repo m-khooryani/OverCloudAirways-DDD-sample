@@ -16,7 +16,16 @@ public class BuildingBlocksDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
         base.OnModelCreating(modelBuilder);
+    }
+
+    public void SetPartitionKey<TEntity, TId>(TEntity entity, TId id)
+        where TEntity : class
+        where TId : class
+    {
+        Entry(entity).Property("partitionKey").CurrentValue = id.ToString();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
