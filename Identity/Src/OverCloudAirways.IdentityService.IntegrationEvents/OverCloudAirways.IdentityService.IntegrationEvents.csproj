@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OverCloudAirways.IdentityService.Domain\OverCloudAirways.IdentityService.Domain.csproj" />
-    <ProjectReference Include="..\OverCloudAirways.IdentityService.IntegrationEvents\OverCloudAirways.IdentityService.IntegrationEvents.csproj" />
   </ItemGroup>
 
 </Project>

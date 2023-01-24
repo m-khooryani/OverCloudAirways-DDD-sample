@@ -23,7 +23,7 @@ internal class CommandsScheduler : ICommandsScheduler
 
     public async Task EnqueueAsync(ICommand command)
     {
-        var queuedCommand = new OutboxMessage(
+        var queuedCommand = OutboxMessage.Create(
             Clock.Now,
             command.GetType().FullName!,
             JsonConvert.SerializeObject(command));
@@ -37,7 +37,7 @@ internal class CommandsScheduler : ICommandsScheduler
 
     public async Task EnqueueAsync<TResult>(ICommand<TResult> command)
     {
-        var queuedCommand = new OutboxMessage(
+        var queuedCommand = OutboxMessage.Create(
             Clock.Now,
             command.GetType().FullName!,
             JsonConvert.SerializeObject(command));

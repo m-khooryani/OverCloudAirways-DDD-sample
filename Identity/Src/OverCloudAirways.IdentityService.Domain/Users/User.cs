@@ -13,7 +13,7 @@ public class User : AggregateRoot<UserId>
 
     public static User Register(UserId id, string name)
     {
-        var @event = new UserRegisrtredDomainEvent(
+        var @event = new UserRegisteredDomainEvent(
             id,
             name);
 
@@ -23,7 +23,7 @@ public class User : AggregateRoot<UserId>
         return user;
     }
 
-    protected void When(UserRegisrtredDomainEvent @event)
+    protected void When(UserRegisteredDomainEvent @event)
     {
         Id = @event.UserId;
         Name = @event.Name;

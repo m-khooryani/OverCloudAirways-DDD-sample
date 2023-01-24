@@ -14,13 +14,15 @@ public class OutboxMessage
     {
     }
 
-    public OutboxMessage(DateTimeOffset occurredOn, string type, string data, string? sessionId = null)
-        : this()
+    public static OutboxMessage Create(DateTimeOffset occurredOn, string type, string data, string? sessionId = null)
     {
-        Id = Guid.NewGuid();
-        OccurredOn = occurredOn;
-        Type = type;
-        Data = data;
-        SessionId = sessionId;
+        var message = new OutboxMessage();
+        message.Id = Guid.NewGuid();
+        message.OccurredOn = occurredOn;
+        message.Type = type;
+        message.Data = data;
+        message.SessionId = sessionId;
+
+        return message;
     }
 }

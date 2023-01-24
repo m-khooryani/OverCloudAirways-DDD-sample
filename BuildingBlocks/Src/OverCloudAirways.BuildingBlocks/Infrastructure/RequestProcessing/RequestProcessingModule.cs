@@ -4,6 +4,7 @@ using DArch.Application.Configuration.Commands;
 using MediatR;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
+using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.PolicyPipelines;
 
 namespace DArch.Infrastructure.Processing;
 
@@ -35,6 +36,11 @@ public class RequestProcessingModule : Autofac.Module
             .As(typeof(IPipelineBehavior<,>));
         builder.RegisterGeneric(typeof(QueryValidationBehavior<,>))
             .As(typeof(IPipelineBehavior<,>));
+
+        // Policy Decorators
+        builder.RegisterGenericDecorator(
+            typeof(PolicyLoggingDecorator<>),
+            typeof(INotificationHandler<>));
 
         builder.RegisterAssemblyTypes(_applicationAssembly)
             .AsClosedTypesOf(typeof(DomainEventPolicy<>))

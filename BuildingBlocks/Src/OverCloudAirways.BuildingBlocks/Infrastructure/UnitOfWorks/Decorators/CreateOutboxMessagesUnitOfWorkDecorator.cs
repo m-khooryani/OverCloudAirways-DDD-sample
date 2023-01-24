@@ -51,7 +51,7 @@ internal class CreateOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
             }
 
             var data = JsonConvert.SerializeObject(domainPolicy);
-            var outboxMessage = new OutboxMessage(Clock.Now, domainPolicy.GetType().FullName, data, aggregate.Id.ToString());
+            var outboxMessage = OutboxMessage.Create(Clock.Now, domainPolicy.GetType().FullName!, data, aggregate.Id.ToString());
             await _repository.AddAsync(outboxMessage);
         }
     }

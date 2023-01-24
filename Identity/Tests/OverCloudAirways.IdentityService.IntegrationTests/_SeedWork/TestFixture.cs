@@ -13,11 +13,13 @@ using DArch.Infrastructure.RetryPolicy;
 using DArch.UnitOfWorks.EFCore;
 using FluentValidation;
 using MediatR;
+using Microsoft.Azure.Cosmos.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+using Polly;
 using Xunit.Abstractions;
 
 namespace DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
@@ -121,7 +123,7 @@ public class TestFixture : IDisposable
                         Output?.WriteLine(log);
                     }
                     catch
-                    { 
+                    {
                     }
                 }
             )
@@ -174,5 +176,12 @@ public class TestFixture : IDisposable
         var message = await context.OutboxMessages.OrderBy(x => x.OccurredOn).LastAsync();
 
         await Invoker.CommandAsync(new ProcessOutboxCommand(message.Id.ToString()));
+
+        // Check for failing. exceptions are handled by retry policy
+        await context.Entry(message).ReloadAsync();
+        if (message is not null)
+        {
+            throw new OutboxMessageProccessingFailedException($"messageId: {message.Id}, Exception: {message.Error}");
+        }
     }
 }

@@ -48,19 +48,18 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
         var policy = Policy
             .Handle<Exception>()
             .WaitAndRetryAsync(_pollyConfig.SleepDurations);
-        await ProcessCommandAndDeleteAsync(outboxMessage);
-        //var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommandAndDeleteAsync(outboxMessage));
-        //if (result.Outcome == OutcomeType.Failure)
-        //{
-        //    _logger.LogError("failed to process outbox message.");
-        //    outboxMessage.Error = result.FinalException.ToString();
-        //    outboxMessage.ProcessedDate = Clock.Now;
-        //}
+        var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommandAndDeleteAsync(outboxMessage, cancellationToken));
+        if (result.Outcome == OutcomeType.Failure)
+        {
+            _logger.LogError("failed to process outbox message.");
+            outboxMessage.Error = result.FinalException.ToString();
+            outboxMessage.ProcessedDate = Clock.Now;
+        }
 
         return Unit.Value;
     }
 
-    private async Task ProcessCommandAndDeleteAsync(OutboxMessage outboxMessage)
+    private async Task ProcessCommandAndDeleteAsync(OutboxMessage outboxMessage, CancellationToken cancellationToken)
     {
         _executedTimes++;
 
@@ -69,13 +68,15 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
 
         using var scope = CompositionRoot.BeginLifetimeScope();
         var mediator = scope.Resolve<IMediator>();
-        if (!outboxMessage.Type.Contains("Policy"))
+        if (type.IsAssignableTo(typeof(INotification)))
         {
-            await mediator.Send(commandToProcess);
+            await mediator.Publish((commandToProcess as DomainEventPolicy)!);
+            var unitOfWork = scope.Resolve<IUnitOfWork>();
+            await unitOfWork.CommitAsync(cancellationToken);
         }
         else
         {
-            await mediator.Publish(commandToProcess as DomainEventPolicy);
+            await mediator.Send(commandToProcess);
         }
 
         _outboxRepository.Remove(outboxMessage);
