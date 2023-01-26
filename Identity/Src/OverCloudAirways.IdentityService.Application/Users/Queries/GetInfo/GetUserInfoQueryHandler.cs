@@ -6,7 +6,6 @@ namespace OverCloudAirways.IdentityService.Application.Users.Queries.GetInfo;
 
 internal class GetUserInfoQueryHandler : QueryHandler<GetUserInfoQuery, UserDto>
 {
-    private const string ContainerName = "Users";
     private readonly CosmosManager _cosmosManager;
 
     public GetUserInfoQueryHandler(CosmosManager cosmosManager)
@@ -16,17 +15,18 @@ internal class GetUserInfoQueryHandler : QueryHandler<GetUserInfoQuery, UserDto>
 
     public override async Task<UserDto> HandleAsync(GetUserInfoQuery query, CancellationToken cancellationToken)
     {
-        var sql = "SELECT " +
-                  $"user.id   AS {nameof(UserDto.Id)}, " +
-                  $"user.name AS {nameof(UserDto.Name)} " +
-                  $"FROM user " +
-                  $"WHERE " +
-                  $"user.id = @userId AND " +
-                  $"user.partitionKey = @userId ";
+        var sql = @$"
+                    SELECT 
+                    user.id   AS {nameof(UserDto.Id)}, 
+                    user.Name AS {nameof(UserDto.Name)} 
+                    FROM user 
+                    WHERE 
+                    user.id = @userId AND 
+                    user.partitionKey = @userId ";
+
         var queryDefinition = new QueryDefinition(sql)
             .WithParameter("@userId", query.UserId);
-
-        var user = await _cosmosManager.QuerySingleAsync<UserDto>(ContainerName, queryDefinition);
+        var user = await _cosmosManager.QuerySingleAsync<UserDto>(ContainersConstants.User, queryDefinition);
 
         return user;
     }

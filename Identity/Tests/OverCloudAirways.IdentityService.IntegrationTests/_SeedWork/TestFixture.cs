@@ -13,12 +13,15 @@ using DArch.Infrastructure.RetryPolicy;
 using DArch.UnitOfWorks.EFCore;
 using FluentValidation;
 using MediatR;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
+using OverCloudAirways.IdentityService.Application;
 using Polly;
 using Xunit.Abstractions;
 
@@ -59,13 +62,16 @@ public class TestFixture : IDisposable
 
         dbContextOptionsBuilder.UseCosmos(accountEndpoint!, accountKey!, _databaseId);
         dbContextOptionsBuilder.UseLoggerFactory(GetLoggerFactory());
-        SetupCompositionRoot(dbContextOptionsBuilder);
+        SetupCompositionRoot(dbContextOptionsBuilder, accountEndpoint, accountKey);
 
         Invoker = new CqrsInvoker();
         InitialDatabase();
     }
 
-    private void SetupCompositionRoot(DbContextOptionsBuilder<BuildingBlocksDbContext> contextOptionsBuilder)
+    private void SetupCompositionRoot(
+        DbContextOptionsBuilder<BuildingBlocksDbContext> contextOptionsBuilder,
+        string? accountEndpoint,
+        string? accountKey)
     {
         var domainAssembly = Assembly.Load("OverCloudAirways.IdentityService.Domain");
         var infrastructureAssembly = Assembly.Load("OverCloudAirways.IdentityService.Infrastructure");
@@ -95,6 +101,8 @@ public class TestFixture : IDisposable
         var serviceBusConfig = Substitute.For<ServiceBusConfig>();
         var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig);
 
+        var cosmosDbModule = new CosmosDBModule(accountEndpoint!, accountKey!, _databaseId);
+
         CompositionRoot.Initialize(
             assemblyLayersModule,
             processingModule,
@@ -103,7 +111,8 @@ public class TestFixture : IDisposable
             loggingModule,
             contextAccessorModule,
             retryPolicyModule,
-            azureServiceBusModule);
+            azureServiceBusModule,
+            cosmosDbModule);
     }
 
     private static LoggerFactory GetLoggerFactory()
@@ -133,8 +142,9 @@ public class TestFixture : IDisposable
     void IDisposable.Dispose()
     {
         using var scope = CompositionRoot.BeginLifetimeScope();
-        var context = scope.Resolve<BuildingBlocksDbContext>();
-        context.Database.EnsureDeleted();
+
+        var database = scope.Resolve<Database>();
+        database.DeleteAsync().Wait();
     }
 
     internal static TService ResolveService<TService>()
@@ -150,6 +160,9 @@ public class TestFixture : IDisposable
         using var scope = CompositionRoot.BeginLifetimeScope();
         var context = scope.Resolve<BuildingBlocksDbContext>();
         context.Database.EnsureCreated();
+
+        var database = scope.Resolve<Database>();
+        _ = database.CreateContainerIfNotExistsAsync(ContainersConstants.User, "/partitionKey").Result;
     }
 
     internal async Task ResetAsync()
@@ -178,9 +191,10 @@ public class TestFixture : IDisposable
         await Invoker.CommandAsync(new ProcessOutboxCommand(message.Id.ToString()));
 
         // Check for failing. exceptions are handled by retry policy
-        await context.Entry(message).ReloadAsync();
+        message = await context.OutboxMessages.Where(x => x.Id == message.Id).FirstOrDefaultAsync();
         if (message is not null)
         {
+            await context.Entry(message).ReloadAsync();
             throw new OutboxMessageProccessingFailedException($"messageId: {message.Id}, Exception: {message.Error}");
         }
     }

@@ -15,12 +15,13 @@ internal class PublishUserRegisteredEventPolicyHandler : IDomainPolicyHandler<Us
         _commandsScheduler = commandsScheduler;
     }
 
-    public async Task Handle(UserRegisteredPolicy notification, CancellationToken cancellationToken)
+    public Task Handle(UserRegisteredPolicy notification, CancellationToken cancellationToken)
     {
-        var @event = new UserRegisteredIntegrationEvent(
-            notification.DomainEvent.UserId,
-            notification.DomainEvent.Name);
+        return Task.CompletedTask;
+        //var @event = new UserRegisteredIntegrationEvent(
+        //    notification.DomainEvent.UserId,
+        //    notification.DomainEvent.Name);
 
-        await _commandsScheduler.EnqueueAsync(new PublishIntegrationEventCommand(@event));
+        //await _commandsScheduler.EnqueueAsync(new PublishIntegrationEventCommand(@event));
     }
 }

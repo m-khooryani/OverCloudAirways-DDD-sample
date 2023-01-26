@@ -1,6 +1,7 @@
 ﻿using DArch.Application.Contracts;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using OverCloudAirways.BuildingBlocks.Application.Models;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
@@ -155,5 +156,19 @@ public class CosmosManager
         var item = await results.ReadNextAsync();
 
         return item.Resource.FirstOrDefault();
+    }
+
+    public async Task UpsertAsync(string containerName, ReadModel item)
+    {
+        var container = GetContainer(containerName);
+        _logger.LogInformation("Upserting item...");
+
+        var response = await container.UpsertItemAsync(item, new PartitionKey(item.PartitionKey));
+        _logger.LogInformation($"Response: {response}");
+
+        if (!(200 <= (int)response.StatusCode && (int)response.StatusCode < 300))
+        {
+            throw new Exception();
+        }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.Azure.Cosmos;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
-internal class CosmosDBModule : Module
+public class CosmosDBModule : Module
 {
     private readonly string _accountEndPoint;
     private readonly string _primaryKey;

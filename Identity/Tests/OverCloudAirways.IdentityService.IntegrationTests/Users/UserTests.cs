@@ -1,6 +1,7 @@
 ﻿using DArch.Infrastructure;
 using DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
 using OverCloudAirways.IdentityService.Application.Users.Commands.Register;
+using OverCloudAirways.IdentityService.Application.Users.Queries.GetInfo;
 using OverCloudAirways.IdentityService.Domain.Users;
 using Xunit;
 using Xunit.Abstractions;
@@ -30,9 +31,17 @@ public class UserTests
         var registerUserCommand = new RegisterUserCommand(userId, username);
         await _invoker.CommandAsync(registerUserCommand);
 
-        // 
+        // Process Registered Policy
+        await _testFixture.ProcessLastOutboxMessageAsync();
+        // Process Project Read-Model
         await _testFixture.ProcessLastOutboxMessageAsync();
 
+        // ReadUser Query
+        var query = new GetUserInfoQuery(userId.Value);
+        var user = await _invoker.QueryAsync(query);
 
+        Assert.NotNull(user);
+        Assert.Equal(userId.Value, user.Id);
+        Assert.Equal(username, user.Name);
     }
 }
