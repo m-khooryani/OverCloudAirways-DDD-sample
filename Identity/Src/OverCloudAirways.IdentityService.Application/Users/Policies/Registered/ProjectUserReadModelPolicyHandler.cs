@@ -5,11 +5,11 @@ using OverCloudAirways.IdentityService.Domain.Users.Events;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Policies.Registered;
 
-internal class UpdateUserReadModelPolicyHandler : IDomainPolicyHandler<UserRegisteredPolicy, UserRegisteredDomainEvent>
+internal class ProjectUserReadModelPolicyHandler : IDomainPolicyHandler<UserRegisteredPolicy, UserRegisteredDomainEvent>
 {
     private readonly ICommandsScheduler _commandsScheduler;
 
-    public UpdateUserReadModelPolicyHandler(ICommandsScheduler commandsScheduler)
+    public ProjectUserReadModelPolicyHandler(ICommandsScheduler commandsScheduler)
     {
         _commandsScheduler = commandsScheduler;
     }
