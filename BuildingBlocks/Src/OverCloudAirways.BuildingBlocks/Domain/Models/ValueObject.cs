@@ -51,6 +51,8 @@ public abstract class ValueObject : IEquatable<ValueObject>
             return AreArraysEqual(left, right);
         }
         if (type.IsGenericType && (typeof(ICollection).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
+                                   typeof(IReadOnlyCollection<>).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
+                                   typeof(IReadOnlyList<>).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
                                    typeof(ICollection<>).IsAssignableFrom(type.GetGenericTypeDefinition())))
         {
             var left = propertyInfo.GetValue(this, null) as ICollection;
@@ -122,6 +124,8 @@ public abstract class ValueObject : IEquatable<ValueObject>
             return AreArraysEqual(left, right);
         }
         if (type.IsGenericType && (typeof(ICollection).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
+                                   typeof(IReadOnlyCollection<>).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
+                                   typeof(IReadOnlyList<>).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
                                    typeof(ICollection<>).IsAssignableFrom(type.GetGenericTypeDefinition())))
         {
             var left = fieldInfo.GetValue(this) as ICollection;

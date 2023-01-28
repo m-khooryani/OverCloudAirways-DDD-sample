@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using OverCloudAirways.BookingService.Application;
+using OverCloudAirways.BookingService.Infrastructure.DomainServices;
 using OverCloudAirways.BuildingBlocks.Application.Commands.ProcessOutboxMessage;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.BuildingBlocks.Infrastructure;
@@ -97,8 +98,8 @@ public class TestFixture : IDisposable
         });
         var serviceBusConfig = Substitute.For<ServiceBusConfig>();
         var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig);
-
         var cosmosDbModule = new CosmosDBModule(accountEndpoint!, accountKey!, _databaseId);
+        var domainServicesModule = new DomainServicesModule();
 
         CompositionRoot.Initialize(
             assemblyLayersModule,
@@ -109,7 +110,8 @@ public class TestFixture : IDisposable
             contextAccessorModule,
             retryPolicyModule,
             azureServiceBusModule,
-            cosmosDbModule);
+            cosmosDbModule,
+            domainServicesModule);
     }
 
     private static LoggerFactory GetLoggerFactory()

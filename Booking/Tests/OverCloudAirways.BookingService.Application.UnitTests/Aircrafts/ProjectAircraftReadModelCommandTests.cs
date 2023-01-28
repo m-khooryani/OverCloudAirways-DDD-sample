@@ -16,7 +16,7 @@ public class ProjectAircraftReadModelCommandTests
         // Arrange
         var aggregateRepository = Substitute.For<IAggregateRepository>();
         var cosmosManager = Substitute.For<ICosmosManager>();
-        var handler = new ProjectAircraftReadModelCommandHandler(aggregateRepository, cosmosManager);
+        var handler = new ProjectAircraftReadModelCommandHandler(cosmosManager, aggregateRepository);
         var aircraftId = AircraftId.New();
         var command = new ProjectAircraftReadModelCommand(aircraftId);
         var aggregate = new AircraftBuilder()

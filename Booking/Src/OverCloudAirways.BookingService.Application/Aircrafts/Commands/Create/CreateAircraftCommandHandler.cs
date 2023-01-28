@@ -32,7 +32,7 @@ internal class CreateAircraftCommandHandler : CommandHandler<CreateAircraftComma
             command.Height,
             command.Engines);
 
-        _aggregateRepository.Add<Aircraft, AircraftId>(aircraft);
+        _aggregateRepository.Add(aircraft);
 
         return Task.CompletedTask;
     }

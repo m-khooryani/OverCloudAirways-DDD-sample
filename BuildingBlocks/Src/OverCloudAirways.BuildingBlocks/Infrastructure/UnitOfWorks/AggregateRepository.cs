@@ -28,9 +28,8 @@ internal class AggregateRepository : IAggregateRepository
         _layers = layers;
     }
 
-    public void Add<TAggregateRoot, TKey>(TAggregateRoot aggregateRoot)
-        where TAggregateRoot : AggregateRoot<TKey>
-        where TKey : TypedId
+    public void Add<TAggregateRoot>(TAggregateRoot aggregateRoot)
+        where TAggregateRoot : IAggregateRoot
     {
         _loadedAggregates.Add(aggregateRoot.Id, aggregateRoot);
     }

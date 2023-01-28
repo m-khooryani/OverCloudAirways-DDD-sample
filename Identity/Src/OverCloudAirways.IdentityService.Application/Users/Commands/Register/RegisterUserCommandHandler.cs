@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OverCloudAirways.BuildingBlocks.Application.Commands;
+﻿using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.IdentityService.Domain.Users;
 
@@ -22,7 +17,7 @@ internal class RegisterUserCommandHandler : CommandHandler<RegisterUserCommand>
     {
         var user = User.Register(command.UserId, command.Name);
 
-        _aggregateRepository.Add<User, UserId>(user);
+        _aggregateRepository.Add(user);
 
         return Task.CompletedTask;
     }

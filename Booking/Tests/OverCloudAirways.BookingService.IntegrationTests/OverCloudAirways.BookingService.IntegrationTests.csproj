@@ -38,7 +38,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Src\OverCloudAirways.BookingService.Application\OverCloudAirways.BookingService.Application.csproj" />
-	  <ProjectReference Include="..\OverCloudAirways.BookingService.Infrastructure\OverCloudAirways.BookingService.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\Src\OverCloudAirways.BookingService.Infrastructure\OverCloudAirways.BookingService.Infrastructure.csproj" />
 	  <ProjectReference Include="..\OverCloudAirways.BookingService.TestHelpers\OverCloudAirways.BookingService.TestHelpers.csproj" />
 	</ItemGroup>
 

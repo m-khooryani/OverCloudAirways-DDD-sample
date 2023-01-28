@@ -7,15 +7,15 @@ namespace OverCloudAirways.BookingService.Application.Aircrafts.Commands.Project
 
 internal class ProjectAircraftReadModelCommandHandler : CommandHandler<ProjectAircraftReadModelCommand>
 {
-    private readonly IAggregateRepository _aggregateRepository;
     private readonly ICosmosManager _cosmosManager;
+    private readonly IAggregateRepository _aggregateRepository;
 
     public ProjectAircraftReadModelCommandHandler(
-        IAggregateRepository aggregateRepository,
-        ICosmosManager cosmosManager)
+        ICosmosManager cosmosManager,
+        IAggregateRepository aggregateRepository)
     {
-        _aggregateRepository = aggregateRepository;
         _cosmosManager = cosmosManager;
+        _aggregateRepository = aggregateRepository;
     }
 
     public override async Task HandleAsync(ProjectAircraftReadModelCommand command, CancellationToken cancellationToken)
