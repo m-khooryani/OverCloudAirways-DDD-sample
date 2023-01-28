@@ -2,9 +2,10 @@
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 
-namespace DArch.Infrastructure.EventBus;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 
 internal class AzureServiceBusEventBus : IEventBus
 {

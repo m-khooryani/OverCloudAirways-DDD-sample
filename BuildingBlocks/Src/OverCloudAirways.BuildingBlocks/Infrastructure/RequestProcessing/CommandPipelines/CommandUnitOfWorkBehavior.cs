@@ -1,8 +1,8 @@
-﻿using DArch.Application.Contracts;
-using MediatR;
+﻿using MediatR;
+using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
-namespace DArch.Infrastructure.Processing;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.CommandPipelines;
 
 internal class CommandUnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : ICommand<TResponse>

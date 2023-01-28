@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 using Autofac;
-using DArch.Infrastructure.CleanArchitecture;
 using Module = Autofac.Module;
 
-namespace DArch.Infrastructure.Configuration.Processing.ApplicationAssembly;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 
 public class AssemblyLayersModule : Module
 {
@@ -14,7 +13,7 @@ public class AssemblyLayersModule : Module
         Assembly domainAssembly,
         Assembly applicationAssembly)
     {
-        _domainAssembly = domainAssembly;   
+        _domainAssembly = domainAssembly;
         _applicationAssembly = applicationAssembly;
     }
 

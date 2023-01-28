@@ -1,6 +1,6 @@
 ﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 
-namespace DArch.Infrastructure.EventBus;
+namespace OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 public interface IEventBus
 {

@@ -1,14 +1,14 @@
-﻿using DArch.Application.Configuration.Queries;
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
+using OverCloudAirways.BuildingBlocks.Application.Queries;
 using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Queries.GetInfo;
 
 internal class GetUserInfoQueryHandler : QueryHandler<GetUserInfoQuery, UserDto>
 {
-    private readonly CosmosManager _cosmosManager;
+    private readonly ICosmosManager _cosmosManager;
 
-    public GetUserInfoQueryHandler(CosmosManager cosmosManager)
+    public GetUserInfoQueryHandler(ICosmosManager cosmosManager)
     {
         _cosmosManager = cosmosManager;
     }

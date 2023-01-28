@@ -1,8 +1,8 @@
-﻿using DArch.Infrastructure;
-using DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
+﻿using OverCloudAirways.BuildingBlocks.Infrastructure;
 using OverCloudAirways.IdentityService.Application.Users.Commands.Register;
 using OverCloudAirways.IdentityService.Application.Users.Queries.GetInfo;
 using OverCloudAirways.IdentityService.Domain.Users;
+using OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 using Xunit;
 using Xunit.Abstractions;
 

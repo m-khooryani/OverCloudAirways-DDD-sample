@@ -1,5 +1,4 @@
-﻿using DArch.Application.Contracts;
-using DArch.Infrastructure.EventBus;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 
 namespace OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
 

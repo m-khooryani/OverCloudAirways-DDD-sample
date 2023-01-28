@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
+namespace OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 
 internal class IntegratinTestLogger : ILogger
 {
@@ -8,7 +8,7 @@ internal class IntegratinTestLogger : ILogger
     private readonly LogLevel _logLevel;
 
     public IntegratinTestLogger(
-        Action<string> logAction, 
+        Action<string> logAction,
         LogLevel logLevel)
     {
         _logAction = logAction;
@@ -26,9 +26,9 @@ internal class IntegratinTestLogger : ILogger
     }
 
     public void Log<TState>(
-        LogLevel logLevel, 
-        EventId eventId, 
-        TState state, 
+        LogLevel logLevel,
+        EventId eventId,
+        TState state,
         Exception exception,
         Func<TState, Exception, string> formatter)
     {

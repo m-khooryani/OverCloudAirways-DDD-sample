@@ -1,4 +1,4 @@
-﻿using DArch.Infrastructure.EventBus;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.IdentityService.Domain.Users;
 
 namespace OverCloudAirways.IdentityService.IntegrationEvents.Users;

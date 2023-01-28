@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Logging;
 
-namespace DArch.Infrastructure.Logging;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.Logging;
 
 public class LoggingModule : Module
 {

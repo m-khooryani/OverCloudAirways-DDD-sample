@@ -1,6 +1,7 @@
-﻿using DArch.Application.Contracts;
+﻿using FluentValidation;
+using OverCloudAirways.BuildingBlocks.Application.Queries;
 
-namespace FluentValidation;
+namespace OverCloudAirways.BuildingBlocks.Application.Validators;
 
 public abstract class QueryValidator<T> : AbstractValidator<T>
     where T : IQueryBase

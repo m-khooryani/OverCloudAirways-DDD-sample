@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace DArch.Infrastructure.RetryPolicy;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
 
 public class RetryPolicyModule : Module
 {

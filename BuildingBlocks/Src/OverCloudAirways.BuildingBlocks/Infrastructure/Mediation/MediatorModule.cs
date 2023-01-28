@@ -5,7 +5,7 @@ using Autofac.Features.Variance;
 using MediatR;
 using MediatR.Pipeline;
 
-namespace DArch.Infrastructure.Mediation;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.Mediation;
 
 public class MediatorModule : Autofac.Module
 {

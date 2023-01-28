@@ -1,9 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using Azure.Messaging.ServiceBus;
-using DArch.AzureServiceBus;
-using DArch.Infrastructure.EventBus;
 
-namespace DArch.ServiceBus;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 
 internal class ServiceBusSenderFactory : IServiceBusSenderFactory
 {

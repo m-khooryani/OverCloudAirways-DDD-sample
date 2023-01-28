@@ -1,4 +1,4 @@
-﻿using DArch.Application.Contracts;
+﻿using OverCloudAirways.BuildingBlocks.Application.Queries;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Queries.GetInfo;
 

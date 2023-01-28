@@ -1,11 +1,11 @@
 ﻿using Autofac;
-using DArch.Application.Contracts;
-using DArch.Infrastructure.Configuration;
 using MediatR;
+using OverCloudAirways.BuildingBlocks.Application.Commands;
+using OverCloudAirways.BuildingBlocks.Application.Queries;
 
-namespace DArch.Infrastructure;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure;
 
-public class CqrsInvoker 
+public class CqrsInvoker
 {
     public async Task<TResult> CommandAsync<TResult>(ICommand<TResult> command)
     {

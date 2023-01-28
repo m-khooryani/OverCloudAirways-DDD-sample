@@ -1,6 +1,6 @@
 ﻿using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
-namespace DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
+namespace OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 
 class FakeAccessor : IUserAccessor
 {

@@ -1,4 +1,4 @@
-﻿namespace DArch.Application.Contracts;
+﻿namespace OverCloudAirways.BuildingBlocks.Application.Queries;
 
 public class PagedDto<T>
 {

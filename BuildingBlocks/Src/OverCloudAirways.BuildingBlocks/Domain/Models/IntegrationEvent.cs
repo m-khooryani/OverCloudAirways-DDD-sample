@@ -1,7 +1,6 @@
-﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
-using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 
-namespace DArch.Infrastructure.EventBus;
+namespace OverCloudAirways.BuildingBlocks.Domain.Models;
 
 public record IntegrationEvent
 {

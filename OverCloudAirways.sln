@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{D206D7EA-BC0D-4600-8A5F-A7BFA3CF4842}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_BuildingBlocks", "_BuildingBlocks", "{D206D7EA-BC0D-4600-8A5F-A7BFA3CF4842}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7F4E9029-C7C4-406F-BC1A-8AC85623A98B}"
 EndProject
@@ -23,7 +23,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1C2EA234
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.IdentityService.IntegrationTests", "Identity\Tests\OverCloudAirways.IdentityService.IntegrationTests\OverCloudAirways.IdentityService.IntegrationTests.csproj", "{C863379A-1FAE-41F8-8711-AA64B33323C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.IdentityService.IntegrationEvents", "Identity\Src\OverCloudAirways.IdentityService.IntegrationEvents\OverCloudAirways.IdentityService.IntegrationEvents.csproj", "{F0EC1F8E-212C-4D5B-A862-DD0082AF5DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.IdentityService.IntegrationEvents", "Identity\Src\OverCloudAirways.IdentityService.IntegrationEvents\OverCloudAirways.IdentityService.IntegrationEvents.csproj", "{F0EC1F8E-212C-4D5B-A862-DD0082AF5DC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Booking", "Booking", "{05A793FF-3C76-434A-B7D6-6BF467FFBF8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{8DE471EB-49A7-490F-9F95-08912DBA0FED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.BookingService.Domain", "Booking\Src\OverCloudAirways.BookingService.Domain\OverCloudAirways.BookingService.Domain.csproj", "{CC9E1910-7E5A-4FBB-A1A3-668CC44545B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.BookingService.Application", "Booking\Src\OverCloudAirways.BookingService.Application\OverCloudAirways.BookingService.Application.csproj", "{D0A68159-C8ED-4A15-AD91-56B879F20716}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EC28C59D-F6B3-4995-B548-D3D93425993A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.BookingService.IntegrationTests", "Booking\Tests\OverCloudAirways.BookingService.IntegrationTests\OverCloudAirways.BookingService.IntegrationTests.csproj", "{3DC1BEEA-C34B-45FC-983D-CE26756948EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.BookingService.Infrastructure", "Booking\Tests\OverCloudAirways.BookingService.Infrastructure\OverCloudAirways.BookingService.Infrastructure.csproj", "{D9219F28-6A56-4728-9C02-4115D8CF29D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.BookingService.TestHelpers", "Booking\Tests\OverCloudAirways.BookingService.TestHelpers\OverCloudAirways.BookingService.TestHelpers.csproj", "{8279D8D2-1BD5-4C0B-912B-3A4AFB1BEFEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.BookingService.Application.UnitTests", "Booking\Tests\OverCloudAirways.BookingService.Application.UnitTests\OverCloudAirways.BookingService.Application.UnitTests.csproj", "{CB2DB307-9EAC-479B-B046-0C61469763D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +73,30 @@ Global
 		{F0EC1F8E-212C-4D5B-A862-DD0082AF5DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0EC1F8E-212C-4D5B-A862-DD0082AF5DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0EC1F8E-212C-4D5B-A862-DD0082AF5DC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC9E1910-7E5A-4FBB-A1A3-668CC44545B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC9E1910-7E5A-4FBB-A1A3-668CC44545B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC9E1910-7E5A-4FBB-A1A3-668CC44545B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC9E1910-7E5A-4FBB-A1A3-668CC44545B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A68159-C8ED-4A15-AD91-56B879F20716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A68159-C8ED-4A15-AD91-56B879F20716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A68159-C8ED-4A15-AD91-56B879F20716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A68159-C8ED-4A15-AD91-56B879F20716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC1BEEA-C34B-45FC-983D-CE26756948EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC1BEEA-C34B-45FC-983D-CE26756948EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC1BEEA-C34B-45FC-983D-CE26756948EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC1BEEA-C34B-45FC-983D-CE26756948EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9219F28-6A56-4728-9C02-4115D8CF29D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9219F28-6A56-4728-9C02-4115D8CF29D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9219F28-6A56-4728-9C02-4115D8CF29D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9219F28-6A56-4728-9C02-4115D8CF29D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8279D8D2-1BD5-4C0B-912B-3A4AFB1BEFEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8279D8D2-1BD5-4C0B-912B-3A4AFB1BEFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8279D8D2-1BD5-4C0B-912B-3A4AFB1BEFEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8279D8D2-1BD5-4C0B-912B-3A4AFB1BEFEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB2DB307-9EAC-479B-B046-0C61469763D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB2DB307-9EAC-479B-B046-0C61469763D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB2DB307-9EAC-479B-B046-0C61469763D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB2DB307-9EAC-479B-B046-0C61469763D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +111,14 @@ Global
 		{1C2EA234-22F2-496A-85BD-34D979884D31} = {9F4A355C-54C9-4B6B-8556-B3F9E574C45F}
 		{C863379A-1FAE-41F8-8711-AA64B33323C2} = {1C2EA234-22F2-496A-85BD-34D979884D31}
 		{F0EC1F8E-212C-4D5B-A862-DD0082AF5DC4} = {03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE}
+		{8DE471EB-49A7-490F-9F95-08912DBA0FED} = {05A793FF-3C76-434A-B7D6-6BF467FFBF8F}
+		{CC9E1910-7E5A-4FBB-A1A3-668CC44545B0} = {8DE471EB-49A7-490F-9F95-08912DBA0FED}
+		{D0A68159-C8ED-4A15-AD91-56B879F20716} = {8DE471EB-49A7-490F-9F95-08912DBA0FED}
+		{EC28C59D-F6B3-4995-B548-D3D93425993A} = {05A793FF-3C76-434A-B7D6-6BF467FFBF8F}
+		{3DC1BEEA-C34B-45FC-983D-CE26756948EB} = {EC28C59D-F6B3-4995-B548-D3D93425993A}
+		{D9219F28-6A56-4728-9C02-4115D8CF29D7} = {8DE471EB-49A7-490F-9F95-08912DBA0FED}
+		{8279D8D2-1BD5-4C0B-912B-3A4AFB1BEFEC} = {EC28C59D-F6B3-4995-B548-D3D93425993A}
+		{CB2DB307-9EAC-479B-B046-0C61469763D2} = {EC28C59D-F6B3-4995-B548-D3D93425993A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}

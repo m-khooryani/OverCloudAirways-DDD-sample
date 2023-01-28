@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace DArch.Application.Contracts;
+namespace OverCloudAirways.BuildingBlocks.Application.Commands;
 
 public interface ICommand<out TResult> : IRequest<TResult>, ICommandBase
 {

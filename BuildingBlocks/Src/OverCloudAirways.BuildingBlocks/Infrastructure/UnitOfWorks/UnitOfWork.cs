@@ -1,5 +1,4 @@
-﻿using DArch.UnitOfWorks.EFCore;
-using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 

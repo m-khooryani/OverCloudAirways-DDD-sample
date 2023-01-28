@@ -1,4 +1,4 @@
-﻿namespace DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
+﻿namespace OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 
 class OutboxMessageProccessingFailedException : Exception
 {

@@ -1,17 +1,18 @@
 ﻿using Autofac;
-using DArch.Application.Configuration.Commands;
-using DArch.Infrastructure.CleanArchitecture;
-using DArch.Infrastructure.RetryPolicy;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+using OverCloudAirways.BuildingBlocks.Infrastructure;
+using OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
+using OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
 using Polly;
 
-namespace DArch.Infrastructure.Configuration.Processing.Outbox;
+namespace OverCloudAirways.BuildingBlocks.Application.Commands.ProcessOutboxMessage;
 
 internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand>
 {

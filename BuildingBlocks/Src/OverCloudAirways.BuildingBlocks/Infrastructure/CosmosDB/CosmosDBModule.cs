@@ -28,7 +28,7 @@ public class CosmosDBModule : Module
             .SingleInstance();
 
         builder.RegisterType<CosmosManager>()
-            .AsSelf()
+            .As<ICosmosManager>()
             .SingleInstance();
     }
 }

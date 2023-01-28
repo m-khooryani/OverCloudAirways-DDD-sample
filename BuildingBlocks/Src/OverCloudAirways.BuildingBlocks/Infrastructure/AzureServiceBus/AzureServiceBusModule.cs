@@ -1,9 +1,7 @@
 ﻿using Autofac;
-using DArch.AzureServiceBus;
-using DArch.Infrastructure.EventBus;
-using DArch.ServiceBus;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
-namespace DArch.Infrastructure.Configuration;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 
 public class AzureServiceBusModule : Module
 {

@@ -1,4 +1,4 @@
-﻿namespace DArch.AzureServiceBus;
+﻿namespace OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 
 public class ServiceBusConfig
 {

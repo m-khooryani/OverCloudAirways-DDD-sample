@@ -1,5 +1,4 @@
-﻿using DArch.Application.Configuration.Commands;
-using DArch.Infrastructure.EventBus;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
 

@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace DArch.Infrastructure.Configuration;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure;
 
 public static class CompositionRoot
 {

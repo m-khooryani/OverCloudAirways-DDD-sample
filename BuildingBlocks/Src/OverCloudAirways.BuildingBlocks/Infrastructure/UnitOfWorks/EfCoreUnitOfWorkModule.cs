@@ -2,12 +2,11 @@
 using Autofac;
 using Microsoft.EntityFrameworkCore;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
-using OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 using OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks.Decorators;
 
-namespace DArch.UnitOfWorks.EFCore;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 
-public class EfCoreUnitOfWorkModule<T> : Autofac.Module 
+public class EfCoreUnitOfWorkModule<T> : Autofac.Module
     where T : BuildingBlocksDbContext
 {
     private readonly DbContextOptionsBuilder<T> _dbContextOptions;

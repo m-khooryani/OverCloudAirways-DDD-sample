@@ -1,18 +1,18 @@
-﻿using DArch.Application.Configuration.Commands;
+﻿using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 using OverCloudAirways.IdentityService.Domain.Users;
 
-namespace OverCloudAirways.IdentityService.Application.Users.Commands.UpdateReadModel;
+namespace OverCloudAirways.IdentityService.Application.Users.Commands.ProjectReadModel;
 
 internal class ProjectUserReadModelCommandHandler : CommandHandler<ProjectUserReadModelCommand>
 {
     private readonly IAggregateRepository _aggregateRepository;
-    private readonly CosmosManager _cosmosManager;
+    private readonly ICosmosManager _cosmosManager;
 
     public ProjectUserReadModelCommandHandler(
         IAggregateRepository aggregateRepository,
-        CosmosManager cosmosManager)
+        ICosmosManager cosmosManager)
     {
         _aggregateRepository = aggregateRepository;
         _cosmosManager = cosmosManager;
@@ -20,9 +20,9 @@ internal class ProjectUserReadModelCommandHandler : CommandHandler<ProjectUserRe
 
     public override async Task HandleAsync(ProjectUserReadModelCommand command, CancellationToken cancellationToken)
     {
-        var user = await _aggregateRepository.LoadAsync<User, UserId>(command.UserId);
-        var userReadmodel = new UserReadModel(user.Id.Value, user.Name);
+        var aggregate = await _aggregateRepository.LoadAsync<User, UserId>(command.UserId);
+        var readModel = new UserReadModel(aggregate.Id.Value, aggregate.Name);
 
-        await _cosmosManager.UpsertAsync(ContainersConstants.User, userReadmodel);
+        await _cosmosManager.UpsertAsync(ContainersConstants.User, readModel);
     }
 }

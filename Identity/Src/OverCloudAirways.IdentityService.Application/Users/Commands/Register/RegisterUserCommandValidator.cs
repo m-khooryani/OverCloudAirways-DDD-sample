@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using OverCloudAirways.BuildingBlocks.Application.Validators;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;
 

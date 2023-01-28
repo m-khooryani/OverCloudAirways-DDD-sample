@@ -1,11 +1,11 @@
-﻿using DArch.Application.Contracts;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Application.Commands;
 
-namespace DArch.Infrastructure.Processing;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.CommandPipelines;
 
-internal class CommandLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+internal class CommandLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : ICommand<TResponse>
 {
     private readonly ILogger _logger;

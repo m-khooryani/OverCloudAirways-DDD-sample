@@ -1,7 +1,6 @@
-﻿using DArch.Application.Contracts;
-using MediatR;
+﻿using MediatR;
 
-namespace DArch.Application.Configuration.Commands;
+namespace OverCloudAirways.BuildingBlocks.Application.Commands;
 
 public abstract class CommandHandler<TCommand> : IRequestHandler<TCommand> where TCommand : ICommand
 {

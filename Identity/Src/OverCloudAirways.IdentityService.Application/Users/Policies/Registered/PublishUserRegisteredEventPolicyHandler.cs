@@ -1,6 +1,6 @@
-﻿using DArch.Application.Configuration.Commands;
-using OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
+﻿using OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.IdentityService.Domain.Users.Events;
 using OverCloudAirways.IdentityService.IntegrationEvents.Users;
 

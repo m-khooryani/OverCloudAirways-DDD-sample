@@ -1,6 +1,6 @@
-﻿using DArch.Application.Configuration.Commands;
-using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
-using OverCloudAirways.IdentityService.Application.Users.Commands.UpdateReadModel;
+﻿using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+using OverCloudAirways.IdentityService.Application.Users.Commands.ProjectReadModel;
 using OverCloudAirways.IdentityService.Domain.Users.Events;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Policies.Registered;

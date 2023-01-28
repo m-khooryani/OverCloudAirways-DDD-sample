@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using DArch.Application.Contracts;
 using FluentValidation;
 using MediatR;
+using OverCloudAirways.BuildingBlocks.Application.Commands;
 
-namespace DArch.Infrastructure.Processing;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.CommandPipelines;
 
 public class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : ICommand<TResponse>

@@ -1,6 +1,4 @@
-﻿using DArch.Application.Contracts;
-
-namespace DArch.Infrastructure.Configuration.Processing.Outbox;
+﻿namespace OverCloudAirways.BuildingBlocks.Application.Commands.ProcessOutboxMessage;
 
 public record ProcessOutboxCommand : Command
 {

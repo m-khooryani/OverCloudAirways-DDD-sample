@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace DArch.Infrastructure.CleanArchitecture;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 
 internal class AssemblyLayers
 {

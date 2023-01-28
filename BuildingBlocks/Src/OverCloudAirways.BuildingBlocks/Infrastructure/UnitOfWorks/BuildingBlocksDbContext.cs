@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 
-namespace DArch.UnitOfWorks.EFCore;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 
 public class BuildingBlocksDbContext : DbContext
 {

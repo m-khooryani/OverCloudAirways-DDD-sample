@@ -1,11 +1,11 @@
 ﻿using System.Text;
-using DArch.Application.Contracts;
 using FluentValidation;
 using MediatR;
+using OverCloudAirways.BuildingBlocks.Application.Queries;
 
-namespace DArch.Infrastructure.Processing;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.QueryPipelines;
 
-internal class QueryValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+internal class QueryValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IQuery<TResponse>
 {
     private readonly IValidator<TRequest>[] _validators;

@@ -1,11 +1,11 @@
-﻿using DArch.Application.Contracts;
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using OverCloudAirways.BuildingBlocks.Application.Models;
+using OverCloudAirways.BuildingBlocks.Application.Queries;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
-public class CosmosManager
+internal class CosmosManager : ICosmosManager
 {
     private readonly ILogger _logger;
     private readonly Database _database;

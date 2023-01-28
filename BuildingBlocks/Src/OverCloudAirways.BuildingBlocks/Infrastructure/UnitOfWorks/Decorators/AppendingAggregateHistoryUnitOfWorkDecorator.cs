@@ -1,5 +1,4 @@
-﻿using DArch.UnitOfWorks.EFCore;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 

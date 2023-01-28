@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
+namespace OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 
 internal class LogToActionLoggerProvider : ILoggerProvider
 {

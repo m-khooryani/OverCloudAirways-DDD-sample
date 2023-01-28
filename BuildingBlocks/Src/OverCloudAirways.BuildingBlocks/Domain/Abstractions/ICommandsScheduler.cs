@@ -1,6 +1,6 @@
-﻿using DArch.Application.Contracts;
+﻿using OverCloudAirways.BuildingBlocks.Application.Commands;
 
-namespace DArch.Application.Configuration.Commands;
+namespace OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 public interface ICommandsScheduler
 {

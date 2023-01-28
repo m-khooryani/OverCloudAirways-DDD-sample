@@ -1,4 +1,4 @@
-﻿using DArch.Application.Contracts;
+﻿using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.IdentityService.Domain.Users;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;

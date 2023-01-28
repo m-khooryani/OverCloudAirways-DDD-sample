@@ -1,11 +1,11 @@
-﻿using DArch.Application.Contracts;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Application.Queries;
 
-namespace DArch.Infrastructure.Processing;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.QueryPipelines;
 
-internal class QueryLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+internal class QueryLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IQuery<TResponse>
 {
     private readonly ILogger _logger;

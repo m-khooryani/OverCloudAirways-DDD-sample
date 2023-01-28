@@ -1,6 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 
-namespace DArch.Infrastructure.EventBus;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 
 public interface IServiceBusSenderFactory
 {

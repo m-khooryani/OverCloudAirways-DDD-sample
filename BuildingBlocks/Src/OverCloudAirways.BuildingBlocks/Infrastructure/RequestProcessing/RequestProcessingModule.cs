@@ -1,12 +1,13 @@
 ﻿using System.Reflection;
 using Autofac;
-using DArch.Application.Configuration.Commands;
 using MediatR;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
-using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.CommandPipelines;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.PolicyPipelines;
+using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.QueryPipelines;
 
-namespace DArch.Infrastructure.Processing;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
 
 public class RequestProcessingModule : Autofac.Module
 {

@@ -1,7 +1,6 @@
-﻿using DArch.Application.Contracts;
-using MediatR;
+﻿using MediatR;
 
-namespace DArch.Application.Configuration.Queries;
+namespace OverCloudAirways.BuildingBlocks.Application.Queries;
 
 public abstract class QueryHandler<TQuery, TResult> :
       IRequestHandler<TQuery, TResult> where TQuery : IQuery<TResult>

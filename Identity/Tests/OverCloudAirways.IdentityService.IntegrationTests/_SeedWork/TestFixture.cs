@@ -1,31 +1,28 @@
 ﻿using System.Reflection;
 using Autofac;
-using DArch.AzureServiceBus;
-using DArch.Infrastructure;
-using DArch.Infrastructure.Configuration;
-using DArch.Infrastructure.Configuration.Processing.ApplicationAssembly;
-using DArch.Infrastructure.Configuration.Processing.Outbox;
-using DArch.Infrastructure.ContextAccessors;
-using DArch.Infrastructure.Logging;
-using DArch.Infrastructure.Mediation;
-using DArch.Infrastructure.Processing;
-using DArch.Infrastructure.RetryPolicy;
-using DArch.UnitOfWorks.EFCore;
 using FluentValidation;
 using MediatR;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using OverCloudAirways.BuildingBlocks.Application.Commands.ProcessOutboxMessage;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+using OverCloudAirways.BuildingBlocks.Infrastructure;
+using OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
+using OverCloudAirways.BuildingBlocks.Infrastructure.ContextAccessors;
 using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
+using OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
+using OverCloudAirways.BuildingBlocks.Infrastructure.Logging;
+using OverCloudAirways.BuildingBlocks.Infrastructure.Mediation;
+using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
+using OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
+using OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 using OverCloudAirways.IdentityService.Application;
-using Polly;
 using Xunit.Abstractions;
 
-namespace DArch.Samples.AppointmentService.IntegrationTests._SeedWork;
+namespace OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 
 public class TestFixture : IDisposable
 {

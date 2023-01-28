@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 
-namespace DArch.Samples.AppointmentService.Infrastructure.Configuration.DArchMapping;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks.EntityConfigurations;
 
 internal class AggregateHistoryReferenceConfiguration : IEntityTypeConfiguration<AggregateRootHistoryItem>
 {

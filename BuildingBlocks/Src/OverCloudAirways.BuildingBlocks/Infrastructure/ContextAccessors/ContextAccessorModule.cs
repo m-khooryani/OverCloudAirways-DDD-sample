@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
-namespace DArch.Infrastructure.ContextAccessors;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.ContextAccessors;
 
 public class ContextAccessorModule : Module
 {
