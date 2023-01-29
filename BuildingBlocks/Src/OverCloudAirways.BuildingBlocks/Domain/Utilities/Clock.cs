@@ -6,7 +6,7 @@ public static class Clock
 
     public static DateTimeOffset Now => _customDate ?? DateTime.UtcNow;
 
-    public static void SetCustomDate(DateTime customDate)
+    public static void SetCustomDate(DateTimeOffset customDate)
     {
         _customDate = customDate;
     }

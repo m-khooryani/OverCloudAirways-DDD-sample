@@ -11,7 +11,7 @@ public class AircraftBuilder
     private int _seatingCapacity = 366;
     private int _economyCostPerKM = 100;
     private int _firstClassCostPerKM = 100;
-    private int _range = 7500;
+    private int _range = 12500;
     private int _cruisingAltitude = 35000;
     private int _maxTakeoffWeight = 875000;
     private int _length = 231;

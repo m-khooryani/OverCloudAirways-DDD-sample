@@ -5,11 +5,11 @@ using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BookingService.Application.Airports.Policies.Created;
 
-internal class ProjectAirportReadModelPolicyHandler : IDomainPolicyHandler<AirportCreatedPolicy, AirportCreatedDomainEvent>
+internal class EnqueueProjectingAirportReadModelPolicyHandler : IDomainPolicyHandler<AirportCreatedPolicy, AirportCreatedDomainEvent>
 {
     private readonly ICommandsScheduler _commandsScheduler;
 
-    public ProjectAirportReadModelPolicyHandler(ICommandsScheduler commandsScheduler)
+    public EnqueueProjectingAirportReadModelPolicyHandler(ICommandsScheduler commandsScheduler)
     {
         _commandsScheduler = commandsScheduler;
     }

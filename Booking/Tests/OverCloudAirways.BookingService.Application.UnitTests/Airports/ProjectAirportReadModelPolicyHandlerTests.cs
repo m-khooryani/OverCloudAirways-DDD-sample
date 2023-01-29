@@ -14,7 +14,7 @@ public class ProjectAirportReadModelPolicyHandlerTests
     {
         // Arrange
         var commandsScheduler = Substitute.For<ICommandsScheduler>();
-        var handler = new ProjectAirportReadModelPolicyHandler(commandsScheduler);
+        var handler = new EnqueueProjectingAirportReadModelPolicyHandler(commandsScheduler);
         var notification = new AirportCreatedPolicyBuilder().Build();
 
         // Act

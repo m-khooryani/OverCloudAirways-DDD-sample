@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
 using OverCloudAirways.BookingService.Domain.Airports;
 using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
@@ -21,12 +16,12 @@ internal class AirportCodeUniqueChecker : IAirportCodeUniqueChecker
     public async Task<bool> IsUniqueAsync(string code)
     {
         var sql = @$"
-                    SELECT * FROM c WHERE 
+                    SELECT c.id FROM c WHERE 
                     c.id = @code AND 
                     c.partitionKey = @code ";
         var queryDefinition = new QueryDefinition(sql)
             .WithParameter("@code", code);
-        var d = await _cosmosManager.QuerySingleAsync<dynamic>("readmodels", queryDefinition);
-        return d is null;
+        var item = await _cosmosManager.QuerySingleAsync<dynamic>("readmodels", queryDefinition);
+        return item is null;
     }
 }
