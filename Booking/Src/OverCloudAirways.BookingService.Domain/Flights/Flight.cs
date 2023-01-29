@@ -39,7 +39,6 @@ public class Flight : AggregateRoot<FlightId>
         int distance,
         AircraftId aircraftId,
         int availableSeats,
-        int bookedSeats,
         double maximumLuggageWeight)
     {
         await CheckRuleAsync(new FlightCanOnlyBeScheduledInTheFutureRule(departureTime));
@@ -56,8 +55,7 @@ public class Flight : AggregateRoot<FlightId>
             route, 
             distance, 
             aircraftId, 
-            availableSeats, 
-            bookedSeats, 
+            availableSeats,
             maximumLuggageWeight);
 
         var flight = new Flight();
@@ -87,7 +85,7 @@ public class Flight : AggregateRoot<FlightId>
         Distance = @event.Distance;
         AircraftId = @event.AircraftId;
         AvailableSeats = @event.AvailableSeats;
-        BookedSeats = @event.BookedSeats;
+        BookedSeats = 0;
         MaximumLuggageWeight = @event.MaximumLuggageWeight;
     }
 

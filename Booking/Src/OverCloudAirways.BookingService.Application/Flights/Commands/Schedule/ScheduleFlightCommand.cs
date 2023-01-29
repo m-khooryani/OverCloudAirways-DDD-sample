@@ -16,5 +16,4 @@ public record ScheduleFlightCommand(
     int Distance,
     AircraftId AircraftId,
     int AvailableSeats,
-    int BookedSeats,
     double MaximumLuggageWeight) : Command;

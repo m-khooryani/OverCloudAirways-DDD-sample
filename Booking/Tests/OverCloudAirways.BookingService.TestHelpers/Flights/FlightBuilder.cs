@@ -19,7 +19,6 @@ public class FlightBuilder
     private int _distance = 12_000;
     private AircraftId _aircraftId = AircraftId.New();
     private int _availableSeats = 300;
-    private int _bookedSeats = 0;
     private double _maximumLuggageWeight = 35.0;
 
     public async Task<Flight> BuildAsync()
@@ -36,7 +35,6 @@ public class FlightBuilder
             _distance,
             _aircraftId,
             _availableSeats,
-            _bookedSeats,
             _maximumLuggageWeight);
     }
 
@@ -103,12 +101,6 @@ public class FlightBuilder
     public FlightBuilder SetAvailableSeats(int availableSeats)
     {
         _availableSeats = availableSeats;
-        return this;
-    }
-
-    public FlightBuilder SetBookedSeats(int bookedSeats)
-    {
-        _bookedSeats = bookedSeats;
         return this;
     }
 

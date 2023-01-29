@@ -27,7 +27,6 @@ internal class ScheduleFlightCommandHandler : CommandHandler<ScheduleFlightComma
             command.Distance,
             command.AircraftId,
             command.AvailableSeats,
-            command.BookedSeats,
             command.MaximumLuggageWeight);
 
         _aggregateRepository.Add(flight);

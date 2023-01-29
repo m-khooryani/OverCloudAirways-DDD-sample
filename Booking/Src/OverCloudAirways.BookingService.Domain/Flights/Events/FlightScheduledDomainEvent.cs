@@ -15,5 +15,4 @@ public record FlightScheduledDomainEvent(
     int Distance,
     AircraftId AircraftId,
     int AvailableSeats,
-    int BookedSeats,
     double MaximumLuggageWeight) : DomainEvent(FlightId);

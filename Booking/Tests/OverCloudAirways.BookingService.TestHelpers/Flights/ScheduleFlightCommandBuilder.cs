@@ -18,7 +18,6 @@ public class ScheduleFlightCommandBuilder
     private int _distance = 7_000;
     private AircraftId _aircraftId = AircraftId.New();
     private int _availableSeats = 300;
-    private int _bookedSeats = 0;
     private double _maximumLuggageWeight = 35.0;
 
     public ScheduleFlightCommand Build()
@@ -34,7 +33,6 @@ public class ScheduleFlightCommandBuilder
             _distance, 
             _aircraftId, 
             _availableSeats, 
-            _bookedSeats, 
             _maximumLuggageWeight);
     }
 
@@ -95,12 +93,6 @@ public class ScheduleFlightCommandBuilder
     public ScheduleFlightCommandBuilder SetAvailableSeats(int availableSeats)
     {
         _availableSeats = availableSeats;
-        return this;
-    }
-
-    public ScheduleFlightCommandBuilder SetBookedSeats(int bookedSeats)
-    {
-        _bookedSeats = bookedSeats;
         return this;
     }
 

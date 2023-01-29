@@ -35,9 +35,6 @@ internal class ScheduleFlightCommandValidator : CommandValidator<ScheduleFlightC
         RuleFor(x => x.AvailableSeats)
             .GreaterThan(0);
 
-        RuleFor(x => x.BookedSeats)
-            .GreaterThanOrEqualTo(0);
-
         RuleFor(x => x.MaximumLuggageWeight)
             .GreaterThan(0);
     }
