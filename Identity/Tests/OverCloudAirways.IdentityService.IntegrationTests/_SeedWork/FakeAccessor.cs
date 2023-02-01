@@ -1,4 +1,5 @@
-﻿using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+﻿using System.Net.Http.Headers;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 
@@ -23,6 +24,8 @@ class FakeAccessor : IUserAccessor
         _fullName = Guid.NewGuid().ToString();
     }
     public string FullName => _fullName;
+
+    public string TcpConnectionId => Guid.NewGuid().ToString();
 
     private Guid _storedUserId;
     private string _storedFullName;

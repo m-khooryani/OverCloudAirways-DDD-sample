@@ -4,18 +4,27 @@ namespace OverCloudAirways.BuildingBlocks.Domain.Models;
 
 public record IntegrationEvent
 {
-    public TypedId AggregateId { get; }
+    public string AggregateId { get; }
     public Guid IntegrationEventId { get; }
     public DateTimeOffset OccurredOn { get; }
     public string IntegrationEventName { get; }
 
-    protected IntegrationEvent(
-        TypedId aggreateId,
+    private IntegrationEvent(
+        string aggreateId,
+        Guid integrationEventId,
+        DateTimeOffset occurredOn,
         string integrationEventName)
     {
         AggregateId = aggreateId;
-        IntegrationEventId = Guid.NewGuid();
-        OccurredOn = Clock.Now;
+        IntegrationEventId = integrationEventId;
+        OccurredOn = occurredOn;
         IntegrationEventName = integrationEventName;
+    }
+
+    protected IntegrationEvent(
+        TypedId aggreateId,
+        string integrationEventName)
+        : this(aggreateId.ToString()!, Guid.NewGuid(), Clock.Now, integrationEventName)
+    {
     }
 }

@@ -2,5 +2,5 @@
 
 namespace OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
 
-public record PublishIntegrationEventCommand(
+internal record PublishIntegrationEventCommand(
     IntegrationEvent IntegrationEvent) : Command;

@@ -1,4 +1,5 @@
-﻿using OverCloudAirways.BookingService.Domain.Aircrafts;
+﻿using System.Diagnostics;
+using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BookingService.Domain.Airports;
 using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
@@ -73,6 +74,15 @@ public class Flight : AggregateRoot<FlightId>
         Apply(@event);
     }
 
+    public async Task ReserveSeatsAsync(int seatsCount)
+    {
+        await CheckRuleAsync(new FlightMustHaveEnoughAvailableSeatsToReserveRule(this, seatsCount));
+
+        var @event = new FlightSeatsReservedDomainEvent(Id, seatsCount);
+
+        Apply(@event);
+    }
+
     protected void When(FlightScheduledDomainEvent @event)
     {
         Id = @event.FlightId;
@@ -93,5 +103,10 @@ public class Flight : AggregateRoot<FlightId>
     {
         EconomyPrice = @event.EconomyPrice;
         FirstClassPrice = @event.FirstClassPrice;
+    }
+
+    protected void When(FlightSeatsReservedDomainEvent @event)
+    {
+        AvailableSeats -= @event.SeatsCount;
     }
 }

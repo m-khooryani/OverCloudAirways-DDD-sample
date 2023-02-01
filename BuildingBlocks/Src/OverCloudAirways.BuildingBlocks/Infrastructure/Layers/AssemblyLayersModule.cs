@@ -7,22 +7,17 @@ namespace OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 public class AssemblyLayersModule : Module
 {
     private readonly Assembly _domainAssembly;
-    private readonly Assembly _applicationAssembly;
 
-    public AssemblyLayersModule(
-        Assembly domainAssembly,
-        Assembly applicationAssembly)
+    public AssemblyLayersModule(Assembly domainAssembly)
     {
         _domainAssembly = domainAssembly;
-        _applicationAssembly = applicationAssembly;
     }
 
     protected override void Load(ContainerBuilder builder)
     {
         var layers = new AssemblyLayers()
         {
-            DomainLayer = _domainAssembly,
-            ApplicationLayer = _applicationAssembly,
+            DomainLayer = _domainAssembly
         };
 
         builder.RegisterInstance(layers)

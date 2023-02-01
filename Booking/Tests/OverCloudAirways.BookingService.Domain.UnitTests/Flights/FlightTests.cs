@@ -1,8 +1,12 @@
 ﻿using NSubstitute;
 using OverCloudAirways.BookingService.Domain.Aircrafts;
+using OverCloudAirways.BookingService.Domain.Airports;
+using OverCloudAirways.BookingService.Domain.Flights;
+using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
 using OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
 using OverCloudAirways.BookingService.TestHelpers.Aircrafts;
+using OverCloudAirways.BookingService.TestHelpers.Airports;
 using OverCloudAirways.BookingService.TestHelpers.Flights;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
@@ -64,5 +68,54 @@ public class FlightTests : Test
         {
             _ = await builder.BuildAsync();
         });
+    }
+
+    [Fact]
+    public async Task ReserveSeats_Given_More_Than_Available_Seats_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var flight = await GetFlight();
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<FlightMustHaveEnoughAvailableSeatsToReserveRule>(async () =>
+        {
+            await flight.ReserveSeatsAsync(1000);
+        });
+    }
+
+    [Fact]
+    public async Task ReserveSeats_Given_Valid_Input_Should_Successfully_Reserve_Seats_And_Publish_Event()
+    {
+        // Arrange
+        const int SeatsToReserve = 2;
+        var flight = await GetFlight();
+
+        // Act
+        await flight.ReserveSeatsAsync(SeatsToReserve);
+
+        // Assert
+        Assert.Equal(300 - SeatsToReserve, flight.AvailableSeats);
+        AssertPublishedDomainEvent<FlightSeatsReservedDomainEvent>(flight);
+    }
+
+    // helper
+    private static async Task<Flight> GetFlight()
+    {
+        var aggregateRepository = Substitute.For<IAggregateRepository>();
+        aggregateRepository
+            .LoadAsync<Aircraft, AircraftId>(Arg.Any<AircraftId>())
+            .Returns(new AircraftBuilder().Build());
+        var codeChecker = Substitute.For<IAirportCodeUniqueChecker>();
+        codeChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
+        var airport = await new AirportBuilder()
+            .SetAirportCodeUniqueChecker(codeChecker)
+            .BuildAsync();
+        aggregateRepository
+            .LoadAsync<Airport, AirportId>(Arg.Any<AirportId>())
+            .Returns(airport);
+        var builder = new FlightBuilder()
+            .SetAggregateRepository(aggregateRepository);
+        var flight = await builder.BuildAsync();
+        return flight;
     }
 }

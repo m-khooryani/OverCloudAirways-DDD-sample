@@ -4,47 +4,64 @@ using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
 
 internal class CommandsScheduler : ICommandsScheduler
 {
     private readonly ILogger _logger;
+    private readonly IUserAccessor _userAccessor;
     private readonly IOutboxRepository _repository;
 
     public CommandsScheduler(
         ILogger logger,
+        IUserAccessor userAccessor,
         IOutboxRepository repository)
     {
         _logger = logger;
+        _userAccessor = userAccessor;
         _repository = repository;
     }
 
     public async Task EnqueueAsync(ICommand command)
     {
-        var queuedCommand = OutboxMessage.Create(
+        var outboxMessage = OutboxMessage.Create(
             Clock.Now,
-            command.GetType().FullName!,
-            JsonConvert.SerializeObject(command));
+            command,
+            _userAccessor.UserId,
+            _userAccessor.TcpConnectionId);
 
-        var json = JsonConvert.SerializeObject(queuedCommand, Formatting.Indented);
+        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
         _logger.LogInformation("Enqueue Command:");
         _logger.LogInformation(json);
 
-        await _repository.AddAsync(queuedCommand);
+        await _repository.AddAsync(outboxMessage);
     }
 
     public async Task EnqueueAsync<TResult>(ICommand<TResult> command)
     {
-        var queuedCommand = OutboxMessage.Create(
+        var outboxMessage = OutboxMessage.Create(
             Clock.Now,
-            command.GetType().FullName!,
-            JsonConvert.SerializeObject(command));
+            command,
+            _userAccessor.UserId,
+            _userAccessor.TcpConnectionId);
 
-        var json = JsonConvert.SerializeObject(queuedCommand, Formatting.Indented);
+        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
         _logger.LogInformation("Enqueue Command:");
         _logger.LogInformation(json);
 
-        await _repository.AddAsync(queuedCommand);
+        await _repository.AddAsync(outboxMessage);
+    }
+
+    public async Task EnqueuePublishingEventAsync(IntegrationEvent integrationEvent)
+    {
+        var outboxMessage = OutboxMessage.Create(
+            Clock.Now,
+            integrationEvent,
+            _userAccessor.UserId,
+            _userAccessor.TcpConnectionId);
+
+        await _repository.AddAsync(outboxMessage);
     }
 }

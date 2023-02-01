@@ -24,6 +24,8 @@ class FakeAccessor : IUserAccessor
     }
     public string FullName => _fullName;
 
+    public string TcpConnectionId => Guid.NewGuid().ToString();
+
     private Guid _storedUserId;
     private string _storedFullName;
 

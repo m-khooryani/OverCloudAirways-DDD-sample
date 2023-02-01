@@ -5,5 +5,4 @@ namespace OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 internal class AssemblyLayers
 {
     public Assembly DomainLayer { get; init; }
-    public Assembly ApplicationLayer { get; init; }
 }

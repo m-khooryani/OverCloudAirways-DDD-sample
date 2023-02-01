@@ -15,17 +15,20 @@ internal class CreateOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
     private readonly IAggregateRepository _aggregateRepository;
     private readonly ILifetimeScope _scope;
     private readonly IOutboxRepository _repository;
+    private readonly IUserAccessor _userAccessor;
 
     public CreateOutboxMessagesUnitOfWorkDecorator(
         IUnitOfWork decorated,
         IAggregateRepository aggregateRepository,
         ILifetimeScope scope,
-        IOutboxRepository repository)
+        IOutboxRepository repository,
+        IUserAccessor userAccessor)
     {
         _decorated = decorated;
         _aggregateRepository = aggregateRepository;
         _scope = scope;
         _repository = repository;
+        _userAccessor = userAccessor;
     }
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken)
@@ -51,7 +54,12 @@ internal class CreateOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
             }
 
             var data = JsonConvert.SerializeObject(domainPolicy);
-            var outboxMessage = OutboxMessage.Create(Clock.Now, domainPolicy.GetType().FullName!, data, aggregate.Id.ToString());
+            var outboxMessage = OutboxMessage.Create(
+                Clock.Now, 
+                domainPolicy, 
+                _userAccessor.UserId,
+                _userAccessor.TcpConnectionId,
+                aggregate.Id.ToString());
             await _repository.AddAsync(outboxMessage);
         }
     }

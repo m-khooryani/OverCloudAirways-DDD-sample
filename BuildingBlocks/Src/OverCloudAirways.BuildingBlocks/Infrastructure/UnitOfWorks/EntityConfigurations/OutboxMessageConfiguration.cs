@@ -18,6 +18,7 @@ internal class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessa
         builder.Property(x => x.OccurredOn).ToJsonProperty("occurredOn");
         builder.Property(x => x.ProcessedDate).ToJsonProperty("processedDate");
         builder.Property(x => x.Type).ToJsonProperty("type");
+        builder.Property(x => x.AssemblyName).ToJsonProperty("assemblyName");
         builder.Property(x => x.Error).ToJsonProperty("error");
 
         builder.HasNoDiscriminator();

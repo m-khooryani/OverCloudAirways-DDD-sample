@@ -1,4 +1,5 @@
-﻿using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 
@@ -28,7 +29,7 @@ internal class PublishOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
         var outboxMessages = _context
             .ChangeTracker
             .Entries<OutboxMessage>()
-            .Where(x => x.State == Microsoft.EntityFrameworkCore.EntityState.Added)
+            .Where(x => x.State == EntityState.Added)
             .Select(x => x.Entity);
 
         var changes = await _decorated.CommitAsync(cancellationToken);

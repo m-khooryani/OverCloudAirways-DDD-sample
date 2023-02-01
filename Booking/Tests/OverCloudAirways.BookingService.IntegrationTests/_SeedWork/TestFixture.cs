@@ -75,7 +75,7 @@ public class TestFixture : IDisposable
         var infrastructureAssembly = Assembly.Load("OverCloudAirways.BookingService.Infrastructure");
         var applicationAssembly = Assembly.Load("OverCloudAirways.BookingService.Application");
 
-        var assemblyLayersModule = new AssemblyLayersModule(domainAssembly, applicationAssembly);
+        var assemblyLayersModule = new AssemblyLayersModule(domainAssembly);
         var processingModule = new RequestProcessingModule(applicationAssembly);
         var mediatorModule = new MediatorModule(
             new[]
@@ -97,7 +97,7 @@ public class TestFixture : IDisposable
             SleepDurations = Array.Empty<TimeSpan>()
         });
         var serviceBusConfig = Substitute.For<ServiceBusConfig>();
-        var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig);
+        var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig, Substitute.For<IServiceBusSenderFactory>());
         var cosmosDbModule = new CosmosDBModule(accountEndpoint!, accountKey!, _databaseId);
         var domainServicesModule = new DomainServicesModule();
 

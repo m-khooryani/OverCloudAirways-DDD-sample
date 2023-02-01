@@ -1,8 +1,9 @@
-﻿using Autofac;
+﻿using System.Collections.Concurrent;
+using Autofac;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Application.Commands;
+using OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
@@ -21,6 +22,7 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
     private readonly PollyConfig _pollyConfig;
     private readonly ILogger _logger;
     private int _executedTimes;
+    private readonly ConcurrentDictionary<string, Type?> _typeCache;
 
     public ProcessOutboxCommandHandler(
         IOutboxRepository outboxRepository,
@@ -33,6 +35,7 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
         _pollyConfig = pollyConfig;
         _logger = logger;
         _executedTimes = 0;
+        _typeCache = new();
     }
 
     public override async Task<Unit> HandleAsync(ProcessOutboxCommand request, CancellationToken cancellationToken)
@@ -64,20 +67,34 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
     {
         _executedTimes++;
 
-        var type = _layers.ApplicationLayer.GetType(outboxMessage.Type);
-        var commandToProcess = JsonConvert.DeserializeObject(outboxMessage.Data, type) as dynamic;
+        Type? type = _typeCache.GetOrAdd(outboxMessage.Type, typeAsStr =>
+        {
+            var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetName().Name == outboxMessage.AssemblyName);
+            return assembly?.GetType(typeAsStr);
+        });
+        if (type is null)
+        {
+            throw new InvalidOperationException($"Could not find type '{outboxMessage.Type}'");
+        }
+        var deserializedMessage = JsonConvert.DeserializeObject(outboxMessage.Data, type) as dynamic;
 
         using var scope = CompositionRoot.BeginLifetimeScope();
         var mediator = scope.Resolve<IMediator>();
         if (type.IsAssignableTo(typeof(INotification)))
         {
-            await mediator.Publish((commandToProcess as DomainEventPolicy)!);
+            await mediator.Publish((deserializedMessage as DomainEventPolicy)!, cancellationToken);
             var unitOfWork = scope.Resolve<IUnitOfWork>();
             await unitOfWork.CommitAsync(cancellationToken);
         }
+        else if (type.IsAssignableTo(typeof(ICommand)) ||
+            type.IsAssignableTo(typeof(ICommand<>)))
+        {
+            await mediator.Send(deserializedMessage, cancellationToken);
+        }
         else
         {
-            await mediator.Send(commandToProcess);
+            var publishIntegrationEventCommand = new PublishIntegrationEventCommand(deserializedMessage as IntegrationEvent);
+            await mediator.Send(publishIntegrationEventCommand, cancellationToken);
         }
 
         _outboxRepository.Remove(outboxMessage);

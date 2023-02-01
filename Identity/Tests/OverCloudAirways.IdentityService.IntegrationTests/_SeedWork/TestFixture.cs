@@ -74,7 +74,7 @@ public class TestFixture : IDisposable
         var infrastructureAssembly = Assembly.Load("OverCloudAirways.IdentityService.Infrastructure");
         var applicationAssembly = Assembly.Load("OverCloudAirways.IdentityService.Application");
 
-        var assemblyLayersModule = new AssemblyLayersModule(domainAssembly, applicationAssembly);
+        var assemblyLayersModule = new AssemblyLayersModule(domainAssembly);
         var processingModule = new RequestProcessingModule(applicationAssembly);
         var mediatorModule = new MediatorModule(
             new[]
