@@ -142,6 +142,7 @@ public class FlightTests : Test
 
         // Assert
         Assert.Equal(300 - SeatsToReserve, flight.AvailableSeats);
+        Assert.Equal(2, flight.ReservedSeats);
         AssertPublishedDomainEvent<FlightSeatsReservedDomainEvent>(flight);
     }
 
@@ -170,6 +171,34 @@ public class FlightTests : Test
         await AssertViolatedRuleAsync<OnlyScheduledFlightCanBeModifiedRule>(async () =>
         {
             await flight.CancelAsync();
+        });
+    }
+
+    [Fact]
+    public async Task ChangeCapacity_Given_Valid_Input_Should_Successfully_ChangesCapacity_And_Publish_Event()
+    {
+        // Arrange
+        var flight = await GetFlight();
+
+        // Act
+        await flight.ChangeCapacityAsync(50);
+
+        // Assert
+        Assert.Equal(50, flight.AvailableSeats);
+        AssertPublishedDomainEvent<FlightCapacityChangedDomainEvent>(flight);
+    }
+
+    [Fact]
+    public async Task ChangeCapacity_Given_CanceledFlight_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var flight = await GetFlight();
+        await flight.ReserveSeatsAsync(5);
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<FlightCapacityMustBeGreaterEqualThanTotalBookedReservedSeatsRule>(async () =>
+        {
+            await flight.ChangeCapacityAsync(3);
         });
     }
 

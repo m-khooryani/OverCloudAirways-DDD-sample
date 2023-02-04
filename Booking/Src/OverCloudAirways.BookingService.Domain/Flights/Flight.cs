@@ -20,6 +20,7 @@ public class Flight : AggregateRoot<FlightId>
     public AircraftId AircraftId { get; private set; }
     public int AvailableSeats { get; private set; }
     public int BookedSeats { get; private set; }
+    public int ReservedSeats { get; private set; }
     public double MaximumLuggageWeight { get; private set; }
     public decimal? EconomyPrice { get; private set; }
     public decimal? FirstClassPrice { get; private set; }
@@ -94,6 +95,15 @@ public class Flight : AggregateRoot<FlightId>
         Apply(@event);
     }
 
+    public async Task ChangeCapacityAsync(int capacity)
+    {
+        await CheckRuleAsync(new FlightCapacityMustBeGreaterEqualThanTotalBookedReservedSeatsRule(capacity, BookedSeats, ReservedSeats));
+
+        var @event = new FlightCapacityChangedDomainEvent(Id, capacity);
+
+        Apply(@event);
+    }
+
     protected void When(FlightScheduledDomainEvent @event)
     {
         Id = @event.FlightId;
@@ -108,6 +118,7 @@ public class Flight : AggregateRoot<FlightId>
         AircraftId = @event.AircraftId;
         AvailableSeats = @event.AvailableSeats;
         BookedSeats = 0;
+        ReservedSeats = 0;
         MaximumLuggageWeight = @event.MaximumLuggageWeight;
     }
 
@@ -120,10 +131,16 @@ public class Flight : AggregateRoot<FlightId>
     protected void When(FlightSeatsReservedDomainEvent @event)
     {
         AvailableSeats -= @event.SeatsCount;
+        ReservedSeats += @event.SeatsCount;
     }
 
     protected void When(FlightCanceledDomainEvent _)
     {
         Status = FlightStatus.Cancelled;
+    }
+
+    protected void When(FlightCapacityChangedDomainEvent @event)
+    {
+        AvailableSeats = @event.Capacity - BookedSeats;
     }
 }
