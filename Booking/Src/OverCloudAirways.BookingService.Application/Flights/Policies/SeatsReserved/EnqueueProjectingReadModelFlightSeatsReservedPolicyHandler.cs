@@ -5,11 +5,11 @@ using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BookingService.Application.Flights.Policies.SeatsReserved;
 
-internal class EnqueueProjectingFlightReadModelSeatsReservedPolicyHandler : IDomainPolicyHandler<FlightSeatsReservedPolicy, FlightSeatsReservedDomainEvent>
+internal class EnqueueProjectingReadModelFlightSeatsReservedPolicyHandler : IDomainPolicyHandler<FlightSeatsReservedPolicy, FlightSeatsReservedDomainEvent>
 {
     private readonly ICommandsScheduler _commandsScheduler;
 
-    public EnqueueProjectingFlightReadModelSeatsReservedPolicyHandler(ICommandsScheduler commandsScheduler)
+    public EnqueueProjectingReadModelFlightSeatsReservedPolicyHandler(ICommandsScheduler commandsScheduler)
     {
         _commandsScheduler = commandsScheduler;
     }

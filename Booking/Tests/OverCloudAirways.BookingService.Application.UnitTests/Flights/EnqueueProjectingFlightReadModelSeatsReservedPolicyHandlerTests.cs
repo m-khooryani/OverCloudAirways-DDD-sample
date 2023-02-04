@@ -14,7 +14,7 @@ public class EnqueueProjectingFlightReadModelSeatsReservedPolicyHandlerTests
     {
         // Arrange
         var commandsScheduler = Substitute.For<ICommandsScheduler>();
-        var handler = new EnqueueProjectingFlightReadModelSeatsReservedPolicyHandler(commandsScheduler);
+        var handler = new EnqueueProjectingReadModelFlightSeatsReservedPolicyHandler(commandsScheduler);
         var policy = new FlightSeatsReservedPolicyBuilder().Build();
 
         // Act

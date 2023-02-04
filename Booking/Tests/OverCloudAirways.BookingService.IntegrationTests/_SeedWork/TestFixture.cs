@@ -122,7 +122,7 @@ public class TestFixture : IDisposable
                 new Dictionary<string, LogLevel>()
                 {
                     { "Default", LogLevel.Debug },
-                    { "Microsoft", LogLevel.Trace },
+                    { "Microsoft", LogLevel.Information },
                 },
                 log =>
                 {

@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Core;
-using Newtonsoft.Json;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.DomainEvents;
@@ -53,7 +52,6 @@ internal class CreateOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
                 continue;
             }
 
-            var data = JsonConvert.SerializeObject(domainPolicy);
             var outboxMessage = OutboxMessage.Create(
                 Clock.Now, 
                 domainPolicy, 

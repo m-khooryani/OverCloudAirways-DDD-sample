@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using OverCloudAirways.BookingService.Domain.Aircrafts;
+﻿using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BookingService.Domain.Airports;
 using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
@@ -15,6 +14,7 @@ public class Flight : AggregateRoot<FlightId>
     public AirportId DestinationAirportId { get; private set; }
     public DateTimeOffset DepartureTime { get; private set; }
     public DateTimeOffset ArrivalTime { get; private set; }
+    public FlightStatus Status { get; private set; }
     public string Route { get; private set; }
     public int Distance { get; private set; }
     public AircraftId AircraftId { get; private set; }
@@ -67,18 +67,29 @@ public class Flight : AggregateRoot<FlightId>
 
     public async Task ChargePriceAsync(IFlightPriceCalculatorService priceCalculatorService)
     {
-        var prices = await priceCalculatorService.CalculateAsync(this);
+        await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
+        var (economyPrice, firstClassPrice) = await priceCalculatorService.CalculateAsync(this);
 
-        var @event = new FlightPriceChargedDomainEvent(Id, prices.economyPrice, prices.firstClassPrice);
+        var @event = new FlightPriceChargedDomainEvent(Id, economyPrice, firstClassPrice);
 
         Apply(@event);
     }
 
     public async Task ReserveSeatsAsync(int seatsCount)
     {
+        await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
         await CheckRuleAsync(new FlightMustHaveEnoughAvailableSeatsToReserveRule(this, seatsCount));
 
         var @event = new FlightSeatsReservedDomainEvent(Id, seatsCount);
+
+        Apply(@event);
+    }
+
+    public async Task CancelAsync()
+    {
+        await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
+
+        var @event = new FlightCanceledDomainEvent(Id);
 
         Apply(@event);
     }
@@ -91,6 +102,7 @@ public class Flight : AggregateRoot<FlightId>
         DestinationAirportId = @event.DestinationAirportId;
         DepartureTime = @event.DepartureTime;
         ArrivalTime = @event.ArrivalTime;
+        Status = FlightStatus.Scheduled;
         Route = @event.Route;
         Distance = @event.Distance;
         AircraftId = @event.AircraftId;
@@ -108,5 +120,10 @@ public class Flight : AggregateRoot<FlightId>
     protected void When(FlightSeatsReservedDomainEvent @event)
     {
         AvailableSeats -= @event.SeatsCount;
+    }
+
+    protected void When(FlightCanceledDomainEvent _)
+    {
+        Status = FlightStatus.Cancelled;
     }
 }

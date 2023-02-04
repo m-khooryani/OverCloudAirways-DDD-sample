@@ -71,6 +71,53 @@ public class FlightTests : Test
     }
 
     [Fact]
+    public async Task ChargePrice_Given_CanceledFlight_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var flight = await GetFlight();
+        await flight.CancelAsync();
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<OnlyScheduledFlightCanBeModifiedRule>(async () =>
+        {
+            await flight.ChargePriceAsync(Substitute.For<IFlightPriceCalculatorService>());
+        });
+    }
+
+    [Fact]
+    public async Task ChargePrice_Given_Valid_Input_Should_Successfully_Charge_Prices_And_Publish_Event()
+    {
+        // Arrange
+        var flight = await GetFlight();
+        var priceCalculator = Substitute.For<IFlightPriceCalculatorService>();
+        const int EconomyPrice = 100;
+        const int FirstClassPrice = 200;
+        priceCalculator.CalculateAsync(flight).Returns((EconomyPrice, FirstClassPrice));
+
+        // Act
+        await flight.ChargePriceAsync(priceCalculator);
+
+        // Assert
+        Assert.Equal(EconomyPrice, flight.EconomyPrice);
+        Assert.Equal(FirstClassPrice, flight.FirstClassPrice);
+        AssertPublishedDomainEvent<FlightPriceChargedDomainEvent>(flight);
+    }
+
+    [Fact]
+    public async Task ReserveSeats_Given_CanceledFlight_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var flight = await GetFlight();
+        await flight.CancelAsync();
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<OnlyScheduledFlightCanBeModifiedRule>(async () =>
+        {
+            await flight.ReserveSeatsAsync(1000);
+        });
+    }
+
+    [Fact]
     public async Task ReserveSeats_Given_More_Than_Available_Seats_Should_Throw_Business_Error()
     {
         // Arrange
@@ -96,6 +143,34 @@ public class FlightTests : Test
         // Assert
         Assert.Equal(300 - SeatsToReserve, flight.AvailableSeats);
         AssertPublishedDomainEvent<FlightSeatsReservedDomainEvent>(flight);
+    }
+
+    [Fact]
+    public async Task Cancel_Given_Valid_Input_Should_Successfully_Cancel_And_Publish_Event()
+    {
+        // Arrange
+        var flight = await GetFlight();
+
+        // Act
+        await flight.CancelAsync();
+
+        // Assert
+        Assert.Equal(FlightStatus.Cancelled, flight.Status);
+        AssertPublishedDomainEvent<FlightCanceledDomainEvent>(flight);
+    }
+
+    [Fact]
+    public async Task Cancel_Given_Given_CanceledFlight_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var flight = await GetFlight();
+        await flight.CancelAsync();
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<OnlyScheduledFlightCanBeModifiedRule>(async () =>
+        {
+            await flight.CancelAsync();
+        });
     }
 
     // helper
