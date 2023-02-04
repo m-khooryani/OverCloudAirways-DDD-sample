@@ -97,9 +97,20 @@ public class Flight : AggregateRoot<FlightId>
 
     public async Task ChangeCapacityAsync(int capacity)
     {
+        await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
         await CheckRuleAsync(new FlightCapacityMustBeGreaterEqualThanTotalBookedReservedSeatsRule(capacity, BookedSeats, ReservedSeats));
 
         var @event = new FlightCapacityChangedDomainEvent(Id, capacity);
+
+        Apply(@event);
+    }
+
+    public async Task ReplaceAircraftAsync(IAggregateRepository aggregateRepository, AircraftId aircraftId)
+    {
+        await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
+        await CheckRuleAsync(new FlightMustHaveExistingAircraftInTheSystemRule(aggregateRepository, aircraftId));
+
+        var @event = new FlightAircraftReplacedDomainEvent(Id, aircraftId);
 
         Apply(@event);
     }
@@ -142,5 +153,10 @@ public class Flight : AggregateRoot<FlightId>
     protected void When(FlightCapacityChangedDomainEvent @event)
     {
         AvailableSeats = @event.Capacity - BookedSeats;
+    }
+
+    protected void When(FlightAircraftReplacedDomainEvent @event)
+    {
+        AircraftId = @event.AircraftId;
     }
 }
