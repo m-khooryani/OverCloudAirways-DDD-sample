@@ -115,6 +115,12 @@ public class Flight : AggregateRoot<FlightId>
         Apply(@event);
     }
 
+    public void ChangeStatus(FlightStatus status)
+    {
+        var @event = new FlightStatusChangedDomainEvent(Id, status);
+        Apply(@event);
+    }
+
     protected void When(FlightScheduledDomainEvent @event)
     {
         Id = @event.FlightId;
@@ -158,5 +164,10 @@ public class Flight : AggregateRoot<FlightId>
     protected void When(FlightAircraftReplacedDomainEvent @event)
     {
         AircraftId = @event.AircraftId;
+    }
+
+    protected void When(FlightStatusChangedDomainEvent @event)
+    {
+        Status = @event.Status;
     }
 }

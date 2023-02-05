@@ -6,7 +6,6 @@ namespace OverCloudAirways.BookingService.Domain.UnitTests.Flights;
 
 public class ChangeFlightCapacityTests : FlightTests
 {
-
     [Fact]
     public async Task ChangeCapacity_Given_Valid_Input_Should_Successfully_ChangesCapacity_And_Publish_Event()
     {
