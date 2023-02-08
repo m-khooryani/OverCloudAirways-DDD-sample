@@ -45,7 +45,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.BookingSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.BookingService.Infrastructure", "Booking\Src\OverCloudAirways.BookingService.Infrastructure\OverCloudAirways.BookingService.Infrastructure.csproj", "{0AD0A5A4-4418-4625-9B77-F5A4A3F675A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.BookingService.IntegrationEvents", "Booking\Src\OverCloudAirways.BookingService.IntegrationEvents\OverCloudAirways.BookingService.IntegrationEvents.csproj", "{0AC637B4-5659-4D27-8D97-CE4EDE0EC1C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.BookingService.IntegrationEvents", "Booking\Src\OverCloudAirways.BookingService.IntegrationEvents\OverCloudAirways.BookingService.IntegrationEvents.csproj", "{0AC637B4-5659-4D27-8D97-CE4EDE0EC1C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{69EF9AAA-27B8-45D9-A740-AC9E21774444}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{BAF46004-5238-4BB8-A41E-32BD2E0F59DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{51ABF997-C9EC-460C-AA54-0AC766C8CD4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.PaymentService.Domain", "Payment\OverCloudAirways.PaymentService.Domain\OverCloudAirways.PaymentService.Domain.csproj", "{04A15514-10DA-4BFD-9428-C6AA03E9016D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +117,10 @@ Global
 		{0AC637B4-5659-4D27-8D97-CE4EDE0EC1C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AC637B4-5659-4D27-8D97-CE4EDE0EC1C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AC637B4-5659-4D27-8D97-CE4EDE0EC1C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A15514-10DA-4BFD-9428-C6AA03E9016D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A15514-10DA-4BFD-9428-C6AA03E9016D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A15514-10DA-4BFD-9428-C6AA03E9016D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A15514-10DA-4BFD-9428-C6AA03E9016D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +145,9 @@ Global
 		{C1990E98-8DED-42D7-808E-957DC3278D12} = {EC28C59D-F6B3-4995-B548-D3D93425993A}
 		{0AD0A5A4-4418-4625-9B77-F5A4A3F675A9} = {8DE471EB-49A7-490F-9F95-08912DBA0FED}
 		{0AC637B4-5659-4D27-8D97-CE4EDE0EC1C5} = {8DE471EB-49A7-490F-9F95-08912DBA0FED}
+		{BAF46004-5238-4BB8-A41E-32BD2E0F59DF} = {69EF9AAA-27B8-45D9-A740-AC9E21774444}
+		{51ABF997-C9EC-460C-AA54-0AC766C8CD4A} = {69EF9AAA-27B8-45D9-A740-AC9E21774444}
+		{04A15514-10DA-4BFD-9428-C6AA03E9016D} = {BAF46004-5238-4BB8-A41E-32BD2E0F59DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}
