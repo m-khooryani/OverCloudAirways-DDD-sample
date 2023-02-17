@@ -34,7 +34,7 @@ public class TypedId<TKey> : TypedId, IEquatable<TypedId<TKey>>
 
     public bool Equals(TypedId<TKey> other)
     {
-        return Value.Equals(other.Value);
+        return Value.Equals(other.Value) && GetType() == other.GetType();
     }
 
     public static bool operator ==(TypedId<TKey> left, TypedId<TKey> right)

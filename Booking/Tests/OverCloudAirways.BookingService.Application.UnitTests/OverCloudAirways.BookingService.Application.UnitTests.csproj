@@ -26,4 +26,8 @@
     <ProjectReference Include="..\OverCloudAirways.BookingService.TestHelpers\OverCloudAirways.BookingService.TestHelpers.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tickets\" />
+  </ItemGroup>
+
 </Project>

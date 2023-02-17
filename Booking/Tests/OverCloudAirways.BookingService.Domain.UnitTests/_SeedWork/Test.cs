@@ -10,7 +10,7 @@ namespace OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
 [ExcludeFromCodeCoverage]
 public abstract class Test
 {
-    public static T AssertPublishedDomainEvent<T>(IAggregateRoot aggregate)
+    public static DomainEventAssertion<T> AssertPublishedDomainEvent<T>(IAggregateRoot aggregate) 
         where T : DomainEvent
     {
         var domainEvent = aggregate.DomainEvents
@@ -22,7 +22,7 @@ public abstract class Test
             throw new Exception($"{typeof(T).Name} is not published.");
         }
 
-        return domainEvent;
+        return new DomainEventAssertion<T>(domainEvent);
     }
 
     public static async Task AssertViolatedRuleAsync<TRule>(Func<Task> testDelegate)
