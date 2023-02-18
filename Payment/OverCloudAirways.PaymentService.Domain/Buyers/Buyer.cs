@@ -35,6 +35,12 @@ public class Buyer : AggregateRoot<BuyerId>
         return buyer;
     }
 
+    public void Refund(decimal amount)
+    {
+        var @event = new BuyerBalanceRefundedDomainEvent(Id, amount);
+        Apply(@event);
+    }
+
     protected void When(BuyerRegisteredDomainEvent @event)
     {
         Id = @event.BuyerId; 
@@ -43,5 +49,10 @@ public class Buyer : AggregateRoot<BuyerId>
         Email = @event.Email; 
         PhoneNumber = @event.PhoneNumber;
         Balance = 0M;
+    }
+
+    protected void When(BuyerBalanceRefundedDomainEvent @event)
+    {
+        Balance += @event.Amount;
     }
 }

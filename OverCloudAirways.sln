@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.PaymentSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.PaymentService.Infrastructure", "Payment\Src\OverCloudAirways.PaymentService.Infrastructure\OverCloudAirways.PaymentService.Infrastructure.csproj", "{E7510860-4DBE-4F81-9B55-2FA18BBA5E82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.PaymentService.Application.UnitTests", "Payment\Tests\OverCloudAirways.PaymentService.Application.UnitTests\OverCloudAirways.PaymentService.Application.UnitTests.csproj", "{8A5FA4D7-55A6-46A0-B767-6FB64A0E0831}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,10 @@ Global
 		{E7510860-4DBE-4F81-9B55-2FA18BBA5E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7510860-4DBE-4F81-9B55-2FA18BBA5E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7510860-4DBE-4F81-9B55-2FA18BBA5E82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A5FA4D7-55A6-46A0-B767-6FB64A0E0831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5FA4D7-55A6-46A0-B767-6FB64A0E0831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A5FA4D7-55A6-46A0-B767-6FB64A0E0831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A5FA4D7-55A6-46A0-B767-6FB64A0E0831}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +189,7 @@ Global
 		{B6B4CF59-9626-4BAB-8741-130D58233BAF} = {51ABF997-C9EC-460C-AA54-0AC766C8CD4A}
 		{DC194520-B5EE-4D3E-93FB-325027894ECF} = {51ABF997-C9EC-460C-AA54-0AC766C8CD4A}
 		{E7510860-4DBE-4F81-9B55-2FA18BBA5E82} = {BAF46004-5238-4BB8-A41E-32BD2E0F59DF}
+		{8A5FA4D7-55A6-46A0-B767-6FB64A0E0831} = {51ABF997-C9EC-460C-AA54-0AC766C8CD4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}

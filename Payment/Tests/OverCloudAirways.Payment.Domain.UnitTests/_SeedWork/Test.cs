@@ -25,6 +25,23 @@ public abstract class Test
         return new DomainEventAssertion<T>(domainEvent);
     }
 
+    public static DomainEventAssertion<T> AssertPublishedDomainEvent<T>(IAggregateRoot aggregate, int count)
+        where T : DomainEvent
+    {
+        var domainEvents = aggregate.DomainEvents
+            .OfType<T>()
+            .ToList();
+
+        if (domainEvents.Count != count)
+        {
+            throw new Exception($"{typeof(T).Name} was not published {count} times.");
+        }
+
+        var domainEvent = domainEvents.Last();
+
+        return new DomainEventAssertion<T>(domainEvent);
+    }
+
     public static async Task AssertViolatedRuleAsync<TRule>(Func<Task> testDelegate)
         where TRule : class, IBusinessRule
     {

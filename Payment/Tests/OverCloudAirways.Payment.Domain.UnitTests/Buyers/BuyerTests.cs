@@ -35,4 +35,20 @@ public class BuyerTests : Test
         Assert.Equal(phoneNumber, buyer.PhoneNumber);
         AssertPublishedDomainEvent<BuyerRegisteredDomainEvent>(buyer);
     }
+
+    [Fact]
+    public void Refund_Given_Valid_Input_Should_Successfully_Refund_Buyer_Balance_And_Publish_Event()
+    {
+        // Arrange
+        var buyer = new BuyerBuilder()
+            .Build();
+
+        // Act
+        buyer.Refund(20M);
+        buyer.Refund(30M);
+
+        // Assert
+        Assert.Equal(50, buyer.Balance);
+        AssertPublishedDomainEvent<BuyerBalanceRefundedDomainEvent>(buyer, 2);
+    }
 }
