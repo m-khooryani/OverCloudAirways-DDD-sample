@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\OverCloudAirways.PaymentService.Domain\OverCloudAirways.PaymentService.Domain.csproj" />
+    <ProjectReference Include="..\..\Src\OverCloudAirways.Payment.Application\OverCloudAirways.PaymentService.Application.csproj" />
+  </ItemGroup>
+
+</Project>
