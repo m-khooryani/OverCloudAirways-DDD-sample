@@ -14,7 +14,7 @@ public class BuyerRegisteredPolicyTests
     {
         // Arrange
         var commandsScheduler = Substitute.For<ICommandsScheduler>();
-        var handler = new EnqueueProjectingReadModelBuyerCreatedPolicyHandler(commandsScheduler);
+        var handler = new EnqueueProjectingReadModelBuyerRegisteredPolicyHandler(commandsScheduler);
         var policy = new BuyerRegisteredPolicyBuilder().Build();
 
         // Act

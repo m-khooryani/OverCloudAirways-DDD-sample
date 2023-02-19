@@ -5,11 +5,11 @@ using OverCloudAirways.PaymentService.Domain.Buyers.Events;
 
 namespace OverCloudAirways.PaymentService.Application.Buyers.Policies.Registered;
 
-internal class EnqueueProjectingReadModelBuyerCreatedPolicyHandler : IDomainPolicyHandler<BuyerRegisteredPolicy, BuyerRegisteredDomainEvent>
+internal class EnqueueProjectingReadModelBuyerRegisteredPolicyHandler : IDomainPolicyHandler<BuyerRegisteredPolicy, BuyerRegisteredDomainEvent>
 {
     private readonly ICommandsScheduler _commandsScheduler;
 
-    public EnqueueProjectingReadModelBuyerCreatedPolicyHandler(ICommandsScheduler commandsScheduler)
+    public EnqueueProjectingReadModelBuyerRegisteredPolicyHandler(ICommandsScheduler commandsScheduler)
     {
         _commandsScheduler = commandsScheduler;
     }
