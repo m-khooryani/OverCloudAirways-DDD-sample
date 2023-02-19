@@ -15,8 +15,8 @@ public class Product : AggregateRoot<ProductId>
     }
 
     public static Product Create(
-        ProductId productId, 
-        string name, 
+        ProductId productId,
+        string name,
         string description,
         decimal price)
     {
@@ -37,6 +37,12 @@ public class Product : AggregateRoot<ProductId>
         Apply(@event);
     }
 
+    public void Disable()
+    {
+        var @event = new ProductDisabledDomainEvent(Id);
+        Apply(@event);
+    }
+
     protected void When(ProductCreatedDomainEvent @event)
     {
         Id = @event.ProductId;
@@ -51,5 +57,10 @@ public class Product : AggregateRoot<ProductId>
         Name = @event.Name;
         Description = @event.Description;
         Price = @event.Price;
+    }
+
+    protected void When(ProductDisabledDomainEvent _)
+    {
+        IsEnabled = false;
     }
 }

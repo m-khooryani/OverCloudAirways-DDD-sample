@@ -55,4 +55,19 @@ public class ProductTests : Test
         Assert.True(product.IsEnabled);
         AssertPublishedDomainEvent<ProductUpdatedDomainEvent>(product);
     }
+
+    [Fact]
+    public void DisableProduct_Given_Valid_Input_Should_Successfully_Disable_Product_And_Publish_Event()
+    {
+        // Arrange
+        var product = new ProductBuilder()
+            .Build();
+
+        // Act
+        product.Disable();
+
+        // Assert
+        Assert.False(product.IsEnabled);
+        AssertPublishedDomainEvent<ProductDisabledDomainEvent>(product);
+    }
 }
