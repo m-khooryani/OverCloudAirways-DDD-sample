@@ -28,6 +28,15 @@ public class Product : AggregateRoot<ProductId>
         return product;
     }
 
+    public void Update(
+        string name,
+        string description,
+        decimal price)
+    {
+        var @event = new ProductUpdatedDomainEvent(Id, name, description, price);
+        Apply(@event);
+    }
+
     protected void When(ProductCreatedDomainEvent @event)
     {
         Id = @event.ProductId;
@@ -35,5 +44,12 @@ public class Product : AggregateRoot<ProductId>
         Description = @event.Description;
         Price = @event.Price;
         IsEnabled = true;
+    }
+
+    protected void When(ProductUpdatedDomainEvent @event)
+    {
+        Name = @event.Name;
+        Description = @event.Description;
+        Price = @event.Price;
     }
 }
