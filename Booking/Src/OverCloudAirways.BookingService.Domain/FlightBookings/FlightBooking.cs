@@ -46,6 +46,14 @@ public class FlightBooking : AggregateRoot<FlightBookingId>
         Apply(@event);
     }
 
+    public async Task CancelAsync(IAggregateRepository repository)
+    {
+        await CheckRuleAsync(new FlightBookingCanOnlyBeCancelledForFlightsHasNotYetDepartedRule(repository, FlightId));
+
+        var @event = new FlightBookingCancelledDomainEvent(Id);
+        Apply(@event);
+    }
+
     protected void When(FlightBookingReservedDomainEvent @event)
     {
         Id = @event.FlightBookingId;
@@ -58,5 +66,10 @@ public class FlightBooking : AggregateRoot<FlightBookingId>
     protected void When(FlightBookingConfirmedDomainEvent _)
     {
         Status = FlightBookingStatus.Confirmed;
+    }
+
+    protected void When(FlightBookingCancelledDomainEvent _)
+    {
+        Status = FlightBookingStatus.Cancelled;
     }
 }
