@@ -1,10 +1,11 @@
 ﻿using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
+using OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
 using Xunit;
 
 namespace OverCloudAirways.BookingService.Domain.UnitTests.Flights;
 
-public class ReserveFlightSeatsTests : FlightTests
+public class ReserveFlightSeatsTests : Test
 {
     [Fact]
     public async Task ReserveSeats_Given_CanceledFlight_Should_Throw_Business_Error()

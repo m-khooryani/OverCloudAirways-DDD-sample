@@ -14,6 +14,11 @@ public abstract class FlightStatus : Enumeration
     {
     }
 
+    internal bool HasNotYetDeparted()
+    {
+        return this != None && this == Scheduled;
+    }
+
     private class NoneFlightStatus : FlightStatus
     {
         public NoneFlightStatus() : base(0, "None")

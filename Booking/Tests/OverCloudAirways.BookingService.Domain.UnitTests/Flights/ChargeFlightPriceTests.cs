@@ -2,11 +2,12 @@
 using OverCloudAirways.BookingService.Domain.Flights;
 using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
+using OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
 using Xunit;
 
 namespace OverCloudAirways.BookingService.Domain.UnitTests.Flights;
 
-public class ChargeFlightPriceTests : FlightTests
+public class ChargeFlightPriceTests : Test
 {
     [Fact]
     public async Task ChargePrice_Given_CanceledFlight_Should_Throw_Business_Error()

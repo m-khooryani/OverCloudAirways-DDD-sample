@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
+using OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
 using OverCloudAirways.BookingService.TestHelpers.Aircrafts;
 using OverCloudAirways.BookingService.TestHelpers.Flights;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
@@ -9,7 +10,7 @@ using Xunit;
 
 namespace OverCloudAirways.BookingService.Domain.UnitTests.Flights;
 
-public class ScheduleFlightTests : FlightTests
+public class ScheduleFlightTests : Test
 {
     [Fact]
     public async Task ScheduleFlight_Given_DepartureTime_In_The_Past_Should_Throw_Business_Error()

@@ -1,10 +1,11 @@
 ﻿using OverCloudAirways.BookingService.Domain.Flights;
 using OverCloudAirways.BookingService.Domain.Flights.Events;
+using OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
 using Xunit;
 
 namespace OverCloudAirways.BookingService.Domain.UnitTests.Flights;
 
-public class ChangeFlightStatusTests : FlightTests
+public class ChangeFlightStatusTests : Test
 {
     [Fact]
     public async Task Cancel_Given_Valid_Input_Should_Successfully_Cancel_And_Publish_Event()

@@ -3,13 +3,14 @@ using NSubstitute.ReturnsExtensions;
 using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
+using OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
 using OverCloudAirways.BookingService.TestHelpers.Aircrafts;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using Xunit;
 
 namespace OverCloudAirways.BookingService.Domain.UnitTests.Flights;
 
-public class ReplacingFlightAircraftTests : FlightTests
+public class ReplacingFlightAircraftTests : Test
 {
     [Fact]
     public async Task ReplaceAircraft_Given_CanceledFlight_Should_Throw_Business_Error()
