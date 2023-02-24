@@ -3,6 +3,7 @@ using OverCloudAirways.BookingService.Domain.Customers;
 using OverCloudAirways.BookingService.Domain.FlightBookings.Events;
 using OverCloudAirways.BookingService.Domain.FlightBookings.Rules;
 using OverCloudAirways.BookingService.Domain.Flights;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 
 namespace OverCloudAirways.BookingService.Domain.FlightBookings;
@@ -36,6 +37,15 @@ public class FlightBooking : AggregateRoot<FlightBookingId>
         return flightBooking;
     }
 
+    public async Task ConfirmAsync(IAggregateRepository repository)
+    {
+        await CheckRuleAsync(new OnlyReservedFlightBookingsCanBeConfirmedRule(Status));
+        await CheckRuleAsync(new FlightBookingCanOnlyBeConfirmedForFlightsHasNotYetDepartedRule(repository, FlightId));
+
+        var @event = new FlightBookingConfirmedDomainEvent(Id);
+        Apply(@event);
+    }
+
     protected void When(FlightBookingReservedDomainEvent @event)
     {
         Id = @event.FlightBookingId;
@@ -43,5 +53,10 @@ public class FlightBooking : AggregateRoot<FlightBookingId>
         FlightId = @event.FlightId;
         _passengers = new List<Passenger>(@event.Passengers);
         Status = FlightBookingStatus.Reserved;
+    }
+
+    protected void When(FlightBookingConfirmedDomainEvent _)
+    {
+        Status = FlightBookingStatus.Confirmed;
     }
 }
