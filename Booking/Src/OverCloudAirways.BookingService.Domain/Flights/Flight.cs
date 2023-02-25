@@ -86,6 +86,15 @@ public class Flight : AggregateRoot<FlightId>
         Apply(@event);
     }
 
+    public async Task ReleaseSeatsAsync(int seatsCount)
+    {
+        await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
+
+        var @event = new FlightSeatsReleasedDomainEvent(Id, seatsCount);
+
+        Apply(@event);
+    }
+
     public async Task CancelAsync()
     {
         await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
@@ -149,6 +158,12 @@ public class Flight : AggregateRoot<FlightId>
     {
         AvailableSeats -= @event.SeatsCount;
         ReservedSeats += @event.SeatsCount;
+    }
+
+    protected void When(FlightSeatsReleasedDomainEvent @event)
+    {
+        AvailableSeats += @event.SeatsCount;
+        ReservedSeats -= @event.SeatsCount;
     }
 
     protected void When(FlightCanceledDomainEvent _)

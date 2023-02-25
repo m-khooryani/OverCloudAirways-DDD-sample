@@ -50,7 +50,7 @@ public class FlightBooking : AggregateRoot<FlightBookingId>
     {
         await CheckRuleAsync(new FlightBookingCanOnlyBeCancelledForFlightsHasNotYetDepartedRule(repository, FlightId));
 
-        var @event = new FlightBookingCancelledDomainEvent(Id);
+        var @event = new FlightBookingCancelledDomainEvent(Id, FlightId, Passengers.Count);
         Apply(@event);
     }
 

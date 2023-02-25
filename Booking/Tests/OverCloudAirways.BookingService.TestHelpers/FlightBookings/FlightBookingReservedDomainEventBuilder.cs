@@ -40,7 +40,7 @@ public class FlightBookingReservedDomainEventBuilder
         return this;
     }
 
-    public FlightBookingReservedDomainEventBuilder SetPassenger(Passenger passenger)
+    public FlightBookingReservedDomainEventBuilder AddPassenger(Passenger passenger)
     {
         _passengers.Add(passenger);
         return this;
