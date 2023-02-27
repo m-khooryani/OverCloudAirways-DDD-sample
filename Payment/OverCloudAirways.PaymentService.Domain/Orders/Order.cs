@@ -37,10 +37,12 @@ public class Order : AggregateRoot<OrderId>
 
     private static async Task<ReadOnlyCollection<PricedOrderItem>> GetPricedOrderItems(IAggregateRepository repository, IReadOnlyList<OrderItem> orderItems)
     {
+        // Tip: Using a domain service can be considered to handle the
+        // querying of the products for the order items, rather than the repository.
+        // This can help to optimize the queries and reduce the number of round trips to the database.
         var pricedOrderItems = new List<PricedOrderItem>();
         foreach (var orderItem in orderItems)
         {
-            // TIP: Alternatively a domain service can be used for DB query optimization
             var product = await repository.LoadAsync<Product, ProductId>(orderItem.ProductId);
             pricedOrderItems.Add(PricedOrderItem.Of(orderItem, product));
         }
