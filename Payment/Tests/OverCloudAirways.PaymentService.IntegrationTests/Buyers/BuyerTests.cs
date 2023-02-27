@@ -32,7 +32,7 @@ public class BuyerTests
 
         var buyerId = BuyerId.New();
 
-        // Create Customer 
+        // Register Buyer 
         var createCustomerCommand = new RegisterBuyerCommandBuilder()
             .SetBuyerId(buyerId)
             .Build();
