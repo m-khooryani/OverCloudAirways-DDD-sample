@@ -8,4 +8,4 @@ public record OrderDto(
     string BuyerLastName,
     DateTimeOffset Date,
     decimal TotalAmount,
-    IReadOnlyList<OrderItemDto> OrderItems) : ReadModel(Id.ToString(), Id.ToString());
+    IReadOnlyList<OrderItemDto> OrderItems);

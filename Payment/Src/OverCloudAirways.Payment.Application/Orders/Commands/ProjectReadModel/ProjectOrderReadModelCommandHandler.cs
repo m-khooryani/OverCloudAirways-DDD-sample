@@ -20,7 +20,6 @@ internal class ProjectOrderReadModelCommandHandler : CommandHandler<ProjectOrder
         _aggregateRepository = aggregateRepository;
     }
 
-
     public override async Task HandleAsync(ProjectOrderReadModelCommand command, CancellationToken cancellationToken)
     {
         var order = await _aggregateRepository.LoadAsync<Order, OrderId>(command.OrderId);
