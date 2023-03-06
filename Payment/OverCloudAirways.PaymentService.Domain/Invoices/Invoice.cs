@@ -50,6 +50,14 @@ public class Invoice : AggregateRoot<InvoiceId>
         Apply(@event);
     }
 
+    public async Task AcceptAsync()
+    {
+        await CheckRuleAsync(new OnlyPaidInvoiceCanBeAcceptedRule(Status));
+        
+        var @event = new InvoiceAcceptedDomainEvent(Id);
+        Apply(@event);
+    }
+
     private static async Task<ReadOnlyCollection<InvoiceItem>> GetInvoiceItems(
         IAggregateRepository repository,
         IReadOnlyList<PricedOrderItem> orderItems)
@@ -77,5 +85,10 @@ public class Invoice : AggregateRoot<InvoiceId>
     protected void When(InvoicePaidDomainEvent _)
     {
         Status = InvoiceStatus.Paid;
+    }
+
+    protected void When(InvoiceAcceptedDomainEvent _)
+    {
+        Status = InvoiceStatus.Accepted;
     }
 }

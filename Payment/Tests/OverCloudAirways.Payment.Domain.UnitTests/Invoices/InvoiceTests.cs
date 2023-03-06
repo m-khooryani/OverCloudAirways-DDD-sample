@@ -4,6 +4,7 @@ using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.PaymentService.Domain.Buyers;
 using OverCloudAirways.PaymentService.Domain.Invoices;
 using OverCloudAirways.PaymentService.Domain.Invoices.Events;
+using OverCloudAirways.PaymentService.Domain.Invoices.Rules;
 using OverCloudAirways.PaymentService.Domain.Products;
 using OverCloudAirways.PaymentService.Domain.UnitTests._SeedWork;
 using OverCloudAirways.PaymentService.TestHelpers.Invoices;
@@ -69,5 +70,69 @@ public class InvoiceTests : Test
         // Assert
         Assert.Equal(InvoiceStatus.Paid, invoice.Status);
         AssertPublishedDomainEvent<InvoicePaidDomainEvent>(invoice);
+    }
+
+    [Fact]
+    public async Task PayInvoice_Given_NotPendingInvoice_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var product = new ProductBuilder().Build();
+        var repository = Substitute.For<IAggregateRepository>();
+        repository.LoadAsync<Product, ProductId>(product.Id).Returns(product);
+
+        var invoice = await new InvoiceBuilder()
+            .ClearItems()
+            .SetAggregateRepository(repository)
+            .BuildAsync();
+        await invoice.PayAsync();
+        await invoice.AcceptAsync();
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<OnlyPendingInvoiceCanBePaidRule>(async () =>
+        {
+            await invoice.PayAsync();
+        });
+    }
+
+    [Fact]
+    public async void AcceptInvoice_Given_Valid_Input_Should_Successfully_Accept_Invoice_And_Publish_Event()
+    {
+        // Arrange
+        var product = new ProductBuilder().Build();
+        var repository = Substitute.For<IAggregateRepository>();
+        repository.LoadAsync<Product, ProductId>(product.Id).Returns(product);
+
+        var invoice = await new InvoiceBuilder()
+            .ClearItems()
+            .SetAggregateRepository(repository)
+            .BuildAsync();
+        await invoice.PayAsync();
+
+        // Act
+        await invoice.AcceptAsync();
+
+        // Assert
+        Assert.Equal(InvoiceStatus.Accepted, invoice.Status);
+        AssertPublishedDomainEvent<InvoiceAcceptedDomainEvent>(invoice);
+    }
+
+    [Fact]
+    public async Task AcceptInvoice_Given_NotPaidInvoice_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var product = new ProductBuilder().Build();
+        var repository = Substitute.For<IAggregateRepository>();
+        repository.LoadAsync<Product, ProductId>(product.Id).Returns(product);
+
+        var invoice = await new InvoiceBuilder()
+            .ClearItems()
+            .SetAggregateRepository(repository)
+            .BuildAsync();
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<OnlyPaidInvoiceCanBeAcceptedRule>(async () =>
+        {
+            await invoice.AcceptAsync();
+        });
     }
 }
