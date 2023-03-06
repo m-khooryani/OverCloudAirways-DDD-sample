@@ -4,6 +4,7 @@ using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.PaymentService.Domain.Buyers;
 using OverCloudAirways.PaymentService.Domain.Invoices.Events;
+using OverCloudAirways.PaymentService.Domain.Invoices.Rules;
 using OverCloudAirways.PaymentService.Domain.Orders;
 using OverCloudAirways.PaymentService.Domain.Products;
 
@@ -41,6 +42,14 @@ public class Invoice : AggregateRoot<InvoiceId>
         return invoice;
     }
 
+    public async Task PayAsync()
+    {
+        await CheckRuleAsync(new OnlyPendingInvoiceCanBePaidRule(Status));
+
+        var @event = new InvoicePaidDomainEvent(Id);
+        Apply(@event);
+    }
+
     private static async Task<ReadOnlyCollection<InvoiceItem>> GetInvoiceItems(
         IAggregateRepository repository,
         IReadOnlyList<PricedOrderItem> orderItems)
@@ -63,5 +72,10 @@ public class Invoice : AggregateRoot<InvoiceId>
         DueDate = @event.DueDate;
         Status = InvoiceStatus.Pending;
         _items = new (@event.InvoiceItems);
+    }
+
+    protected void When(InvoicePaidDomainEvent _)
+    {
+        Status = InvoiceStatus.Paid;
     }
 }

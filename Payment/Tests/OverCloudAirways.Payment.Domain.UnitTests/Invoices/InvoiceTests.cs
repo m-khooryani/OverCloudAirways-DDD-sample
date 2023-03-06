@@ -49,4 +49,25 @@ public class InvoiceTests : Test
         Assert.Single(invoice.Items);
         AssertPublishedDomainEvent<InvoiceIssuedDomainEvent>(invoice);
     }
+
+    [Fact]
+    public async void PayInvoice_Given_Valid_Input_Should_Successfully_Pay_Invoice_And_Publish_Event()
+    {
+        // Arrange
+        var product = new ProductBuilder().Build();
+        var repository = Substitute.For<IAggregateRepository>();
+        repository.LoadAsync<Product, ProductId>(product.Id).Returns(product);
+
+        var invoice = await new InvoiceBuilder()
+            .ClearItems()
+            .SetAggregateRepository(repository)
+            .BuildAsync();
+
+        // Act
+        await invoice.PayAsync();
+
+        // Assert
+        Assert.Equal(InvoiceStatus.Paid, invoice.Status);
+        AssertPublishedDomainEvent<InvoicePaidDomainEvent>(invoice);
+    }
 }

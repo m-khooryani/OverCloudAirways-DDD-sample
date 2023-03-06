@@ -6,6 +6,7 @@ public abstract class InvoiceStatus : Enumeration
 {
     public static readonly InvoiceStatus None = new NoneInvoiceStatus();
     public static readonly InvoiceStatus Pending = new PendingInvoiceStatus();
+    public static readonly InvoiceStatus Paid = new PaidInvoiceStatus();
     public static readonly InvoiceStatus Accepted = new AcceptedInvoiceStatus();
 
     private InvoiceStatus(int value, string name) : base(value, name)
@@ -26,9 +27,16 @@ public abstract class InvoiceStatus : Enumeration
         }
     }
 
+    private class PaidInvoiceStatus : InvoiceStatus
+    {
+        public PaidInvoiceStatus() : base(2, "Paid")
+        {
+        }
+    }
+
     private class AcceptedInvoiceStatus : InvoiceStatus
     {
-        public AcceptedInvoiceStatus() : base(2, "Accepted")
+        public AcceptedInvoiceStatus() : base(3, "Accepted")
         {
         }
     }
