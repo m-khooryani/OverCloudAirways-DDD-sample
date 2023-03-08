@@ -76,7 +76,10 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
         {
             throw new InvalidOperationException($"Could not find type '{outboxMessage.Type}'");
         }
-        var deserializedMessage = JsonConvert.DeserializeObject(outboxMessage.Data, type) as dynamic;
+
+        var settings = new JsonSerializerSettings();
+        settings.Converters.Add(new EnumerationJsonConverter());
+        var deserializedMessage = JsonConvert.DeserializeObject(outboxMessage.Data, type, settings) as dynamic;
 
         using var scope = CompositionRoot.BeginLifetimeScope();
         var mediator = scope.Resolve<IMediator>();

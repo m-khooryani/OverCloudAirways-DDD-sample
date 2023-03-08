@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
+using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks.Decorators;
 
@@ -39,8 +40,11 @@ internal class AppendingAggregateHistoryUnitOfWorkDecorator : IUnitOfWork
         var domainEvents = aggregate.DomainEvents;
         var type = aggregate.GetType().FullName;
         var index = 0;
+        var settings = new JsonSerializerSettings();
+        settings.Converters.Add(new EnumerationJsonConverter());
         foreach (var domainEvent in domainEvents)
         {
+            var data = JsonConvert.SerializeObject(domainEvent, settings);
             var historyItem = AggregateRootHistoryItem.Create(
                 domainEvent.AggregateId,
                 aggregate.Version + index,
@@ -49,7 +53,7 @@ internal class AppendingAggregateHistoryUnitOfWorkDecorator : IUnitOfWork
                 domainEvent.GetType().FullName!,
                 domainEvent.OccurredAt,
                 type!,
-                JsonConvert.SerializeObject(domainEvent));
+                data);
             await _context.AggregateRootHistory
                 .AddAsync(historyItem, cancellationToken);
             index++;

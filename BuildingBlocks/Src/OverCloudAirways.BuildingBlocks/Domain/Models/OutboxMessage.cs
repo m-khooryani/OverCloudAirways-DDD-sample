@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 
 namespace OverCloudAirways.BuildingBlocks.Domain.Models;
 
@@ -30,8 +31,11 @@ public class OutboxMessage
         message.Id = Guid.NewGuid();
         message.OccurredOn = occurredOn;
         message.AssemblyName = obj.GetType()!.Assembly!.GetName()!.Name!;
-        message.Type = obj.GetType().FullName!; 
-        message.Data = JsonConvert.SerializeObject(obj);
+        message.Type = obj.GetType().FullName!;
+
+        var settings = new JsonSerializerSettings();
+        settings.Converters.Add(new EnumerationJsonConverter());
+        message.Data = JsonConvert.SerializeObject(obj, settings);
         message.SessionId = sessionId;
         message.UserId = userId;
         message.TcpConnectionId = tcpConnectionId;

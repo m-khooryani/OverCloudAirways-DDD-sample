@@ -5,6 +5,7 @@ using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.DomainEvents;
 using OverCloudAirways.BuildingBlocks.Domain.Exceptions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
+using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
@@ -90,11 +91,13 @@ internal class AggregateRepository : IAggregateRepository
     {
         _logger.LogInformation("Restoring aggregate state by applying {eventsCount}", history.Count);
         var domainEvents = new Queue<DomainEvent>();
+        var settings = new JsonSerializerSettings();
+        settings.Converters.Add(new EnumerationJsonConverter());
         foreach (var historyItem in history)
         {
             _logger.LogDebug("Applying {eventName}...", historyItem.EventType);
             var domainEventType = _layers.DomainLayer.GetType(historyItem.EventType);
-            var domainEvent = JsonConvert.DeserializeObject(historyItem.Data, domainEventType);
+            var domainEvent = JsonConvert.DeserializeObject(historyItem.Data, domainEventType, settings);
 
             domainEvents.Enqueue(domainEvent! as DomainEvent);
         }
