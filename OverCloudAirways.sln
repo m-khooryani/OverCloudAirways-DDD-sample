@@ -67,6 +67,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.PaymentSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.PaymentService.Domain", "Payment\Src\OverCloudAirways.PaymentService.Domain\OverCloudAirways.PaymentService.Domain.csproj", "{899DD61A-C8B2-4EB2-BCA5-0EBB544C3666}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM", "CRM", "{28C95E2D-7958-4F82-A4B4-57DEC47E0823}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{AF74634C-BB86-460E-96D6-C765FDA23755}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A7076C27-2C65-4F12-BA85-AA61FA784133}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.Domain", "CRM\Src\OverCloudAirways.CrmService.Domain\OverCloudAirways.CrmService.Domain.csproj", "{89B15CBA-495E-419F-9A04-5668B83FC8C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Domain.UnitTests", "CRM\Tests\OverCloudAirways.CrmService.Domain.UnitTests\OverCloudAirways.CrmService.Domain.UnitTests.csproj", "{61509513-AE0D-4685-9DC5-B6C709589E25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.TestHelpers", "CRM\Tests\OverCloudAirways.CrmService.TestHelpers\OverCloudAirways.CrmService.TestHelpers.csproj", "{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Application", "CRM\Src\OverCloudAirways.CrmService.Application\OverCloudAirways.CrmService.Application.csproj", "{7A56A698-06B5-4D20-8D47-0D9D274839C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Application.UnitTests", "CRM\Tests\OverCloudAirways.CrmService.Application.UnitTests\OverCloudAirways.CrmService.Application.UnitTests.csproj", "{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.IntegrationTests", "CRM\Tests\OverCloudAirways.CrmService.IntegrationTests\OverCloudAirways.CrmService.IntegrationTests.csproj", "{C244F10A-6AB1-46AF-9631-B34D137B6E48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Infrastructure", "CRM\Src\OverCloudAirways.CrmService.Infrastructure\OverCloudAirways.CrmService.Infrastructure.csproj", "{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +177,34 @@ Global
 		{899DD61A-C8B2-4EB2-BCA5-0EBB544C3666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{899DD61A-C8B2-4EB2-BCA5-0EBB544C3666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{899DD61A-C8B2-4EB2-BCA5-0EBB544C3666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89B15CBA-495E-419F-9A04-5668B83FC8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B15CBA-495E-419F-9A04-5668B83FC8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B15CBA-495E-419F-9A04-5668B83FC8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B15CBA-495E-419F-9A04-5668B83FC8C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61509513-AE0D-4685-9DC5-B6C709589E25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61509513-AE0D-4685-9DC5-B6C709589E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61509513-AE0D-4685-9DC5-B6C709589E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61509513-AE0D-4685-9DC5-B6C709589E25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A56A698-06B5-4D20-8D47-0D9D274839C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A56A698-06B5-4D20-8D47-0D9D274839C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A56A698-06B5-4D20-8D47-0D9D274839C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A56A698-06B5-4D20-8D47-0D9D274839C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C244F10A-6AB1-46AF-9631-B34D137B6E48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C244F10A-6AB1-46AF-9631-B34D137B6E48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C244F10A-6AB1-46AF-9631-B34D137B6E48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C244F10A-6AB1-46AF-9631-B34D137B6E48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +238,15 @@ Global
 		{E7510860-4DBE-4F81-9B55-2FA18BBA5E82} = {BAF46004-5238-4BB8-A41E-32BD2E0F59DF}
 		{8A5FA4D7-55A6-46A0-B767-6FB64A0E0831} = {51ABF997-C9EC-460C-AA54-0AC766C8CD4A}
 		{899DD61A-C8B2-4EB2-BCA5-0EBB544C3666} = {BAF46004-5238-4BB8-A41E-32BD2E0F59DF}
+		{AF74634C-BB86-460E-96D6-C765FDA23755} = {28C95E2D-7958-4F82-A4B4-57DEC47E0823}
+		{A7076C27-2C65-4F12-BA85-AA61FA784133} = {28C95E2D-7958-4F82-A4B4-57DEC47E0823}
+		{89B15CBA-495E-419F-9A04-5668B83FC8C8} = {AF74634C-BB86-460E-96D6-C765FDA23755}
+		{61509513-AE0D-4685-9DC5-B6C709589E25} = {A7076C27-2C65-4F12-BA85-AA61FA784133}
+		{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98} = {A7076C27-2C65-4F12-BA85-AA61FA784133}
+		{7A56A698-06B5-4D20-8D47-0D9D274839C8} = {AF74634C-BB86-460E-96D6-C765FDA23755}
+		{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B} = {A7076C27-2C65-4F12-BA85-AA61FA784133}
+		{C244F10A-6AB1-46AF-9631-B34D137B6E48} = {A7076C27-2C65-4F12-BA85-AA61FA784133}
+		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C} = {AF74634C-BB86-460E-96D6-C765FDA23755}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}
