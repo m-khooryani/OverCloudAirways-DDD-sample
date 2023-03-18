@@ -41,6 +41,12 @@ public class Customer : AggregateRoot<CustomerId>
         return customer;
     }
 
+    public void CollectLoyaltyPoints(decimal loyaltyPoints)
+    {
+        var @event = new CustomerLoyaltyPointsCollectedDomainEvent(Id, loyaltyPoints);
+        Apply(@event);
+    }
+
     protected void When(CustomerCreatedDomainEvent @event)
     {
         Id = @event.CustomerId;
@@ -51,5 +57,10 @@ public class Customer : AggregateRoot<CustomerId>
         PhoneNumber = @event.PhoneNumber;
         Address = @event.Address;
         LoyaltyPoints = 0M;
+    }
+
+    protected void When(CustomerLoyaltyPointsCollectedDomainEvent @event)
+    {
+        LoyaltyPoints += @event.LoyaltyPoints;
     }
 }
