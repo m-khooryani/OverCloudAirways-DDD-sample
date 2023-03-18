@@ -4,7 +4,6 @@ using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
 

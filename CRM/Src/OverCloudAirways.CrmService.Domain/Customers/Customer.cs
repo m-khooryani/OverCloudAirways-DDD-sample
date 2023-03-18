@@ -47,6 +47,12 @@ public class Customer : AggregateRoot<CustomerId>
         Apply(@event);
     }
 
+    public void ResetLoyaltyPoints()
+    {
+        var @event = new CustomerLoyaltyPointsResetDomainEvent(Id);
+        Apply(@event);
+    }
+
     protected void When(CustomerCreatedDomainEvent @event)
     {
         Id = @event.CustomerId;
@@ -62,5 +68,10 @@ public class Customer : AggregateRoot<CustomerId>
     protected void When(CustomerLoyaltyPointsCollectedDomainEvent @event)
     {
         LoyaltyPoints += @event.LoyaltyPoints;
+    }
+
+    protected void When(CustomerLoyaltyPointsResetDomainEvent _)
+    {
+        LoyaltyPoints = 0M;
     }
 }

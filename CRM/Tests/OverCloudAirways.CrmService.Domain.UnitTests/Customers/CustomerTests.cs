@@ -62,4 +62,23 @@ public class CustomerTests : Test
         Assert.Equal(loyaltyPoints, customer.LoyaltyPoints);
         AssertPublishedDomainEvent<CustomerLoyaltyPointsCollectedDomainEvent>(customer);
     }
+
+    [Fact]
+    public void ResetCustomerLoyaltyPoints_Given_Valid_Input_Should_Successfully_Reset_Customer_LoyaltyPoints_And_Publish_Event()
+    {
+        // Arrange
+        var customerId = CustomerId.New();
+        var customer = new CustomerBuilder()
+            .SetCustomerId(customerId)
+            .Build();
+
+        // Act
+        customer.CollectLoyaltyPoints(100M);
+        customer.ResetLoyaltyPoints();
+
+        // Assert
+        Assert.Equal(customerId, customer.Id);
+        Assert.Equal(0M, customer.LoyaltyPoints);
+        AssertPublishedDomainEvent<CustomerLoyaltyPointsResetDomainEvent>(customer);
+    }
 }
