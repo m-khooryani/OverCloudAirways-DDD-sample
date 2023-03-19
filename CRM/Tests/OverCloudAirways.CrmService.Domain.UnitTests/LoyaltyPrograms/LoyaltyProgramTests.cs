@@ -35,6 +35,7 @@ public class LoyaltyProgramTests : Test
         Assert.Equal(name, loyaltyProgram.Name);
         Assert.Equal(purchaseRequirements, loyaltyProgram.PurchaseRequirements);
         Assert.Equal(percentageDiscount, loyaltyProgram.DiscountPercentage);
+        Assert.False(loyaltyProgram.IsSuspended);
         AssertPublishedDomainEvent<LoyaltyProgramPlannedDomainEvent>(loyaltyProgram);
     }
 
@@ -58,12 +59,10 @@ public class LoyaltyProgramTests : Test
     public async Task EvaluateLoyaltyProgram_Given_NotQualifiedCustomer_Input_Should_Not_Qualify_And_Publish_Event()
     {
         // Arrange
-        var loyaltyProgramId = LoyaltyProgramId.New();
         var uniqueNameChecker = Substitute.For<ILoyaltyProgramNameUniqueChecker>();
         uniqueNameChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
         var loyaltyProgram = await new LoyaltyProgramBuilder()
             .SetLoyaltyProgramNameUniqueChecker(uniqueNameChecker)
-            .SetLoyaltyProgramId(loyaltyProgramId)
             .BuildAsync();
         var customer = new CustomerBuilder().Build();
 
@@ -79,12 +78,10 @@ public class LoyaltyProgramTests : Test
     public async Task EvaluateLoyaltyProgram_Given_Valid_Input_Should_Successfully_Qualify_LoyaltyProgram_And_Publish_Event()
     {
         // Arrange
-        var loyaltyProgramId = LoyaltyProgramId.New();
         var uniqueNameChecker = Substitute.For<ILoyaltyProgramNameUniqueChecker>();
         uniqueNameChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
         var loyaltyProgram = await new LoyaltyProgramBuilder()
             .SetLoyaltyProgramNameUniqueChecker(uniqueNameChecker)
-            .SetLoyaltyProgramId(loyaltyProgramId)
             .BuildAsync();
         var customer = new CustomerBuilder().Build();
 
@@ -95,5 +92,23 @@ public class LoyaltyProgramTests : Test
         // Assert
         AssertPublishedDomainEvent<LoyaltyProgramEvaluatedForCustomerDomainEvent>(loyaltyProgram);
         AssertPublishedDomainEvent<LoyaltyProgramQualifiedForCustomerDomainEvent>(loyaltyProgram);
+    }
+
+    [Fact]
+    public async Task SuspendLoyaltyProgram_Given_Valid_Input_Should_Successfully_Suspend_LoyaltyProgram_And_Publish_Event()
+    {
+        // Arrange
+        var uniqueNameChecker = Substitute.For<ILoyaltyProgramNameUniqueChecker>();
+        uniqueNameChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
+        var loyaltyProgram = await new LoyaltyProgramBuilder()
+            .SetLoyaltyProgramNameUniqueChecker(uniqueNameChecker)
+            .BuildAsync();
+
+        // Act
+        loyaltyProgram.Suspend();
+
+        // Assert
+        Assert.True(loyaltyProgram.IsSuspended);
+        AssertPublishedDomainEvent<LoyaltyProgramSuspendedDomainEvent>(loyaltyProgram);
     }
 }
