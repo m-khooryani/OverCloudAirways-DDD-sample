@@ -67,7 +67,7 @@ public class LoyaltyProgramTests : Test
         var customer = new CustomerBuilder().Build();
 
         // Act
-        loyaltyProgram.Evaluate(customer);
+        await loyaltyProgram.EvaluateAsync(customer);
 
         // Assert
         AssertPublishedDomainEvent<LoyaltyProgramEvaluatedForCustomerDomainEvent>(loyaltyProgram);
@@ -87,11 +87,31 @@ public class LoyaltyProgramTests : Test
 
         // Act
         customer.CollectLoyaltyPoints(1_000_000M);
-        loyaltyProgram.Evaluate(customer);
+        await loyaltyProgram.EvaluateAsync(customer);
 
         // Assert
         AssertPublishedDomainEvent<LoyaltyProgramEvaluatedForCustomerDomainEvent>(loyaltyProgram);
         AssertPublishedDomainEvent<LoyaltyProgramQualifiedForCustomerDomainEvent>(loyaltyProgram);
+    }
+
+    [Fact]
+    public async Task EvaluateLoyaltyProgram_Given_Suspended_LoyaltyProgram_Should_Throw_Business_Error()
+    {
+        // Arrange
+        var uniqueNameChecker = Substitute.For<ILoyaltyProgramNameUniqueChecker>();
+        uniqueNameChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
+        var loyaltyProgram = await new LoyaltyProgramBuilder()
+            .SetLoyaltyProgramNameUniqueChecker(uniqueNameChecker)
+            .BuildAsync();
+        var customer = new CustomerBuilder().Build();
+
+        loyaltyProgram.Suspend();
+
+        // Act, Assert
+        await AssertViolatedRuleAsync<OnlyActiveLoyaltyProgramCanBeEvaluatedRule>(async () =>
+        {
+            await loyaltyProgram.EvaluateAsync(customer);
+        });
     }
 
     [Fact]

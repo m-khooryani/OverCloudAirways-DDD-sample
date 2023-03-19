@@ -19,6 +19,6 @@ internal class EvaluateLoyaltyProgramCommandHandler : CommandHandler<EvaluateLoy
         var loyaltyProgram = await _repository.LoadAsync<LoyaltyProgram, LoyaltyProgramId>(command.LoyaltyProgramId);
         var customer = await _repository.LoadAsync<Customer, CustomerId>(command.CustomerId);
 
-        loyaltyProgram.Evaluate(customer);
+        await loyaltyProgram.EvaluateAsync(customer);
     }
 }

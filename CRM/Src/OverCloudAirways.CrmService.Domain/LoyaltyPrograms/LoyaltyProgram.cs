@@ -37,8 +37,10 @@ public class LoyaltyProgram : AggregateRoot<LoyaltyProgramId>
         return loyaltyProgram;
     }
 
-    public void Evaluate(Customer customer)
+    public async Task EvaluateAsync(Customer customer)
     {
+        await CheckRuleAsync(new OnlyActiveLoyaltyProgramCanBeEvaluatedRule(this));
+
         if (customer.LoyaltyPoints >= PurchaseRequirements)
         {
             var qualifiedEvent = new LoyaltyProgramQualifiedForCustomerDomainEvent(Id, customer.Id);
