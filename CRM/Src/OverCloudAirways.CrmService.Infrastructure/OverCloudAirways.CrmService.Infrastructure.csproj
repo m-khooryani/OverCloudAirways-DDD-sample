@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OverCloudAirways.CrmService.Domain\OverCloudAirways.CrmService.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

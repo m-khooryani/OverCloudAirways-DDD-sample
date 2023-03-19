@@ -27,11 +27,11 @@ internal class GetCustomerInfoQueryHandler : QueryHandler<GetCustomerInfoQuery, 
                     customer.LoyaltyPoints AS {nameof(CustomerDto.LoyaltyPoints)}
                     FROM customer 
                     WHERE 
-                    customer.id = @customer AND 
-                    customer.partitionKey = @customer ";
+                    customer.id = @customerId AND 
+                    customer.partitionKey = @customerId ";
 
         var queryDefinition = new QueryDefinition(sql)
-            .WithParameter("@customer", query.CustomerId);
+            .WithParameter("@customerId", query.CustomerId);
         var customer = await _cosmosManager.QuerySingleAsync<CustomerDto>(ContainersConstants.ReadModels, queryDefinition);
 
         return customer;

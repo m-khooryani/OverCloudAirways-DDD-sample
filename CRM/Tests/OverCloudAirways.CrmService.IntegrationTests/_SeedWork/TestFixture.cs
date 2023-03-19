@@ -20,6 +20,7 @@ using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
 using OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 using OverCloudAirways.CrmService.Application;
+using OverCloudAirways.CrmService.Infrastructure.DomainServices;
 using Xunit.Abstractions;
 
 namespace OverCloudAirways.CrmService.IntegrationTests._SeedWork;
@@ -98,6 +99,7 @@ public class TestFixture : IDisposable
         var serviceBusConfig = Substitute.For<ServiceBusConfig>();
         var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig, Substitute.For<IServiceBusSenderFactory>());
         var cosmosDbModule = new CosmosDBModule(accountEndpoint!, accountKey!, _databaseId);
+        var domainServiceModule = new DomainServiceModule();
 
         CompositionRoot.Initialize(
             assemblyLayersModule,
@@ -108,7 +110,8 @@ public class TestFixture : IDisposable
             contextAccessorModule,
             retryPolicyModule,
             azureServiceBusModule,
-            cosmosDbModule);
+            cosmosDbModule,
+            domainServiceModule);
     }
 
     private static LoggerFactory GetLoggerFactory()
