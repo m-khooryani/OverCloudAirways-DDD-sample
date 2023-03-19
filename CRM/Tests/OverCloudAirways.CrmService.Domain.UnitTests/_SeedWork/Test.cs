@@ -25,6 +25,19 @@ public abstract class Test
         return new DomainEventAssertion<T>(domainEvent);
     }
 
+    public static void AssertNotPublishedDomainEvent<T>(IAggregateRoot aggregate)
+        where T : DomainEvent
+    {
+        var domainEvent = aggregate.DomainEvents
+            .OfType<T>()
+            .FirstOrDefault();
+
+        if (domainEvent is not null)
+        {
+            throw new Exception($"{typeof(T).Name} is published.");
+        }
+    }
+
     public static async Task AssertViolatedRuleAsync<TRule>(Func<Task> testDelegate)
         where TRule : class, IBusinessRule
     {

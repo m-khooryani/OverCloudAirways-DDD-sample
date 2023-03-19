@@ -3,6 +3,7 @@ using OverCloudAirways.CrmService.Domain.LoyaltyPrograms;
 using OverCloudAirways.CrmService.Domain.LoyaltyPrograms.Events;
 using OverCloudAirways.CrmService.Domain.LoyaltyPrograms.Rules;
 using OverCloudAirways.CrmService.Domain.UnitTests._SeedWork;
+using OverCloudAirways.CrmService.TestHelpers.Customers;
 using OverCloudAirways.CrmService.TestHelpers.LoyaltyPrograms;
 using Xunit;
 
@@ -51,5 +52,48 @@ public class LoyaltyProgramTests : Test
         {
             _ = await builder.BuildAsync();
         });
+    }
+
+    [Fact]
+    public async Task EvaluateLoyaltyProgram_Given_NotQualifiedCustomer_Input_Should_Not_Qualify_And_Publish_Event()
+    {
+        // Arrange
+        var loyaltyProgramId = LoyaltyProgramId.New();
+        var uniqueNameChecker = Substitute.For<ILoyaltyProgramNameUniqueChecker>();
+        uniqueNameChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
+        var loyaltyProgram = await new LoyaltyProgramBuilder()
+            .SetLoyaltyProgramNameUniqueChecker(uniqueNameChecker)
+            .SetLoyaltyProgramId(loyaltyProgramId)
+            .BuildAsync();
+        var customer = new CustomerBuilder().Build();
+
+        // Act
+        loyaltyProgram.Evaluate(customer);
+
+        // Assert
+        AssertPublishedDomainEvent<LoyaltyProgramEvaluatedForCustomerDomainEvent>(loyaltyProgram);
+        AssertNotPublishedDomainEvent<LoyaltyProgramQualifiedForCustomerDomainEvent>(loyaltyProgram);
+    }
+
+    [Fact]
+    public async Task EvaluateLoyaltyProgram_Given_Valid_Input_Should_Successfully_Qualify_LoyaltyProgram_And_Publish_Event()
+    {
+        // Arrange
+        var loyaltyProgramId = LoyaltyProgramId.New();
+        var uniqueNameChecker = Substitute.For<ILoyaltyProgramNameUniqueChecker>();
+        uniqueNameChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
+        var loyaltyProgram = await new LoyaltyProgramBuilder()
+            .SetLoyaltyProgramNameUniqueChecker(uniqueNameChecker)
+            .SetLoyaltyProgramId(loyaltyProgramId)
+            .BuildAsync();
+        var customer = new CustomerBuilder().Build();
+
+        // Act
+        customer.CollectLoyaltyPoints(1_000_000M);
+        loyaltyProgram.Evaluate(customer);
+
+        // Assert
+        AssertPublishedDomainEvent<LoyaltyProgramEvaluatedForCustomerDomainEvent>(loyaltyProgram);
+        AssertPublishedDomainEvent<LoyaltyProgramQualifiedForCustomerDomainEvent>(loyaltyProgram);
     }
 }

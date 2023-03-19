@@ -1,4 +1,5 @@
 ﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
+using OverCloudAirways.CrmService.Domain.Customers;
 using OverCloudAirways.CrmService.Domain.LoyaltyPrograms.Events;
 using OverCloudAirways.CrmService.Domain.LoyaltyPrograms.Rules;
 
@@ -35,11 +36,30 @@ public class LoyaltyProgram : AggregateRoot<LoyaltyProgramId>
         return loyaltyProgram;
     }
 
+    public void Evaluate(Customer customer)
+    {
+        if (customer.LoyaltyPoints >= PurchaseRequirements)
+        {
+            var qualifiedEvent = new LoyaltyProgramQualifiedForCustomerDomainEvent(Id, customer.Id);
+            Apply(qualifiedEvent);
+        }
+        var evaluatedEvent = new LoyaltyProgramEvaluatedForCustomerDomainEvent(Id, customer.Id);
+        Apply(evaluatedEvent);
+    }
+
     protected void When(LoyaltyProgramPlannedDomainEvent @event)
     {
         Id = @event.LoyaltyProgramId;
         Name = @event.Name;
         PurchaseRequirements = @event.PurchaseRequirements;
         DiscountPercentage = @event.DiscountPercentage;
+    }
+
+    protected void When(LoyaltyProgramQualifiedForCustomerDomainEvent _)
+    {
+    }
+
+    protected void When(LoyaltyProgramEvaluatedForCustomerDomainEvent _)
+    {
     }
 }
