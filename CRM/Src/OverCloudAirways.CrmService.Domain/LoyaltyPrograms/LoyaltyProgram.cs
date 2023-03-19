@@ -54,6 +54,12 @@ public class LoyaltyProgram : AggregateRoot<LoyaltyProgramId>
         Apply(@event);
     }
 
+    public void Reactivate()
+    {
+        var @event = new LoyaltyProgramReactivatedDomainEvent(Id);
+        Apply(@event);
+    }
+
     protected void When(LoyaltyProgramPlannedDomainEvent @event)
     {
         Id = @event.LoyaltyProgramId;
@@ -74,5 +80,10 @@ public class LoyaltyProgram : AggregateRoot<LoyaltyProgramId>
     protected void When(LoyaltyProgramSuspendedDomainEvent _)
     {
         IsSuspended = true;
+    }
+
+    protected void When(LoyaltyProgramReactivatedDomainEvent _)
+    {
+        IsSuspended = false;
     }
 }

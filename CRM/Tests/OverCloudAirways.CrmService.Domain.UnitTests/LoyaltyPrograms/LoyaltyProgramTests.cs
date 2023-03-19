@@ -111,4 +111,23 @@ public class LoyaltyProgramTests : Test
         Assert.True(loyaltyProgram.IsSuspended);
         AssertPublishedDomainEvent<LoyaltyProgramSuspendedDomainEvent>(loyaltyProgram);
     }
+
+    [Fact]
+    public async Task ReactivateLoyaltyProgram_Given_Valid_Input_Should_Successfully_Reactivate_LoyaltyProgram_And_Publish_Event()
+    {
+        // Arrange
+        var uniqueNameChecker = Substitute.For<ILoyaltyProgramNameUniqueChecker>();
+        uniqueNameChecker.IsUniqueAsync(Arg.Any<string>()).Returns(true);
+        var loyaltyProgram = await new LoyaltyProgramBuilder()
+            .SetLoyaltyProgramNameUniqueChecker(uniqueNameChecker)
+            .BuildAsync();
+
+        // Act
+        loyaltyProgram.Suspend();
+        loyaltyProgram.Reactivate();
+
+        // Assert
+        Assert.False(loyaltyProgram.IsSuspended);
+        AssertPublishedDomainEvent<LoyaltyProgramReactivatedDomainEvent>(loyaltyProgram);
+    }
 }
