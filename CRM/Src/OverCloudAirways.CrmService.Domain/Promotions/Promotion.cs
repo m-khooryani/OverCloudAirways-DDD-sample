@@ -39,6 +39,12 @@ public class Promotion : AggregateRoot<PromotionId>
         return promotion;
     }
 
+    public void Extend(int months)
+    {
+        var @event = new PromotionExtendedDomainEvent(Id, months);
+        Apply(@event);
+    }
+
     protected void When(PromotionLaunchedDomainEvent @event)
     {
         Id = @event.PromotionId;
@@ -47,5 +53,10 @@ public class Promotion : AggregateRoot<PromotionId>
         Description = @event.Description;
         CustomerId = @event.CustomerId;
         ExpirationDate = @event.ExpirationDate;
+    }
+
+    protected void When(PromotionExtendedDomainEvent @event)
+    {
+        ExpirationDate = ExpirationDate.AddMonths(@event.Months);
     }
 }

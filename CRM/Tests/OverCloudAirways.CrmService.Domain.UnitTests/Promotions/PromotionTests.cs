@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.CrmService.Domain.Customers;
 using OverCloudAirways.CrmService.Domain.LoyaltyPrograms;
 using OverCloudAirways.CrmService.Domain.Promotions;
@@ -39,5 +40,29 @@ public class PromotionTests : Test
         Assert.Equal(description, promotion.Description);
         Assert.Equal(customerId, promotion.CustomerId);
         AssertPublishedDomainEvent<PromotionLaunchedDomainEvent>(promotion);
+    }
+
+    [Fact]
+    public void ExtendPromotion_Given_Valid_Input_Should_Successfully_Extend_Promotion_And_Publish_Event()
+    {
+        // Arrange
+        var discountCode = "OA_10023";
+        const int ExtendedMonths = 2;
+        const int ExpirationMonths = 12;
+        var discountCodeGenerator = Substitute.For<IDiscountCodeGenerator>();
+        discountCodeGenerator.Generate().Returns(discountCode);
+        var date = DateTimeOffset.UtcNow;
+        Clock.SetCustomDate(date);
+
+        var promotion = new PromotionBuilder()
+            .SetDiscountCodeGenerator(discountCodeGenerator)
+            .Build();
+
+        // Act
+        promotion.Extend(ExtendedMonths);
+
+        // Assert
+        Assert.Equal(date.AddMonths(ExtendedMonths + ExpirationMonths), promotion.ExpirationDate);
+        AssertPublishedDomainEvent<PromotionExtendedDomainEvent>(promotion);
     }
 }
