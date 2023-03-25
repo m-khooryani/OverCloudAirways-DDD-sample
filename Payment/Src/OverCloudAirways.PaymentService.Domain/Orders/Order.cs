@@ -46,6 +46,14 @@ public class Order : AggregateRoot<OrderId>
         Apply(@event);
     }
 
+    public async Task CancelAsync()
+    {
+        await CheckRuleAsync(new OnlyPendingOrdersCanBeModifiedRule(Status));
+
+        var @event = new OrderCanceledDomainEvent(Id);
+        Apply(@event);
+    }
+
     private static async Task<ReadOnlyCollection<PricedOrderItem>> GetPricedOrderItems(IAggregateRepository repository, IReadOnlyList<OrderItem> orderItems)
     {
         // Tip: Using a domain service can be considered to handle the
@@ -73,5 +81,10 @@ public class Order : AggregateRoot<OrderId>
     protected void When(OrderExpiredDomainEvent _)
     {
         Status = OrderStatus.Expired;
+    }
+
+    protected void When(OrderCanceledDomainEvent _)
+    {
+        Status = OrderStatus.Canceled;
     }
 }
