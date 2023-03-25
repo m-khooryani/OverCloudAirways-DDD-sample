@@ -3,7 +3,9 @@ using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.PaymentService.Domain.Buyers;
+using OverCloudAirways.PaymentService.Domain.Invoices;
 using OverCloudAirways.PaymentService.Domain.Orders.Events;
+using OverCloudAirways.PaymentService.Domain.Orders.Rules;
 using OverCloudAirways.PaymentService.Domain.Products;
 
 namespace OverCloudAirways.PaymentService.Domain.Orders;
@@ -13,6 +15,7 @@ public class Order : AggregateRoot<OrderId>
     private List<PricedOrderItem> _orderItems;
     public BuyerId BuyerId { get; private set; }
     public DateTimeOffset Date { get; private set; }
+    public OrderStatus Status { get; private set; }
     public decimal TotalAmount => _orderItems.Sum(oi => oi.TotalPrice);
     public IReadOnlyCollection<PricedOrderItem> OrderItems => _orderItems.AsReadOnly();
 
@@ -35,6 +38,14 @@ public class Order : AggregateRoot<OrderId>
         return order;
     }
 
+    public async Task ExpireAsync()
+    {
+        await CheckRuleAsync(new OnlyPendingOrdersCanBeModifiedRule(Status));
+
+        var @event = new OrderExpiredDomainEvent(Id);
+        Apply(@event);
+    }
+
     private static async Task<ReadOnlyCollection<PricedOrderItem>> GetPricedOrderItems(IAggregateRepository repository, IReadOnlyList<OrderItem> orderItems)
     {
         // Tip: Using a domain service can be considered to handle the
@@ -55,6 +66,12 @@ public class Order : AggregateRoot<OrderId>
         Id = @event.OrderId;
         BuyerId = @event.BuyerId;
         Date = @event.Date;
+        Status = OrderStatus.Pending;
         _orderItems = new List<PricedOrderItem>(@event.OrderItems);
+    }
+
+    protected void When(OrderExpiredDomainEvent _)
+    {
+        Status = OrderStatus.Expired;
     }
 }

@@ -45,6 +45,7 @@ public class OrderTests : Test
         Assert.Equal(buyerId, order.BuyerId);
         Assert.Single(order.OrderItems);
         Assert.Equal(pricedOrderItem, order.OrderItems.Single());
+        Assert.Equal(OrderStatus.Pending, order.Status);
         AssertPublishedDomainEvent<OrderPlacedDomainEvent>(order);
     }
 }
