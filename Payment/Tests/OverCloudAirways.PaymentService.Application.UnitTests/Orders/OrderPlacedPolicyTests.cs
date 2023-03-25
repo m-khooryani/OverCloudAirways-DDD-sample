@@ -4,6 +4,7 @@ using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.PaymentService.Application.Orders.Commands.Expire;
 using OverCloudAirways.PaymentService.Application.Orders.Commands.ProjectReadModel;
 using OverCloudAirways.PaymentService.Application.Orders.Policies.Placed;
+using OverCloudAirways.PaymentService.Domain.Orders;
 using OverCloudAirways.PaymentService.TestHelpers.Orders;
 using Xunit;
 
@@ -33,10 +34,15 @@ public class OrderPlacedPolicyTests
     {
         // Arrange
         var now = DateTimeOffset.UtcNow;
-        var expirationDate = now.AddMinutes(15);
+        const int ExpiryDurationInMinutes = 15;
+        var expirationDate = now.AddMinutes(ExpiryDurationInMinutes);
         Clock.SetCustomDate(now);
         var commandsScheduler = Substitute.For<ICommandsScheduler>();
-        var handler = new ScheduleExpiringOrderPlacedPolicyHandler(commandsScheduler);
+        var orderExpirySettings = new OrderExpirySettings()
+        {
+            ExpiryDurationInMinutes = ExpiryDurationInMinutes
+        };
+        var handler = new ScheduleExpiringOrderPlacedPolicyHandler(commandsScheduler, orderExpirySettings);
         var policy = new OrderPlacedPolicyBuilder().Build();
 
         // Act

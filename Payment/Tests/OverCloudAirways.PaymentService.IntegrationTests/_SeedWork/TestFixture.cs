@@ -20,6 +20,8 @@ using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
 using OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 using OverCloudAirways.PaymentService.Application;
+using OverCloudAirways.PaymentService.Domain.Orders;
+using OverCloudAirways.PaymentService.Infrastructure;
 using Xunit.Abstractions;
 
 namespace OverCloudAirways.PaymentService.IntegrationTests._SeedWork;
@@ -98,6 +100,10 @@ public class TestFixture : IDisposable
         var serviceBusConfig = Substitute.For<ServiceBusConfig>();
         var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig, Substitute.For<IServiceBusSenderFactory>());
         var cosmosDbModule = new CosmosDBModule(accountEndpoint!, accountKey!, _databaseId);
+        var orderExpirySettingsModule = new OrderExpirySettingsModule(new OrderExpirySettings()
+        {
+            ExpiryDurationInMinutes = 15
+        });
 
         CompositionRoot.Initialize(
             assemblyLayersModule,
@@ -108,7 +114,8 @@ public class TestFixture : IDisposable
             contextAccessorModule,
             retryPolicyModule,
             azureServiceBusModule,
-            cosmosDbModule);
+            cosmosDbModule,
+            orderExpirySettingsModule);
     }
 
     private static LoggerFactory GetLoggerFactory()
