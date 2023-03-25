@@ -31,11 +31,7 @@ internal class CommandsScheduler : ICommandsScheduler
             _userAccessor.UserId,
             _userAccessor.TcpConnectionId);
 
-        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
-        _logger.LogInformation("Enqueue Command:");
-        _logger.LogInformation(json);
-
-        await _repository.AddAsync(outboxMessage);
+        await AddOutboxMessageAsync(outboxMessage);
     }
 
     public async Task EnqueueAsync<TResult>(ICommand<TResult> command)
@@ -46,11 +42,7 @@ internal class CommandsScheduler : ICommandsScheduler
             _userAccessor.UserId,
             _userAccessor.TcpConnectionId);
 
-        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
-        _logger.LogInformation("Enqueue Command:");
-        _logger.LogInformation(json);
-
-        await _repository.AddAsync(outboxMessage);
+        await AddOutboxMessageAsync(outboxMessage);
     }
 
     public async Task EnqueuePublishingEventAsync(IntegrationEvent integrationEvent)
@@ -60,6 +52,26 @@ internal class CommandsScheduler : ICommandsScheduler
             integrationEvent,
             _userAccessor.UserId,
             _userAccessor.TcpConnectionId);
+
+        await AddOutboxMessageAsync(outboxMessage);
+    }
+
+    public async Task ScheduleAsync(ICommand command, DateTimeOffset date)
+    {
+        var outboxMessage = OutboxMessage.CreateDelayed(
+            Clock.Now,
+            command,
+            _userAccessor.UserId,
+            _userAccessor.TcpConnectionId,
+            date);
+
+        await AddOutboxMessageAsync(outboxMessage);
+    }
+
+    private async Task AddOutboxMessageAsync(OutboxMessage outboxMessage)
+    {
+        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
+        _logger.LogInformation("OutboxMessage added: {json}", json);
 
         await _repository.AddAsync(outboxMessage);
     }

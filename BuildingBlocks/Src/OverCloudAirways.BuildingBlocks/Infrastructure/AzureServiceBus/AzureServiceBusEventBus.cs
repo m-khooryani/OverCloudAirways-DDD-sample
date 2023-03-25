@@ -20,20 +20,40 @@ internal class AzureServiceBusEventBus : IEventBus
         _logger = logger;
     }
 
-    private Task Publish(string queueOrTopicName, string? sessionId, string data)
+    private void LogMessage(string queueOrTopicName, string? sessionId, string data)
     {
         _logger.LogInformation("Publishing message to queue");
         _logger.LogInformation($"QueueOrTopicName: {queueOrTopicName}");
         _logger.LogInformation($"SessionId: {sessionId}");
         _logger.LogInformation($"Data: {data}");
+    }
+
+    private static ServiceBusMessage CreateMessage(string data, string? sessionId = null)
+    {
         var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(data));
-        if (sessionId is not null)
+
+        if (sessionId != null)
         {
             message.SessionId = sessionId;
-        };
+        }
 
+        return message;
+    }
+
+    private async Task<string> SendMessageAsync(string queueOrTopicName, ServiceBusMessage message, DateTimeOffset? scheduleEnqueueTime = null)
+    {
         var sender = _senderFactory.CreateSender(queueOrTopicName);
-        return sender.SendMessageAsync(message);
+
+        if (scheduleEnqueueTime.HasValue)
+        {
+            var sequenceNumber = await sender.ScheduleMessageAsync(message, scheduleEnqueueTime.Value);
+            return sequenceNumber.ToString();
+        }
+        else
+        {
+            await sender.SendMessageAsync(message);
+            return string.Empty;
+        }
     }
 
     public async Task PublishAsync(IntegrationEvent @event)
@@ -42,11 +62,24 @@ internal class AzureServiceBusEventBus : IEventBus
         _logger.LogInformation($"Publishing {eventType.FullName}...");
 
         var json = JsonConvert.SerializeObject(@event, Formatting.Indented);
-        await Publish(@event.IntegrationEventName, @event.AggregateId.ToString()!, json);
+        var message = CreateMessage(json, @event.AggregateId.ToString());
+        LogMessage(@event.IntegrationEventName, @event.AggregateId.ToString(), json);
+        await SendMessageAsync(@event.IntegrationEventName, message);
     }
 
-    async Task IEventBus.PublishAsync(string queue, string? sessionId, OutboxMessage outboxMessage)
+    async Task IEventBus.PublishAsync(string queue, OutboxMessage outboxMessage)
     {
-        await Publish(queue, sessionId, JsonConvert.SerializeObject(outboxMessage, Formatting.Indented));
+        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
+        var message = CreateMessage(json, outboxMessage.SessionId);
+        LogMessage(queue, outboxMessage.SessionId, json);
+        await SendMessageAsync(queue, message);
+    }
+
+    async Task<string> IEventBus.ScheduleAsync(string queue, OutboxMessage outboxMessage, DateTimeOffset dateTimeOffset)
+    {
+        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
+        var message = CreateMessage(json, outboxMessage.SessionId);
+        LogMessage(queue, outboxMessage.SessionId, json);
+        return await SendMessageAsync(queue, message, dateTimeOffset);
     }
 }

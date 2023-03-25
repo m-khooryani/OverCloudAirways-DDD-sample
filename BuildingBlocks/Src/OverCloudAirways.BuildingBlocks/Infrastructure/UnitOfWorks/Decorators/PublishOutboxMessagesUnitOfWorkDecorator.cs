@@ -36,10 +36,22 @@ internal class PublishOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
 
         outboxMessages
             .ToList()
-            .ForEach(async outboxMessage => await _eventBus.PublishAsync(
-                _config.OutboxQueueName,
-                outboxMessage.SessionId,
-                outboxMessage));
+            .ForEach(async outboxMessage =>
+            {
+                if (outboxMessage.IsInstantProcessing)
+                {
+                    await _eventBus.PublishAsync(
+                        _config.OutboxQueueName,
+                        outboxMessage);
+                }
+                else
+                {
+                    await _eventBus.ScheduleAsync(
+                        _config.OutboxQueueName,
+                        outboxMessage,
+                        outboxMessage.ProcessingDate!.Value);
+                }
+            });
 
         return changes;
     }
