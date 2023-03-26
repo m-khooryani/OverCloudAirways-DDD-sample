@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+using OverCloudAirways.BuildingBlocks.Domain.DomainEvents;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.PaymentService.Domain.Buyers;
@@ -54,6 +55,21 @@ public class Order : AggregateRoot<OrderId>
         Apply(@event);
     }
 
+    public void Confirm(Invoice invoice)
+    {
+        var @event = ConfirmationStrategy(invoice);
+        Apply(@event);
+    }
+
+    private DomainEvent ConfirmationStrategy(Invoice invoice)
+    {
+        if (invoice.TotalAmount != TotalAmount)
+        {
+            return new OrderFailedDomainEvent(Id);
+        }
+        return new OrderConfirmedDomainEvent(Id);
+    }
+
     private static async Task<ReadOnlyCollection<PricedOrderItem>> GetPricedOrderItems(IAggregateRepository repository, IReadOnlyList<OrderItem> orderItems)
     {
         // Tip: Using a domain service can be considered to handle the
@@ -86,5 +102,15 @@ public class Order : AggregateRoot<OrderId>
     protected void When(OrderCanceledDomainEvent _)
     {
         Status = OrderStatus.Canceled;
+    }
+
+    protected void When(OrderFailedDomainEvent _)
+    {
+        Status = OrderStatus.Failed;
+    }
+
+    protected void When(OrderConfirmedDomainEvent _)
+    {
+        Status = OrderStatus.Confirmed;
     }
 }
