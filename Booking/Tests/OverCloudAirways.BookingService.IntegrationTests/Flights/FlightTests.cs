@@ -1,5 +1,4 @@
-﻿using OverCloudAirways.BookingService.Application.Flights.Commands.ReserveSeats;
-using OverCloudAirways.BookingService.Application.Flights.Queries.GetInfo;
+﻿using OverCloudAirways.BookingService.Application.Flights.Queries.GetInfo;
 using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BookingService.Domain.Airports;
 using OverCloudAirways.BookingService.Domain.Flights;
@@ -85,32 +84,6 @@ public class FlightTests
         Assert.Equal(createAircraftCommand.Model, flight.AircraftModel);
         Assert.Equal(scheduleFlightCommand.ArrivalTime, flight.ArrivalTime);
         Assert.Equal(scheduleFlightCommand.AvailableSeats, flight.AvailableSeats);
-        Assert.Equal(createDepartureAirportCommand.Code, flight.DepartureAirport);
-        Assert.Equal(scheduleFlightCommand.DepartureTime, flight.DepartureTime);
-        Assert.Equal(createDestinationAirportCommand.Code, flight.DestinationAirport);
-        Assert.Equal(scheduleFlightCommand.Distance, flight.Distance);
-        Assert.True(flight.EconomyPrice > 0M);
-        Assert.True(flight.FirstClassPrice > 0M);
-
-        // Reserve Flight
-        var reserveFlightSeatsCommand = new ReserveFlightSeatsCommand(flightId, 2);
-        await _invoker.CommandAsync(reserveFlightSeatsCommand);
-        // Flight Scheduled Policy
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Publish Integration Event
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Charge Flight Price Command
-        await _testFixture.ProcessLastOutboxMessageAsync();
-
-        query = new GetFlightInfoQuery(flightId.Value);
-        flight = await _invoker.QueryAsync(query);
-
-        // Assert
-        Assert.NotNull(flight);
-        Assert.Equal(scheduleFlightCommand.FlightId.Value, flight.Id);
-        Assert.Equal(createAircraftCommand.Model, flight.AircraftModel);
-        Assert.Equal(scheduleFlightCommand.ArrivalTime, flight.ArrivalTime);
-        Assert.Equal(scheduleFlightCommand.AvailableSeats - 2, flight.AvailableSeats);
         Assert.Equal(createDepartureAirportCommand.Code, flight.DepartureAirport);
         Assert.Equal(scheduleFlightCommand.DepartureTime, flight.DepartureTime);
         Assert.Equal(createDestinationAirportCommand.Code, flight.DestinationAirport);

@@ -23,7 +23,7 @@ internal class PublishFlightSeatsReservedPolicyHandler : IDomainPolicyHandler<Fl
         var @event = new FlightSeatsReservedIntegrationEvent(
             notification.DomainEvent.FlightId,
             _userAccessor.TcpConnectionId,
-            notification.DomainEvent.SeatsCount);
+            notification.DomainEvent.Passengers.Count);
 
         await _commandsScheduler.EnqueuePublishingEventAsync(@event);
     }

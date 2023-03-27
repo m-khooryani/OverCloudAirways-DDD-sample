@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+using OverCloudAirways.PaymentService.Application.Buyers.Commands.Refund;
 using OverCloudAirways.PaymentService.Application.Orders.Commands.ProjectReadModel;
 using OverCloudAirways.PaymentService.Application.Orders.Policies.Canceled;
 using OverCloudAirways.PaymentService.IntegrationEvents.Orders;
@@ -43,5 +44,24 @@ public class OrderCanceledPolicyTests
             .Received(1)
             .EnqueuePublishingEventAsync(Arg.Is<OrderCanceledIntegrationEvent>(x =>
                 x.OrderId == policy.DomainEvent.OrderId));
+    }
+
+    [Fact]
+    public async Task EnqueueRefundingBuyerBalanceOrderCanceledPolicyHandler_Should_Enqueue_ProjectOrderReadModelCommand()
+    {
+        // Arrange
+        var commandsScheduler = Substitute.For<ICommandsScheduler>();
+        var handler = new EnqueueRefundingBuyerBalanceOrderCanceledPolicyHandler(commandsScheduler);
+        var policy = new OrderCanceledPolicyBuilder().Build();
+
+        // Act
+        await handler.Handle(policy, CancellationToken.None);
+
+        // Assert
+        await commandsScheduler
+            .Received(1)
+            .EnqueueAsync(Arg.Is<RefundBuyerBalanceCommand>(c => 
+                c.BuyerId == policy.DomainEvent.BuyerId &&
+                c.Amount == policy.DomainEvent.TotalAmount));
     }
 }

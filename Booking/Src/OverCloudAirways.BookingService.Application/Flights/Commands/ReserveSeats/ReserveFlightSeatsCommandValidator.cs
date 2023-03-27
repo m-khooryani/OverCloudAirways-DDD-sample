@@ -10,7 +10,7 @@ internal class ReserveFlightSeatsCommandValidator : CommandValidator<ReserveFlig
         RuleFor(cmd => cmd.FlightId)
             .NotEmpty();
 
-        RuleFor(cmd => cmd.SeatsCount)
+        RuleFor(cmd => cmd.Passengers.Count)
             .GreaterThan(0);
     }
 }

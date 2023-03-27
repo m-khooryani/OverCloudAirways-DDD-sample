@@ -1,6 +1,9 @@
-﻿using OverCloudAirways.BookingService.Domain.Flights.Events;
+﻿using OverCloudAirways.BookingService.Domain._Shared;
+using OverCloudAirways.BookingService.Domain.Customers;
+using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
 using OverCloudAirways.BookingService.Domain.UnitTests._SeedWork;
+using OverCloudAirways.BookingService.TestHelpers._Shared;
 using Xunit;
 
 namespace OverCloudAirways.BookingService.Domain.UnitTests.Flights;
@@ -26,10 +29,15 @@ public class ReleaseFlightSeatsTests : Test
     {
         // Arrange
         const int SeatsCount = 2;
+        var passengers = new List<Passenger>()
+        {
+            new PassengerBuilder().Build(),
+            new PassengerBuilder().Build()
+        };
         var flight = await GetFlight();
 
         // Act
-        await flight.ReserveSeatsAsync(SeatsCount);
+        await flight.ReserveSeatsAsync(CustomerId.New(), passengers);
         await flight.ReleaseSeatsAsync(SeatsCount);
 
         // Assert

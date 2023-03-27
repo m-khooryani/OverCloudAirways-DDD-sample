@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using OverCloudAirways.BookingService.Application.FlightBookings.Commands.Reserve;
 using OverCloudAirways.BookingService.Application.Flights.Commands.ProjectReadModel;
 using OverCloudAirways.BookingService.Application.Flights.Policies.SeatsReserved;
 using OverCloudAirways.BookingService.IntegrationEvents.Flights;
@@ -29,7 +30,7 @@ public class FlightSeatsReservedPolicyTests
             .EnqueuePublishingEventAsync(Arg.Is<FlightSeatsReservedIntegrationEvent>(x =>
                 x.FlightId == policy.DomainEvent.FlightId &&
                 x.TcpConnectionId == userAccessor.TcpConnectionId &&
-                x.SeatsCount == policy.DomainEvent.SeatsCount));
+                x.SeatsCount == policy.DomainEvent.Passengers.Count));
     }
 
     [Fact]
@@ -47,5 +48,25 @@ public class FlightSeatsReservedPolicyTests
         await commandsScheduler
             .Received(1)
             .EnqueueAsync(Arg.Is<ProjectFlightReadModelCommand>(c => c.FlightId == policy.DomainEvent.FlightId));
+    }
+
+    [Fact]
+    public async Task EnqueueReservingFlightBookingFlightSeatsReservedPolicyHandler_Should_Enqueue_ReserveFlightBookingCommand()
+    {
+        // Arrange
+        var commandsScheduler = Substitute.For<ICommandsScheduler>();
+        var handler = new EnqueueReservingFlightBookingFlightSeatsReservedPolicyHandler(commandsScheduler);
+        var policy = new FlightSeatsReservedPolicyBuilder().Build();
+
+        // Act
+        await handler.Handle(policy, CancellationToken.None);
+
+        // Assert
+        await commandsScheduler
+            .Received(1)
+            .EnqueueAsync(Arg.Is<ReserveFlightBookingCommand>(c => 
+                c.FlightId == policy.DomainEvent.FlightId &&
+                c.Passengers == policy.DomainEvent.Passengers &&
+                c.CustomerId == policy.DomainEvent.CustomerId));
     }
 }

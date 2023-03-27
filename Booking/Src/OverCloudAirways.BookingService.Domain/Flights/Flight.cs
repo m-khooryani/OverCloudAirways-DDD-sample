@@ -1,5 +1,7 @@
-﻿using OverCloudAirways.BookingService.Domain.Aircrafts;
+﻿using OverCloudAirways.BookingService.Domain._Shared;
+using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BookingService.Domain.Airports;
+using OverCloudAirways.BookingService.Domain.Customers;
 using OverCloudAirways.BookingService.Domain.Flights.Events;
 using OverCloudAirways.BookingService.Domain.Flights.Rules;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
@@ -76,12 +78,14 @@ public class Flight : AggregateRoot<FlightId>
         Apply(@event);
     }
 
-    public async Task ReserveSeatsAsync(int seatsCount)
+    public async Task ReserveSeatsAsync(
+        CustomerId customerId,
+        IReadOnlyList<Passenger> passengers)
     {
         await CheckRuleAsync(new OnlyScheduledFlightCanBeModifiedRule(this));
-        await CheckRuleAsync(new FlightMustHaveEnoughAvailableSeatsToReserveRule(this, seatsCount));
+        await CheckRuleAsync(new FlightMustHaveEnoughAvailableSeatsToReserveRule(this, passengers.Count));
 
-        var @event = new FlightSeatsReservedDomainEvent(Id, seatsCount);
+        var @event = new FlightSeatsReservedDomainEvent(Id, customerId, passengers);
 
         Apply(@event);
     }
@@ -156,8 +160,8 @@ public class Flight : AggregateRoot<FlightId>
 
     protected void When(FlightSeatsReservedDomainEvent @event)
     {
-        AvailableSeats -= @event.SeatsCount;
-        ReservedSeats += @event.SeatsCount;
+        AvailableSeats -= @event.Passengers.Count;
+        ReservedSeats += @event.Passengers.Count;
     }
 
     protected void When(FlightSeatsReleasedDomainEvent @event)

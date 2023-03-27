@@ -51,7 +51,7 @@ public class Order : AggregateRoot<OrderId>
     {
         await CheckRuleAsync(new OnlyPendingOrdersCanBeModifiedRule(Status));
 
-        var @event = new OrderCanceledDomainEvent(Id);
+        var @event = new OrderCanceledDomainEvent(Id, BuyerId, TotalAmount);
         Apply(@event);
     }
 

@@ -42,7 +42,7 @@ public abstract class Test
         }
     }
 
-    protected static async Task<Flight> GetFlight()
+    protected static async Task<Flight> GetFlight(int availableSeats = 300)
     {
         var aggregateRepository = Substitute.For<IAggregateRepository>();
         aggregateRepository
@@ -60,6 +60,7 @@ public abstract class Test
             .Returns(airport);
 
         var builder = new FlightBuilder()
+            .SetAvailableSeats(availableSeats)
             .SetAggregateRepository(aggregateRepository);
 
         var flight = await builder.BuildAsync();
