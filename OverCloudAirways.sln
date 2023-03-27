@@ -75,17 +75,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A7076C27
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.Domain", "CRM\Src\OverCloudAirways.CrmService.Domain\OverCloudAirways.CrmService.Domain.csproj", "{89B15CBA-495E-419F-9A04-5668B83FC8C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Domain.UnitTests", "CRM\Tests\OverCloudAirways.CrmService.Domain.UnitTests\OverCloudAirways.CrmService.Domain.UnitTests.csproj", "{61509513-AE0D-4685-9DC5-B6C709589E25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.Domain.UnitTests", "CRM\Tests\OverCloudAirways.CrmService.Domain.UnitTests\OverCloudAirways.CrmService.Domain.UnitTests.csproj", "{61509513-AE0D-4685-9DC5-B6C709589E25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.TestHelpers", "CRM\Tests\OverCloudAirways.CrmService.TestHelpers\OverCloudAirways.CrmService.TestHelpers.csproj", "{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.TestHelpers", "CRM\Tests\OverCloudAirways.CrmService.TestHelpers\OverCloudAirways.CrmService.TestHelpers.csproj", "{3BBD7B18-F8C2-4B46-94AA-D4AFD9FCFD98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Application", "CRM\Src\OverCloudAirways.CrmService.Application\OverCloudAirways.CrmService.Application.csproj", "{7A56A698-06B5-4D20-8D47-0D9D274839C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.Application", "CRM\Src\OverCloudAirways.CrmService.Application\OverCloudAirways.CrmService.Application.csproj", "{7A56A698-06B5-4D20-8D47-0D9D274839C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Application.UnitTests", "CRM\Tests\OverCloudAirways.CrmService.Application.UnitTests\OverCloudAirways.CrmService.Application.UnitTests.csproj", "{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.Application.UnitTests", "CRM\Tests\OverCloudAirways.CrmService.Application.UnitTests\OverCloudAirways.CrmService.Application.UnitTests.csproj", "{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.IntegrationTests", "CRM\Tests\OverCloudAirways.CrmService.IntegrationTests\OverCloudAirways.CrmService.IntegrationTests.csproj", "{C244F10A-6AB1-46AF-9631-B34D137B6E48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.IntegrationTests", "CRM\Tests\OverCloudAirways.CrmService.IntegrationTests\OverCloudAirways.CrmService.IntegrationTests.csproj", "{C244F10A-6AB1-46AF-9631-B34D137B6E48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.Infrastructure", "CRM\Src\OverCloudAirways.CrmService.Infrastructure\OverCloudAirways.CrmService.Infrastructure.csproj", "{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.Infrastructure", "CRM\Src\OverCloudAirways.CrmService.Infrastructure\OverCloudAirways.CrmService.Infrastructure.csproj", "{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.PaymentService.IntegrationEvents", "Payment\Src\OverCloudAirways.PaymentService.IntegrationEvents\OverCloudAirways.PaymentService.IntegrationEvents.csproj", "{734279C1-5C97-40F3-B9D0-F6F419F4A30D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -205,6 +207,10 @@ Global
 		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734279C1-5C97-40F3-B9D0-F6F419F4A30D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734279C1-5C97-40F3-B9D0-F6F419F4A30D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734279C1-5C97-40F3-B9D0-F6F419F4A30D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734279C1-5C97-40F3-B9D0-F6F419F4A30D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -247,6 +253,7 @@ Global
 		{52C78E79-40A2-4C9E-9B29-2E3BDC1E2E6B} = {A7076C27-2C65-4F12-BA85-AA61FA784133}
 		{C244F10A-6AB1-46AF-9631-B34D137B6E48} = {A7076C27-2C65-4F12-BA85-AA61FA784133}
 		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C} = {AF74634C-BB86-460E-96D6-C765FDA23755}
+		{734279C1-5C97-40F3-B9D0-F6F419F4A30D} = {BAF46004-5238-4BB8-A41E-32BD2E0F59DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}

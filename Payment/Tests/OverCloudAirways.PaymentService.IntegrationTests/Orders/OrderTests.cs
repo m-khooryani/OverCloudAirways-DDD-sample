@@ -59,14 +59,7 @@ public class OrderTests
             .Build();
         await _invoker.CommandAsync(placeOrderCommand);
 
-        // Process Registered Policy
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Schedule Expire
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Proces
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Process Project Read-Model
-        await _testFixture.ProcessLastOutboxMessageAsync();
+        await _testFixture.ProcessOutboxMessagesAsync();
 
         // Product Query
         var query = new GetOrderInfoQuery(orderId.Value);

@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\BuildingBlocks\Src\OverCloudAirways.BuildingBlocks\OverCloudAirways.BuildingBlocks.csproj" />
 		<ProjectReference Include="..\OverCloudAirways.PaymentService.Domain\OverCloudAirways.PaymentService.Domain.csproj" />
+		<ProjectReference Include="..\OverCloudAirways.PaymentService.IntegrationEvents\OverCloudAirways.PaymentService.IntegrationEvents.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">

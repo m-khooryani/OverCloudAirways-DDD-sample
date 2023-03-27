@@ -185,11 +185,26 @@ public class TestFixture : IDisposable
         await context.SaveChangesAsync();
     }
 
-    internal async Task ProcessLastOutboxMessageAsync()
+    internal async Task ProcessOutboxMessagesAsync()
+    {
+        bool messageProcessed;
+        do
+        {
+            messageProcessed = await ProcessLastOutboxMessageAsync();
+        }
+        while (messageProcessed);
+    }
+
+    internal async Task<bool> ProcessLastOutboxMessageAsync()
     {
         await using var scope = CompositionRoot.BeginLifetimeScope();
         var context = scope.Resolve<BuildingBlocksDbContext>();
-        var message = await context.OutboxMessages.OrderBy(x => x.OccurredOn).LastAsync();
+        var message = await context.OutboxMessages.OrderBy(x => x.OccurredOn).LastOrDefaultAsync();
+
+        if (message is null)
+        {
+            return false;
+        }
 
         await Invoker.CommandAsync(new ProcessOutboxCommand(message.Id.ToString()));
 
@@ -200,5 +215,6 @@ public class TestFixture : IDisposable
             await context.Entry(message).ReloadAsync();
             throw new OutboxMessageProccessingFailedException($"messageId: {message.Id}, Exception: {message.Error}");
         }
+        return true;
     }
 }
