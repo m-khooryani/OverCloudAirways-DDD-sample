@@ -22,6 +22,7 @@ using OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 using OverCloudAirways.PaymentService.Application;
 using OverCloudAirways.PaymentService.Domain.Orders;
 using OverCloudAirways.PaymentService.Infrastructure;
+using OverCloudAirways.PaymentService.Infrastructure.DomainServices;
 using Xunit.Abstractions;
 
 namespace OverCloudAirways.PaymentService.IntegrationTests._SeedWork;
@@ -104,6 +105,7 @@ public class TestFixture : IDisposable
         {
             ExpiryDurationInMinutes = 15
         });
+        var domainServicesModule = new DomainServicesModule();
 
         CompositionRoot.Initialize(
             assemblyLayersModule,
@@ -115,7 +117,8 @@ public class TestFixture : IDisposable
             retryPolicyModule,
             azureServiceBusModule,
             cosmosDbModule,
-            orderExpirySettingsModule);
+            orderExpirySettingsModule,
+            domainServicesModule);
     }
 
     private static LoggerFactory GetLoggerFactory()
@@ -190,16 +193,32 @@ public class TestFixture : IDisposable
         bool messageProcessed;
         do
         {
-            messageProcessed = await ProcessLastOutboxMessageAsync();
+            messageProcessed = await ProcessEarliestOutboxMessageAsync();
         }
         while (messageProcessed);
     }
 
     internal async Task<bool> ProcessLastOutboxMessageAsync()
     {
+        return await ProcessOutboxMessageAsync(true);
+    }
+
+    internal async Task<bool> ProcessEarliestOutboxMessageAsync()
+    {
+        return await ProcessOutboxMessageAsync(false);
+    }
+
+    internal async Task<bool> ProcessOutboxMessageAsync(bool processLast)
+    {
         await using var scope = CompositionRoot.BeginLifetimeScope();
         var context = scope.Resolve<BuildingBlocksDbContext>();
-        var message = await context.OutboxMessages.OrderBy(x => x.OccurredOn).LastOrDefaultAsync();
+
+        var messageQuery = context.OutboxMessages
+            .AsEnumerable()
+            .Where(m => !m.ProcessingDate.HasValue || m.ProcessingDate <= Clock.Now)
+            .OrderBy(x => x.OccurredOn);
+
+        var message = processLast ? messageQuery.LastOrDefault() : messageQuery.FirstOrDefault();
 
         if (message is null)
         {

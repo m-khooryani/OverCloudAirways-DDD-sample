@@ -22,6 +22,7 @@ internal class GetOrderInfoQueryHandler : QueryHandler<GetOrderInfoQuery, OrderD
                     orders.BuyerLastName  AS {nameof(OrderDto.BuyerLastName)}, 
                     orders.Date           AS {nameof(OrderDto.Date)}, 
                     orders.TotalAmount    AS {nameof(OrderDto.TotalAmount)},
+                    orders.Status         AS {nameof(OrderDto.Status)},
                     orders.OrderItems     AS {nameof(OrderDto.OrderItems)}
                     FROM orders 
                     WHERE 

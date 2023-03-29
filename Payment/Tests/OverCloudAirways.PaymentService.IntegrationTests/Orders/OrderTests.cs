@@ -61,7 +61,7 @@ public class OrderTests
 
         await _testFixture.ProcessOutboxMessagesAsync();
 
-        // Product Query
+        // Order Query
         var query = new GetOrderInfoQuery(orderId.Value);
         var order = await _invoker.QueryAsync(query);
 

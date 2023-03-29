@@ -1,4 +1,4 @@
-﻿using OverCloudAirways.BuildingBlocks.Application.Models;
+﻿using OverCloudAirways.PaymentService.Domain.Orders;
 
 namespace OverCloudAirways.PaymentService.Application.Orders.Queries.GetInfo;
 
@@ -8,4 +8,5 @@ public record OrderDto(
     string BuyerLastName,
     DateTimeOffset Date,
     decimal TotalAmount,
+    OrderStatus Status,
     IReadOnlyList<OrderItemDto> OrderItems);
