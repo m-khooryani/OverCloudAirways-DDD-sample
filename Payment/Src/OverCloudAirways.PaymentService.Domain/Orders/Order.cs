@@ -67,7 +67,7 @@ public class Order : AggregateRoot<OrderId>
         {
             return new OrderFailedDomainEvent(Id, BuyerId, invoice.TotalAmount);
         }
-        return new OrderConfirmedDomainEvent(Id);
+        return new OrderConfirmedDomainEvent(Id, invoice.Id);
     }
 
     private static async Task<ReadOnlyCollection<PricedOrderItem>> GetPricedOrderItems(IAggregateRepository repository, IReadOnlyList<OrderItem> orderItems)
