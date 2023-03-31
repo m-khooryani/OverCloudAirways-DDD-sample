@@ -65,7 +65,7 @@ public class Order : AggregateRoot<OrderId>
     {
         if (invoice.TotalAmount != TotalAmount)
         {
-            return new OrderFailedDomainEvent(Id);
+            return new OrderFailedDomainEvent(Id, BuyerId, invoice.TotalAmount);
         }
         return new OrderConfirmedDomainEvent(Id);
     }
