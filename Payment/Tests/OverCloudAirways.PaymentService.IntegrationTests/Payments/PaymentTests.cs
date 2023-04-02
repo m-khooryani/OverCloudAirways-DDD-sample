@@ -81,10 +81,8 @@ public class PaymentTests
             .Build();
         await _invoker.CommandAsync(receivePaymentCommand);
 
-        // Process Registered Policy
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Process Project Read-Model
-        await _testFixture.ProcessLastOutboxMessageAsync();
+        // Process Outbox Messages
+        await _testFixture.ProcessOutboxMessagesAsync();
 
         // Payment Query
         var query = new GetPaymentInfoQuery(paymentId.Value);
