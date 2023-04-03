@@ -27,7 +27,7 @@ internal class GetPromotionInfoQueryHandler : QueryHandler<GetPromotionInfoQuery
                     FROM promotion 
                     WHERE 
                     promotion.id = @discountCode AND 
-                    promotion.partitionKey = @discountCode ";
+                    promotion.partitionKey = 'Promotion' ";
 
         var queryDefinition = new QueryDefinition(sql)
             .WithParameter("@discountCode", query.DiscountCode);

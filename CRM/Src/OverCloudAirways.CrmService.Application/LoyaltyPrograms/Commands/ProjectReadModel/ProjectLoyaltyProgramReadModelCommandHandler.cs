@@ -27,7 +27,8 @@ internal class ProjectLoyaltyProgramReadModelCommandHandler : CommandHandler<Pro
             loyaltyProgram.Id.Value,
             loyaltyProgram.Name,
             loyaltyProgram.PurchaseRequirements,
-            loyaltyProgram.DiscountPercentage);
+            loyaltyProgram.DiscountPercentage,
+            loyaltyProgram.IsSuspended);
 
         await _cosmosManager.UpsertAsync(ContainersConstants.ReadModels, readmodel);
     }

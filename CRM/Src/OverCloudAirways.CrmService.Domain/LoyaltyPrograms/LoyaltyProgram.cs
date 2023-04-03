@@ -43,7 +43,7 @@ public class LoyaltyProgram : AggregateRoot<LoyaltyProgramId>
 
         if (customer.LoyaltyPoints >= PurchaseRequirements)
         {
-            var qualifiedEvent = new LoyaltyProgramQualifiedForCustomerDomainEvent(Id, customer.Id);
+            var qualifiedEvent = new LoyaltyProgramQualifiedForCustomerDomainEvent(Id, customer.Id, DiscountPercentage);
             Apply(qualifiedEvent);
         }
         var evaluatedEvent = new LoyaltyProgramEvaluatedForCustomerDomainEvent(Id, customer.Id);

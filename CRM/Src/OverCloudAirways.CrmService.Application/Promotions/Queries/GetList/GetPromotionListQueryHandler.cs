@@ -2,19 +2,24 @@
 using OverCloudAirways.BuildingBlocks.Application.Queries;
 using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
-namespace OverCloudAirways.CrmService.Application.Promotions.Queries.GetInfoById;
+namespace OverCloudAirways.CrmService.Application.Promotions.Queries.GetList;
 
-internal class GetPromotionInfoByIdQueryHandler : QueryHandler<GetPromotionInfoByIdQuery, PromotionDto>
+internal class GetPromotionListQueryHandler : QueryHandler<GetPromotionListQuery, PagedDto<PromotionDto>>
 {
     private readonly ICosmosManager _cosmosManager;
 
-    public GetPromotionInfoByIdQueryHandler(ICosmosManager cosmosManager)
+    public GetPromotionListQueryHandler(ICosmosManager cosmosManager)
     {
         _cosmosManager = cosmosManager;
     }
 
-    public override async Task<PromotionDto> HandleAsync(GetPromotionInfoByIdQuery query, CancellationToken cancellationToken)
+    public override async Task<PagedDto<PromotionDto>> HandleAsync(GetPromotionListQuery query, CancellationToken cancellationToken)
     {
+        var fromWhere = $@"
+                    FROM promotion 
+                    WHERE 
+                    promotion.partitionKey = 'Promotion'";
+
         var sql = @$"
                     SELECT 
                     promotion.Id                 AS {nameof(PromotionDto.Id)}, 
@@ -24,15 +29,15 @@ internal class GetPromotionInfoByIdQueryHandler : QueryHandler<GetPromotionInfoB
                     promotion.ExpirationDate     AS {nameof(PromotionDto.ExpirationDate)}, 
                     promotion.CustomerFirstName  AS {nameof(PromotionDto.CustomerFirstName)}, 
                     promotion.CustomerLastName   AS {nameof(PromotionDto.CustomerLastName)}
-                    FROM promotion 
-                    WHERE 
-                    promotion.Id = @promotionId AND 
-                    promotion.partitionKey = 'Promotion'";
+                    {fromWhere}";
 
-        var queryDefinition = new QueryDefinition(sql)
-            .WithParameter("@promotionId", query.PromotionId);
-        var promotion = await _cosmosManager.QuerySingleAsync<PromotionDto>(ContainersConstants.ReadModels, queryDefinition);
+        var queryDefinition = new QueryDefinition(sql);
+        var promotions = await _cosmosManager.AsPagedAsync(
+            ContainersConstants.ReadModels, 
+            query,
+            queryDefinition,
+            fromWhere);
 
-        return promotion;
+        return promotions;
     }
 }

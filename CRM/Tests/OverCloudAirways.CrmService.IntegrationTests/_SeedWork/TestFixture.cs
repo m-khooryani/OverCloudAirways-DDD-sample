@@ -179,6 +179,10 @@ public class TestFixture : IDisposable
         _clearDbAction(context);
 
         await context.SaveChangesAsync();
+
+        var database = scope.Resolve<Database>();
+        await database.GetContainer(ContainersConstants.ReadModels).DeleteContainerAsync();
+        await database.CreateContainerAsync(ContainersConstants.ReadModels, "/partitionKey");
     }
 
     internal async Task ProcessOutboxMessagesAsync()

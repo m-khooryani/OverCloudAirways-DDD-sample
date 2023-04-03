@@ -10,4 +10,4 @@ internal record PromotionReadModel(
     string? Description,
     DateTimeOffset ExpirationDate,
     string? CustomerFirstName,
-    string? CustomerLastName) : ReadModel(DiscountCode, DiscountCode);
+    string? CustomerLastName) : ReadModel(DiscountCode, "Promotion");

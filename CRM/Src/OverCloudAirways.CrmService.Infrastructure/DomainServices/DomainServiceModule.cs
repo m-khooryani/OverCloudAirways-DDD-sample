@@ -14,6 +14,10 @@ public class DomainServiceModule : Module
             .RegisterType<LoyaltyProgramNameUniqueChecker>()
             .As<ILoyaltyProgramNameUniqueChecker>()
             .SingleInstance();
+        builder
+            .RegisterType<ActiveLoyaltyPrograms>()
+            .As<IActiveLoyaltyPrograms>()
+            .SingleInstance();
 
         builder
             .RegisterType<DiscountCodeGenerator>()

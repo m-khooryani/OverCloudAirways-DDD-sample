@@ -24,7 +24,7 @@ internal class GetLoyaltyProgramInfoQueryHandler : QueryHandler<GetLoyaltyProgra
                     FROM loyaltyProgram 
                     WHERE 
                     loyaltyProgram.id = @loyaltyProgramId AND 
-                    loyaltyProgram.partitionKey = @loyaltyProgramId ";
+                    loyaltyProgram.partitionKey = 'LoyaltyPrograms' ";
 
         var queryDefinition = new QueryDefinition(sql)
             .WithParameter("@loyaltyProgramId", query.LoyaltyProgramId);

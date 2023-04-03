@@ -7,4 +7,5 @@ internal record LoyaltyProgramReadModel(
     Guid Id,
     string Name,
     decimal PurchaseRequirements,
-    Percentage DiscountPercentage) : ReadModel(Id.ToString(), Id.ToString());
+    Percentage DiscountPercentage,
+    bool IsSuspended) : ReadModel(Id.ToString(), "LoyaltyPrograms");
