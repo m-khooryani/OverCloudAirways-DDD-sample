@@ -121,8 +121,8 @@ public class TestFixture : IDisposable
             new LogToActionLoggerProvider(
                 new Dictionary<string, LogLevel>()
                 {
-                    { "Default", LogLevel.Debug },
-                    { "Microsoft", LogLevel.Information },
+                    { "Default", LogLevel.Information },
+                    { "Microsoft", LogLevel.Warning },
                 },
                 log =>
                 {

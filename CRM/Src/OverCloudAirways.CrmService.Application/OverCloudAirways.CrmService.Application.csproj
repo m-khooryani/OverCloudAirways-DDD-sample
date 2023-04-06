@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\OverCloudAirways.CrmService.Domain\OverCloudAirways.CrmService.Domain.csproj" />
+		<ProjectReference Include="..\OverCloudAirways.CrmService.IntegrationEvents\OverCloudAirways.CrmService.IntegrationEvents.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">

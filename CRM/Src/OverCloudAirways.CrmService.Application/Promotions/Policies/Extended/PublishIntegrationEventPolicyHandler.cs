@@ -1,22 +1,25 @@
 ﻿using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
-using OverCloudAirways.CrmService.Application.Promotions.Commands.ProjectReadModel;
 using OverCloudAirways.CrmService.Domain.Promotions.Events;
+using OverCloudAirways.CrmService.IntegrationEvents.Promotions;
 
 namespace OverCloudAirways.CrmService.Application.Promotions.Policies.Extended;
 
-internal class EnqueueProjectingReadModelPromotionExtendedPolicyHandler : IDomainPolicyHandler<PromotionExtendedPolicy, PromotionExtendedDomainEvent>
+internal class PublishIntegrationEventPolicyHandler : IDomainPolicyHandler<PromotionExtendedPolicy, PromotionExtendedDomainEvent>
 {
     private readonly ICommandsScheduler _commandsScheduler;
 
-    public EnqueueProjectingReadModelPromotionExtendedPolicyHandler(ICommandsScheduler commandsScheduler)
+    public PublishIntegrationEventPolicyHandler(ICommandsScheduler commandsScheduler)
     {
         _commandsScheduler = commandsScheduler;
     }
 
     public async Task Handle(PromotionExtendedPolicy notification, CancellationToken cancellationToken)
     {
-        var command = new ProjectPromotionReadModelCommand(notification.DomainEvent.PromotionId);
-        await _commandsScheduler.EnqueueAsync(command);
+        var @event = new PromotionExtendedIntegrationEvent(
+            notification.DomainEvent.PromotionId,
+            notification.DomainEvent.Months);
+
+        await _commandsScheduler.EnqueuePublishingEventAsync(@event);
     }
 }
