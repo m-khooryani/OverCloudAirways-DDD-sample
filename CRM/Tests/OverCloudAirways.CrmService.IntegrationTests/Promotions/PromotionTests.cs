@@ -38,10 +38,8 @@ public class PromotionTests
             .Build();
         await _invoker.CommandAsync(launchPromotionCommand);
 
-        // Process Registered Policy
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Process Project Read-Model
-        await _testFixture.ProcessLastOutboxMessageAsync();
+        // Process outbox messages
+        await _testFixture.ProcessOutboxMessagesAsync();
 
         // Promotion Query ById
         var byIdQuery = new GetPromotionInfoByIdQuery(promotionId.Value);
