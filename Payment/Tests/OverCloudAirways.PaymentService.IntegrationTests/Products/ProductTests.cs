@@ -1,7 +1,5 @@
-﻿using OverCloudAirways.BuildingBlocks.Domain.Utilities;
-using OverCloudAirways.BuildingBlocks.Infrastructure;
+﻿using OverCloudAirways.BuildingBlocks.Infrastructure;
 using OverCloudAirways.PaymentService.Application.Orders.Queries.GetInfo;
-using OverCloudAirways.PaymentService.Application.Products.Commands.Disable;
 using OverCloudAirways.PaymentService.Application.Products.Queries.GetInfo;
 using OverCloudAirways.PaymentService.Domain.Buyers;
 using OverCloudAirways.PaymentService.Domain.Orders;
