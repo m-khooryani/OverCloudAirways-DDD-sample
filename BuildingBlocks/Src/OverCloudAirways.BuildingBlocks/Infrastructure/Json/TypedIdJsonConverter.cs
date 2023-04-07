@@ -30,18 +30,15 @@ public class TypedIdJsonConverter : JsonConverter
 
     public override bool CanConvert(Type objectType)
     {
-        return objectType.IsSubclassOfRawGeneric(typeof(TypedId<>));
+        return IsSubclassOfRawGeneric(objectType, typeof(TypedId<>));
     }
 
     public override bool CanRead
     {
         get { return true; }
     }
-}
 
-public static class TypeExtensions
-{
-    public static bool IsSubclassOfRawGeneric(this Type toCheck, Type generic)
+    private static bool IsSubclassOfRawGeneric(Type toCheck, Type generic)
     {
         while (toCheck != null && toCheck != typeof(object))
         {
