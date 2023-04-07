@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Models;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.PaymentService.Domain.Orders;
 using OverCloudAirways.PaymentService.Domain.Products;
 
@@ -16,7 +15,6 @@ public class InvoiceItem : ValueObject
     {
     }
 
-    [JsonConstructor]
     private InvoiceItem(string description, decimal unitPrice, int quantity)
     {
         Description = description;

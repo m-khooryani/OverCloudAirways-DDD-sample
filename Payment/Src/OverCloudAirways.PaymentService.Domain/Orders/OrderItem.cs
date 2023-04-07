@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Models;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.PaymentService.Domain.Products;
 
 namespace OverCloudAirways.PaymentService.Domain.Orders;
@@ -13,7 +12,6 @@ public class OrderItem : ValueObject
     {
     }
 
-    [JsonConstructor]
     private OrderItem(ProductId productId, int quantity)
     {
         ProductId = productId;

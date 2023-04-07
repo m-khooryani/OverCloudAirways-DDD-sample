@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Models;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 
 namespace OverCloudAirways.BookingService.Domain._Shared;
 
@@ -14,7 +13,6 @@ public class Passenger : ValueObject
     {
     }
 
-    [JsonConstructor]
     private Passenger(string firstName, string lastName, string? email, string? seatNumber)
     {
         FirstName = firstName;

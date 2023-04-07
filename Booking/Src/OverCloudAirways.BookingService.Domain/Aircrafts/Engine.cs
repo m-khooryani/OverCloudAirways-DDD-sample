@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Models;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 
 namespace OverCloudAirways.BookingService.Domain.Aircrafts;
 
@@ -14,7 +13,6 @@ public class Engine : ValueObject
     { 
     }
 
-    [JsonConstructor]
     private Engine(string type, int thrust, int diameter, int dryWeight)
     {
         Type = type;

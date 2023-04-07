@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Models;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 
 namespace OverCloudAirways.BookingService.Domain.Airports;
 
@@ -13,7 +12,6 @@ public class Terminal : ValueObject
     {
     }
 
-    [JsonConstructor]
     private Terminal(string name, IEnumerable<string> gates, IEnumerable<string> amenities)
     {
         Name = name;

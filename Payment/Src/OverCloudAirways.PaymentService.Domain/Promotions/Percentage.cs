@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Models;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Models;
 
 namespace OverCloudAirways.PaymentService.Domain.Promotions;
 
@@ -11,7 +10,6 @@ public class Percentage : ValueObject
     {
     }
 
-    [JsonConstructor]
     private Percentage(decimal value)
     {
         Value = value;

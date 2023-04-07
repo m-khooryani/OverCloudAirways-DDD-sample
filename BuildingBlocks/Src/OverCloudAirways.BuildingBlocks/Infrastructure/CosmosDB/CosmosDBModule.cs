@@ -30,7 +30,8 @@ public class CosmosDBModule : Module
                 Converters = new JsonConverter[]
                 {
                     new EnumerationJsonConverter()
-                }
+                },
+                ContractResolver = new ValueObjectsConstructorResolver()
             })
         });
         var database = client.GetDatabase(_databaseId);

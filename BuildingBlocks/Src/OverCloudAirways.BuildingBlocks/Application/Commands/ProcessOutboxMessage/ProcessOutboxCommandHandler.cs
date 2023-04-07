@@ -3,12 +3,14 @@ using Autofac;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.BuildingBlocks.Infrastructure;
+using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 using OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
 using Polly;
@@ -79,6 +81,7 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
 
         var settings = new JsonSerializerSettings();
         settings.Converters.Add(new EnumerationJsonConverter());
+        settings.ContractResolver = new ValueObjectsConstructorResolver();
         var deserializedMessage = JsonConvert.DeserializeObject(outboxMessage.Data, type, settings) as dynamic;
 
         using var scope = CompositionRoot.BeginLifetimeScope();
