@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using OverCloudAirways.BookingService.Domain.Aircrafts;
+﻿using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
