@@ -1,5 +1,4 @@
 ﻿using OverCloudAirways.BookingService.Domain.Airports;
-using OverCloudAirways.BuildingBlocks.Application.Models;
 
 namespace OverCloudAirways.BookingService.Application.Airports.Commands.ProjectReadModel;
 
