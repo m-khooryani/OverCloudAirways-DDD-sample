@@ -87,7 +87,7 @@ public class FlightTests
         Assert.Equal(createDepartureAirportCommand.Code, flight.DepartureAirport);
         Assert.Equal(scheduleFlightCommand.DepartureTime, flight.DepartureTime);
         Assert.Equal(createDestinationAirportCommand.Code, flight.DestinationAirport);
-        Assert.Equal(scheduleFlightCommand.Distance, flight.Distance +1);
+        Assert.Equal(scheduleFlightCommand.Distance, flight.Distance);
         Assert.True(flight.EconomyPrice > 0M);
         Assert.True(flight.FirstClassPrice > 0M);
     }
