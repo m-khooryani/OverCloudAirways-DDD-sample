@@ -30,7 +30,7 @@ public class ProjectAircraftReadModelCommandTests
         // Assert
         await aggregateRepository.Received(1).LoadAsync<Aircraft, AircraftId>(command.AircraftId);
         await cosmosManager.Received(1).UpsertAsync(ContainersConstants.ReadModels, Arg.Is<AircraftReadModel>(x =>
-            x.Id == aggregate.Id.Value &&
+            x.AircraftId == aggregate.Id.Value &&
             x.Type == aggregate.Type &&
             x.Manufacturer == aggregate.Manufacturer &&
             x.Model == aggregate.Model &&

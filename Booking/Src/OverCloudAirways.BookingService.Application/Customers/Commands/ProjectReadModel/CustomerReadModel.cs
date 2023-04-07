@@ -3,10 +3,10 @@
 namespace OverCloudAirways.BookingService.Application.Customers.Commands.ProjectReadModel;
 
 internal record CustomerReadModel(
-    Guid Id,
+    Guid CustomerId,
     string FirstName,
     string LastName,
     string Email,
     DateOnly DateOfBirth,
     string PhoneNumber,
-    string Address) : ReadModel(Id.ToString(), Id.ToString());
+    string Address) : ReadModel(CustomerId.ToString(), CustomerId.ToString());

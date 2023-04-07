@@ -18,7 +18,7 @@ internal class GetAirportInfoQueryHandler : QueryHandler<GetAirportInfoQuery, Ai
     {
         var sql = @$"
                     SELECT 
-                    airport.Id        AS {nameof(AirportDto.Id)}, 
+                    airport.AirportId AS {nameof(AirportDto.Id)}, 
                     airport.Code      AS {nameof(AirportDto.Code)}, 
                     airport.Name      AS {nameof(AirportDto.Name)}, 
                     airport.Location  AS {nameof(AirportDto.Location)}, 

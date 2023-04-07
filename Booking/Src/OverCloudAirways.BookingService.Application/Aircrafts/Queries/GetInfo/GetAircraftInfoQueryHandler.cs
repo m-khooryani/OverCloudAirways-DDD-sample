@@ -17,7 +17,7 @@ internal class GetAircraftInfoQueryHandler : QueryHandler<GetAircraftInfoQuery, 
     {
         var sql = @$"
                     SELECT 
-                    aircraft.id                  AS {nameof(AircraftReadDto.Id)}, 
+                    aircraft.AircraftId          AS {nameof(AircraftReadDto.AircraftId)}, 
                     aircraft.Type                AS {nameof(AircraftReadDto.Type)}, 
                     aircraft.Manufacturer        AS {nameof(AircraftReadDto.Manufacturer)}, 
                     aircraft.Model               AS {nameof(AircraftReadDto.Model)}, 

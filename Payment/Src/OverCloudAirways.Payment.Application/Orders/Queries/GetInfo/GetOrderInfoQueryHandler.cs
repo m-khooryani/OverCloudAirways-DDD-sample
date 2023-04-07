@@ -17,7 +17,7 @@ internal class GetOrderInfoQueryHandler : QueryHandler<GetOrderInfoQuery, OrderD
     {
         var sql = @$"
                     SELECT 
-                    orders.Id             AS {nameof(OrderDto.Id)}, 
+                    orders.OrderId        AS {nameof(OrderDto.Id)}, 
                     orders.BuyerFirstName AS {nameof(OrderDto.BuyerFirstName)}, 
                     orders.BuyerLastName  AS {nameof(OrderDto.BuyerLastName)}, 
                     orders.Date           AS {nameof(OrderDto.Date)}, 

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 
-namespace OverCloudAirways.BuildingBlocks.Domain.Utilities;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.Json;
 
 public class EnumerationJsonConverter : JsonConverter<Enumeration>
 {

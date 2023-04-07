@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.DomainEvents;
 using OverCloudAirways.BuildingBlocks.Domain.Exceptions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
-using OverCloudAirways.BuildingBlocks.Domain.Utilities;
-using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 using OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
@@ -14,6 +11,7 @@ namespace OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
 internal class AggregateRepository : IAggregateRepository
 {
     private readonly Dictionary<TypedId, IAggregateRoot> _loadedAggregates;
+    private readonly IJsonSerializer _jsonSerializer;
     private readonly ILogger _logger;
     private readonly BuildingBlocksDbContext _context;
     private readonly AssemblyLayers _layers;
@@ -21,10 +19,12 @@ internal class AggregateRepository : IAggregateRepository
 
     public AggregateRepository(
         ILogger logger,
+        IJsonSerializer jsonSerializer,
         BuildingBlocksDbContext context,
         AssemblyLayers layers)
     {
         _logger = logger;
+        _jsonSerializer = jsonSerializer;
         _loadedAggregates = new();
         _context = context;
         _layers = layers;
@@ -92,14 +92,11 @@ internal class AggregateRepository : IAggregateRepository
     {
         _logger.LogInformation("Restoring aggregate state by applying {eventsCount}", history.Count);
         var domainEvents = new Queue<DomainEvent>();
-        var settings = new JsonSerializerSettings();
-        settings.Converters.Add(new EnumerationJsonConverter());
-        settings.ContractResolver = new ValueObjectsConstructorResolver();
         foreach (var historyItem in history)
         {
             _logger.LogDebug("Applying {eventName}...", historyItem.EventType);
             var domainEventType = _layers.DomainLayer.GetType(historyItem.EventType);
-            var domainEvent = JsonConvert.DeserializeObject(historyItem.Data, domainEventType, settings);
+            var domainEvent = _jsonSerializer.Deserialize(historyItem.Data, domainEventType);
 
             domainEvents.Enqueue(domainEvent! as DomainEvent);
         }

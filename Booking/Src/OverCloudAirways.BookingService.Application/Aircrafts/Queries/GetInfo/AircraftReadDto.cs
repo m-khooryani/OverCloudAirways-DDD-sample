@@ -4,7 +4,7 @@ using OverCloudAirways.BuildingBlocks.Application.Models;
 namespace OverCloudAirways.BookingService.Application.Aircrafts.Queries.GetInfo;
 
 public record AircraftReadDto(
-    Guid Id,
+    Guid AircraftId,
     string Type,
     string Manufacturer,
     string Model,
@@ -18,4 +18,4 @@ public record AircraftReadDto(
     int Wingspan,
     int Height,
     IReadOnlyCollection<Engine> Engines)
-    : ReadModel(Id.ToString(), Id.ToString());
+    : ReadModel(AircraftId.ToString(), AircraftId.ToString());

@@ -17,7 +17,7 @@ internal class GetInvoiceInfoQueryHandler : QueryHandler<GetInvoiceInfoQuery, In
     {
         var sql = @$"
                     SELECT 
-                    invoice.Id             AS {nameof(InvoiceDto.Id)}, 
+                    invoice.InvoiceId      AS {nameof(InvoiceDto.Id)}, 
                     invoice.BuyerFirstName AS {nameof(InvoiceDto.BuyerFirstName)}, 
                     invoice.BuyerLastName  AS {nameof(InvoiceDto.BuyerLastName)}, 
                     invoice.DueDate        AS {nameof(InvoiceDto.DueDate)}, 

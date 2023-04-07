@@ -2,15 +2,12 @@
 using Autofac;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
 using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 using OverCloudAirways.BuildingBlocks.Infrastructure;
-using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 using OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
 using Polly;
@@ -22,6 +19,7 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
     private readonly IOutboxRepository _outboxRepository;
     private readonly AssemblyLayers _layers;
     private readonly PollyConfig _pollyConfig;
+    private readonly IJsonSerializer _jsonSerializer;
     private readonly ILogger _logger;
     private int _executedTimes;
     private readonly ConcurrentDictionary<string, Type?> _typeCache;
@@ -30,11 +28,13 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
         IOutboxRepository outboxRepository,
         AssemblyLayers layers,
         PollyConfig pollyConfig,
+        IJsonSerializer jsonSerializer,
         ILogger logger)
     {
         _outboxRepository = outboxRepository;
         _layers = layers;
         _pollyConfig = pollyConfig;
+        _jsonSerializer = jsonSerializer;
         _logger = logger;
         _executedTimes = 0;
         _typeCache = new();
@@ -79,10 +79,7 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
             throw new InvalidOperationException($"Could not find type '{outboxMessage.Type}'");
         }
 
-        var settings = new JsonSerializerSettings();
-        settings.Converters.Add(new EnumerationJsonConverter());
-        settings.ContractResolver = new ValueObjectsConstructorResolver();
-        var deserializedMessage = JsonConvert.DeserializeObject(outboxMessage.Data, type, settings) as dynamic;
+        var deserializedMessage = _jsonSerializer.Deserialize(outboxMessage.Data, type) as dynamic;
 
         using var scope = CompositionRoot.BeginLifetimeScope();
         var mediator = scope.Resolve<IMediator>();

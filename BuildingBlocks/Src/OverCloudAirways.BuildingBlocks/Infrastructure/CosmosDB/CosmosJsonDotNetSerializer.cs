@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
@@ -17,8 +15,7 @@ internal sealed class CosmosJsonDotNetSerializer : CosmosSerializer
     /// </summary>  
     public CosmosJsonDotNetSerializer(JsonSerializerSettings jsonSerializerSettings)
     {
-        _serializerSettings = jsonSerializerSettings ??
-              throw new ArgumentNullException(nameof(jsonSerializerSettings));
+        _serializerSettings = jsonSerializerSettings;
     }
 
     /// <summary>

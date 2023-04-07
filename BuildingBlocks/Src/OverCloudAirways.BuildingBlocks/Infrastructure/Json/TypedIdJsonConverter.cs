@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Domain.Models;
+using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 
-namespace OverCloudAirways.BuildingBlocks.Domain.Utilities;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.Json;
 
-internal class TypedIdJsonConverter : JsonConverter
+public class TypedIdJsonConverter : JsonConverter
 {
     public TypedIdJsonConverter()
     {
@@ -28,11 +30,28 @@ internal class TypedIdJsonConverter : JsonConverter
 
     public override bool CanConvert(Type objectType)
     {
-        throw new NotImplementedException();
+        return objectType.IsSubclassOfRawGeneric(typeof(TypedId<>));
     }
 
     public override bool CanRead
     {
         get { return true; }
+    }
+}
+
+public static class TypeExtensions
+{
+    public static bool IsSubclassOfRawGeneric(this Type toCheck, Type generic)
+    {
+        while (toCheck != null && toCheck != typeof(object))
+        {
+            var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+            if (generic == cur)
+            {
+                return true;
+            }
+            toCheck = toCheck.BaseType;
+        }
+        return false;
     }
 }

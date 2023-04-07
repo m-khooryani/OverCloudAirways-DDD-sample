@@ -17,7 +17,7 @@ internal class GetCustomerInfoQueryHandler : QueryHandler<GetCustomerInfoQuery, 
     {
         var sql = @$"
                     SELECT 
-                    customer.Id            AS {nameof(CustomerDto.Id)}, 
+                    customer.CustomerId    AS {nameof(CustomerDto.Id)}, 
                     customer.FirstName     AS {nameof(CustomerDto.FirstName)}, 
                     customer.LastName      AS {nameof(CustomerDto.LastName)}, 
                     customer.Email         AS {nameof(CustomerDto.Email)}, 

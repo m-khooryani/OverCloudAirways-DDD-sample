@@ -17,7 +17,7 @@ internal class GetLoyaltyProgramInfoQueryHandler : QueryHandler<GetLoyaltyProgra
     {
         var sql = @$"
                     SELECT 
-                    loyaltyProgram.Id                   AS {nameof(LoyaltyProgramDto.Id)}, 
+                    loyaltyProgram.LoyaltyProgramId     AS {nameof(LoyaltyProgramDto.Id)}, 
                     loyaltyProgram.Name                 AS {nameof(LoyaltyProgramDto.Name)}, 
                     loyaltyProgram.PurchaseRequirements AS {nameof(LoyaltyProgramDto.PurchaseRequirements)}, 
                     loyaltyProgram.DiscountPercentage   AS {nameof(LoyaltyProgramDto.DiscountPercentage)}

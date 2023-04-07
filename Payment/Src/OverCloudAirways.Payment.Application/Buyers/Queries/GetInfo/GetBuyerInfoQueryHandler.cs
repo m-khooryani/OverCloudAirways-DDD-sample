@@ -17,7 +17,7 @@ internal class GetBuyerInfoQueryHandler : QueryHandler<GetBuyerInfoQuery, BuyerD
     {
         var sql = @$"
                     SELECT 
-                    buyer.Id          AS {nameof(BuyerDto.Id)}, 
+                    buyer.BuyerId     AS {nameof(BuyerDto.Id)}, 
                     buyer.FirstName   AS {nameof(BuyerDto.FirstName)}, 
                     buyer.LastName    AS {nameof(BuyerDto.LastName)}, 
                     buyer.Email       AS {nameof(BuyerDto.Email)}, 

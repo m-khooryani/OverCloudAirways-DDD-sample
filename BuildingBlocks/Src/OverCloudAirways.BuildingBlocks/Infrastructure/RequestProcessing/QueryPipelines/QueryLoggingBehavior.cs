@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using OverCloudAirways.BuildingBlocks.Application.Queries;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing.QueryPipelines;
 
@@ -9,21 +9,25 @@ internal class QueryLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
     where TRequest : IQuery<TResponse>
 {
     private readonly ILogger _logger;
+    private IJsonSerializer _jsonSerializer;
 
-    public QueryLoggingBehavior(ILogger logger)
+    public QueryLoggingBehavior(
+        ILogger logger,
+        IJsonSerializer jsonSerializer)
     {
         _logger = logger;
+        _jsonSerializer = jsonSerializer;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{request.GetType().Name} is processing: {Environment.NewLine}{JsonConvert.SerializeObject(request, Formatting.Indented)}");
+        _logger.LogInformation($"{request.GetType().Name} is processing: {Environment.NewLine}{_jsonSerializer.SerializeIndented(request)}");
         try
         {
             TResponse result = await next();
             if (typeof(TResponse) != typeof(Unit))
             {
-                _logger.LogInformation($"Result: {Environment.NewLine}{JsonConvert.SerializeObject(result, Formatting.Indented)}");
+                _logger.LogInformation($"Result: {Environment.NewLine}{_jsonSerializer.SerializeIndented(result)}");
             }
             return result;
         }

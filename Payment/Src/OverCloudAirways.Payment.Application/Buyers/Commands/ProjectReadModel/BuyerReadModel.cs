@@ -3,8 +3,8 @@
 namespace OverCloudAirways.PaymentService.Application.Buyers.Commands.ProjectReadModel;
 
 internal record BuyerReadModel(
-    Guid Id,
+    Guid BuyerId,
     string FirstName,
     string LastName,
     string Email,
-    string PhoneNumber) : ReadModel(Id.ToString(), Id.ToString());
+    string PhoneNumber) : ReadModel(BuyerId.ToString(), BuyerId.ToString());

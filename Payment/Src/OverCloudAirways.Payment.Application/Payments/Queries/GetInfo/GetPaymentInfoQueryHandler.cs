@@ -17,7 +17,7 @@ internal class GetPaymentInfoQueryHandler : QueryHandler<GetPaymentInfoQuery, Pa
     {
         var sql = @$"
                     SELECT 
-                    payment.Id              AS {nameof(PaymentDto.Id)}, 
+                    payment.PaymentId       AS {nameof(PaymentDto.Id)}, 
                     payment.Amount          AS {nameof(PaymentDto.Amount)}, 
                     payment.InvoiceAmount   AS {nameof(PaymentDto.InvoiceAmount)},
                     payment.Method          AS {nameof(PaymentDto.Method)},

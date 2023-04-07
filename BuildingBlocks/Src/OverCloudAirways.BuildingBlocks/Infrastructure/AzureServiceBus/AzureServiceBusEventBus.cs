@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 
@@ -10,13 +9,16 @@ namespace OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 internal class AzureServiceBusEventBus : IEventBus
 {
     private readonly IServiceBusSenderFactory _senderFactory;
+    private readonly IJsonSerializer _jsonSerializer;
     private readonly ILogger _logger;
 
     public AzureServiceBusEventBus(
         IServiceBusSenderFactory senderFactory,
+        IJsonSerializer jsonSerializer,
         ILogger logger)
     {
         _senderFactory = senderFactory;
+        _jsonSerializer = jsonSerializer;
         _logger = logger;
     }
 
@@ -61,7 +63,7 @@ internal class AzureServiceBusEventBus : IEventBus
         var eventType = @event.GetType();
         _logger.LogInformation($"Publishing {eventType.FullName}...");
 
-        var json = JsonConvert.SerializeObject(@event, Formatting.Indented);
+        var json = _jsonSerializer.Serialize(@event);
         var message = CreateMessage(json, @event.AggregateId.ToString());
         LogMessage(@event.IntegrationEventName, @event.AggregateId.ToString(), json);
         await SendMessageAsync(@event.IntegrationEventName, message);
@@ -69,7 +71,7 @@ internal class AzureServiceBusEventBus : IEventBus
 
     async Task IEventBus.PublishAsync(string queue, OutboxMessage outboxMessage)
     {
-        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
+        var json = _jsonSerializer.Serialize(outboxMessage);
         var message = CreateMessage(json, outboxMessage.SessionId);
         LogMessage(queue, outboxMessage.SessionId, json);
         await SendMessageAsync(queue, message);
@@ -77,7 +79,7 @@ internal class AzureServiceBusEventBus : IEventBus
 
     async Task<string> IEventBus.ScheduleAsync(string queue, OutboxMessage outboxMessage, DateTimeOffset dateTimeOffset)
     {
-        var json = JsonConvert.SerializeObject(outboxMessage, Formatting.Indented);
+        var json = _jsonSerializer.Serialize(outboxMessage);
         var message = CreateMessage(json, outboxMessage.SessionId);
         LogMessage(queue, outboxMessage.SessionId, json);
         return await SendMessageAsync(queue, message, dateTimeOffset);

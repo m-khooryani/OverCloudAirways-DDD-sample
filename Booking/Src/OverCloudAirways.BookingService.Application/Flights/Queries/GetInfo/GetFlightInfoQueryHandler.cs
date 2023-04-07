@@ -17,7 +17,7 @@ internal class GetFlightInfoQueryHandler : QueryHandler<GetFlightInfoQuery, Flig
     {
         var sql = @$"
                     SELECT 
-                    flight.Id                   AS {nameof(FlightDto.Id)}, 
+                    flight.FlightId             AS {nameof(FlightDto.Id)}, 
                     flight.Number               AS {nameof(FlightDto.Number)}, 
                     flight.DepartureAirport     AS {nameof(FlightDto.DepartureAirport)}, 
                     flight.DestinationAirport   AS {nameof(FlightDto.DestinationAirport)}, 

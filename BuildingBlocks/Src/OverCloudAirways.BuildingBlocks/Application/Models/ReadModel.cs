@@ -1,17 +1,13 @@
-﻿using Newtonsoft.Json;
-
-namespace OverCloudAirways.BuildingBlocks.Application.Models;
+﻿namespace OverCloudAirways.BuildingBlocks.Application.Models;
 
 public record ReadModel
 {
-    [JsonProperty("id")]
-    public string ItemId { get; private set; }
-    [JsonProperty("partitionKey")]
-    public string PartitionKey { get; private set; }
+    public string id { get; private set; }
+    public string partitionKey { get; private set; }
 
     public ReadModel(string id, string partitionKey)
     {
-        ItemId = id;
-        PartitionKey = partitionKey;
+        this.id = id;
+        this.partitionKey = partitionKey;
     }
 }

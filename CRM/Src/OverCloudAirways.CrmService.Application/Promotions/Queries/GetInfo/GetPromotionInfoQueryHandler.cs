@@ -17,7 +17,7 @@ internal class GetPromotionInfoQueryHandler : QueryHandler<GetPromotionInfoQuery
     {
         var sql = @$"
                     SELECT 
-                    promotion.Id                 AS {nameof(PromotionDto.Id)}, 
+                    promotion.PromotionId        AS {nameof(PromotionDto.Id)}, 
                     promotion.DiscountCode       AS {nameof(PromotionDto.DiscountCode)}, 
                     promotion.DiscountPercentage AS {nameof(PromotionDto.DiscountPercentage)}, 
                     promotion.Description        AS {nameof(PromotionDto.Description)}, 

@@ -4,8 +4,8 @@ using OverCloudAirways.CrmService.Domain.LoyaltyPrograms;
 namespace OverCloudAirways.CrmService.Application.LoyaltyPrograms.Commands.ProjectReadModel;
 
 internal record LoyaltyProgramReadModel(
-    Guid Id,
+    Guid LoyaltyProgramId,
     string Name,
     decimal PurchaseRequirements,
     Percentage DiscountPercentage,
-    bool IsSuspended) : ReadModel(Id.ToString(), "LoyaltyPrograms");
+    bool IsSuspended) : ReadModel(LoyaltyProgramId.ToString(), "LoyaltyPrograms");

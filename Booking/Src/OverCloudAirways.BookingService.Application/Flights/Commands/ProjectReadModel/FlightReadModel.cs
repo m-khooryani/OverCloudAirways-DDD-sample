@@ -3,7 +3,7 @@
 namespace OverCloudAirways.BookingService.Application.Flights.Commands.ProjectReadModel;
 
 internal record FlightReadModel(
-    Guid Id,
+    Guid FlightId,
     string Number,
     string DepartureAirport,
     string DestinationAirport,
@@ -16,4 +16,4 @@ internal record FlightReadModel(
     int BookedSeats,
     double MaximumLuggageWeight,
     decimal EconomyPrice,
-    decimal FirstClassPrice) : ReadModel(Id.ToString(), Id.ToString());
+    decimal FirstClassPrice) : ReadModel(FlightId.ToString(), FlightId.ToString());

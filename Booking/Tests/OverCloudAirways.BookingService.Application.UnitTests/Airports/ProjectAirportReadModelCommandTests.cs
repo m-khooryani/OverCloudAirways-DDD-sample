@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NSubstitute;
-using OverCloudAirways.BookingService.Application.Aircrafts.Commands.ProjectReadModel;
+﻿using NSubstitute;
 using OverCloudAirways.BookingService.Application.Airports.Commands.ProjectReadModel;
-using OverCloudAirways.BookingService.Domain.Aircrafts;
 using OverCloudAirways.BookingService.Domain.Airports;
-using OverCloudAirways.BookingService.TestHelpers.Aircrafts;
 using OverCloudAirways.BookingService.TestHelpers.Airports;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
@@ -46,7 +38,7 @@ public class ProjectAirportReadModelCommandTests
         // Assert
         await aggregateRepository.Received(1).LoadAsync<Airport, AirportId>(command.AirportId);
         await cosmosManager.Received(1).UpsertAsync(ContainersConstants.ReadModels, Arg.Is<AirportReadModel>(x =>
-            x.Id == aggregate.Id.Value &&
+            x.AirportId == aggregate.Id.Value &&
             x.Code == aggregate.Code &&
             x.Name == aggregate.Name &&
             x.Location == aggregate.Location &&

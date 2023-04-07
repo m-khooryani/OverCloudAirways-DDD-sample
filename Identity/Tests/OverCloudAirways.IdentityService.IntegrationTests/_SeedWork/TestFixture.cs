@@ -6,6 +6,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NSubstitute;
 using OverCloudAirways.BuildingBlocks.Application.Commands.ProcessOutboxMessage;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
@@ -13,6 +14,7 @@ using OverCloudAirways.BuildingBlocks.Infrastructure;
 using OverCloudAirways.BuildingBlocks.Infrastructure.AzureServiceBus;
 using OverCloudAirways.BuildingBlocks.Infrastructure.ContextAccessors;
 using OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
+using OverCloudAirways.BuildingBlocks.Infrastructure.Json;
 using OverCloudAirways.BuildingBlocks.Infrastructure.Layers;
 using OverCloudAirways.BuildingBlocks.Infrastructure.Logging;
 using OverCloudAirways.BuildingBlocks.Infrastructure.Mediation;
@@ -98,7 +100,18 @@ public class TestFixture : IDisposable
         var serviceBusConfig = Substitute.For<ServiceBusConfig>();
         var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig);
 
-        var cosmosDbModule = new CosmosDBModule(accountEndpoint!, accountKey!, _databaseId);
+        var jsonSettings = new JsonSerializerSettings()
+        {
+            Converters =
+            {
+                new EnumerationJsonConverter(), 
+                new TypedIdJsonConverter()
+            },
+            ContractResolver = new ValueObjectsConstructorResolver()
+        };
+
+        var jsonModule = new NewtonsoftJsonModule(jsonSettings);
+        var cosmosDbModule = new CosmosNewtonsoftIntegrationModule(accountEndpoint!, accountKey!, _databaseId, jsonSettings);
 
         CompositionRoot.Initialize(
             assemblyLayersModule,
@@ -109,6 +122,7 @@ public class TestFixture : IDisposable
             contextAccessorModule,
             retryPolicyModule,
             azureServiceBusModule,
+            jsonModule,
             cosmosDbModule);
     }
 

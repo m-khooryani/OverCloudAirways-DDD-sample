@@ -4,7 +4,7 @@ using OverCloudAirways.CrmService.Domain.LoyaltyPrograms;
 namespace OverCloudAirways.CrmService.Application.Promotions.Commands.ProjectReadModel;
 
 internal record PromotionReadModel(
-    Guid Id,
+    Guid PromotionId,
     string DiscountCode,
     Percentage DiscountPercentage,
     string? Description,

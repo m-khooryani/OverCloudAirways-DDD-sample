@@ -4,7 +4,7 @@ using OverCloudAirways.BuildingBlocks.Application.Models;
 namespace OverCloudAirways.BookingService.Application.Airports.Commands.ProjectReadModel;
 
 internal record AirportReadModel(
-    Guid Id,
+    Guid AirportId,
     string Code,
     string Name,
     string Location,

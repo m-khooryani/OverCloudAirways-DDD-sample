@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Exceptions;
-using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Exceptions;
 
 namespace OverCloudAirways.BuildingBlocks.Domain.Models;
 
-[JsonConverter(typeof(TypedIdJsonConverter))]
 public class TypedId<TKey> : TypedId, IEquatable<TypedId<TKey>>
 {
     public TKey Value { get; }

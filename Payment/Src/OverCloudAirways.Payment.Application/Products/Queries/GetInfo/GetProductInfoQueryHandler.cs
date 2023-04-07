@@ -17,7 +17,7 @@ internal class GetProductInfoQueryHandler : QueryHandler<GetProductInfoQuery, Pr
     {
         var sql = @$"
                     SELECT 
-                    product.Id          AS {nameof(ProductDto.Id)}, 
+                    product.ProductId   AS {nameof(ProductDto.Id)}, 
                     product.Name        AS {nameof(ProductDto.Name)}, 
                     product.Description AS {nameof(ProductDto.Description)}, 
                     product.Price       AS {nameof(ProductDto.Price)}, 

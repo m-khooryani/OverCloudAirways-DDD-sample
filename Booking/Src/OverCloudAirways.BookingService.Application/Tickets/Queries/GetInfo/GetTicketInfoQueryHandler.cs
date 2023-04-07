@@ -17,7 +17,7 @@ internal class GetTicketInfoQueryHandler : QueryHandler<GetTicketInfoQuery, Tick
     {
         var sql = @$"
                     SELECT 
-                    ticket.Id                     AS {nameof(TicketDto.Id)}, 
+                    ticket.TicketId               AS {nameof(TicketDto.Id)}, 
                     ticket.FlightNumber           AS {nameof(TicketDto.FlightNumber)}, 
                     ticket.DepartureAirportCode   AS {nameof(TicketDto.DepartureAirportCode)}, 
                     ticket.DestinationAirportCode AS {nameof(TicketDto.DestinationAirportCode)}, 

@@ -4,9 +4,9 @@ using OverCloudAirways.PaymentService.Domain.Invoices;
 namespace OverCloudAirways.PaymentService.Application.Invoices.Commands.ProjectReadModel;
 
 internal record InvoiceReadModel(
-    Guid Id,
+    Guid InvoiceId,
     string BuyerFirstName,
     string BuyerLastName,
     DateTimeOffset DueDate,
     decimal TotalAmount,
-    IReadOnlyList<InvoiceItem> Items) : ReadModel(Id.ToString(), Id.ToString());
+    IReadOnlyList<InvoiceItem> Items) : ReadModel(InvoiceId.ToString(), InvoiceId.ToString());

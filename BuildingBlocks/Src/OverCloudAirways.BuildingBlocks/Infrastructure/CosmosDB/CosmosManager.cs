@@ -163,7 +163,7 @@ internal class CosmosManager : ICosmosManager
         var container = GetContainer(containerName);
         _logger.LogInformation("Upserting item...");
 
-        var response = await container.UpsertItemAsync(item, new PartitionKey(item.PartitionKey));
+        var response = await container.UpsertItemAsync(item, new PartitionKey(item.partitionKey));
         _logger.LogInformation($"Response: {response}");
 
         if (!(200 <= (int)response.StatusCode && (int)response.StatusCode < 300))

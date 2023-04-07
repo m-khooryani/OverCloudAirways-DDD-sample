@@ -17,7 +17,7 @@ internal class GetPromotionInfoByIdQueryHandler : QueryHandler<GetPromotionInfoB
     {
         var sql = @$"
                     SELECT 
-                    promotion.Id                 AS {nameof(PromotionDto.Id)}, 
+                    promotion.PromotionId        AS {nameof(PromotionDto.Id)}, 
                     promotion.DiscountCode       AS {nameof(PromotionDto.DiscountCode)}, 
                     promotion.DiscountPercentage AS {nameof(PromotionDto.DiscountPercentage)}, 
                     promotion.Description        AS {nameof(PromotionDto.Description)}, 
@@ -26,7 +26,7 @@ internal class GetPromotionInfoByIdQueryHandler : QueryHandler<GetPromotionInfoB
                     promotion.CustomerLastName   AS {nameof(PromotionDto.CustomerLastName)}
                     FROM promotion 
                     WHERE 
-                    promotion.Id = @promotionId AND 
+                    promotion.PromotionId = @promotionId AND 
                     promotion.partitionKey = 'Promotion'";
 
         var queryDefinition = new QueryDefinition(sql)

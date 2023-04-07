@@ -44,7 +44,7 @@ public class AirraftTests
 
         // Assert
         Assert.NotNull(aircraft);
-        Assert.Equal(aircraftId.Value, aircraft.Id); 
+        Assert.Equal(aircraftId.Value, aircraft.AircraftId); 
         Assert.Equal(createAircraftCommand.Type, aircraft.Type);
         Assert.Equal(createAircraftCommand.Manufacturer, aircraft.Manufacturer);
         Assert.Equal(createAircraftCommand.Model, aircraft.Model);

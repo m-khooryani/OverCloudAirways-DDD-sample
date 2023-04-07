@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BuildingBlocks.Domain.Models;
 
@@ -24,16 +23,18 @@ public class OutboxMessage
     }
 
     public static OutboxMessage Create(
+        IJsonSerializer jsonSerializer,
         DateTimeOffset occurredOn, 
         object obj, 
         Guid? userId,
         string? tcpConnectionId,
         string? sessionId = null)
     {
-        return Create(occurredOn, obj, userId, tcpConnectionId, null, sessionId);
+        return Create(jsonSerializer, occurredOn, obj, userId, tcpConnectionId, null, sessionId);
     }
 
     public static OutboxMessage CreateDelayed(
+        IJsonSerializer jsonSerializer,
         DateTimeOffset occurredOn, 
         object obj, 
         Guid? userId,
@@ -41,10 +42,11 @@ public class OutboxMessage
         DateTimeOffset processingDate,
         string? sessionId = null)
     {
-        return Create(occurredOn, obj, userId, tcpConnectionId, processingDate, sessionId);
+        return Create(jsonSerializer, occurredOn, obj, userId, tcpConnectionId, processingDate, sessionId);
     }
 
     private static OutboxMessage Create(
+        IJsonSerializer jsonSerializer,
         DateTimeOffset occurredOn,
         object obj,
         Guid? userId,
@@ -58,9 +60,7 @@ public class OutboxMessage
         message.AssemblyName = obj.GetType()!.Assembly!.GetName()!.Name!;
         message.Type = obj.GetType().FullName!;
 
-        var settings = new JsonSerializerSettings();
-        settings.Converters.Add(new EnumerationJsonConverter());
-        message.Data = JsonConvert.SerializeObject(obj, settings);
+        message.Data = jsonSerializer.Serialize(obj);
         message.SessionId = sessionId;
         message.UserId = userId;
         message.TcpConnectionId = tcpConnectionId;

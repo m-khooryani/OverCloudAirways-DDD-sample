@@ -18,7 +18,7 @@ internal class ActiveLoyaltyPrograms : IActiveLoyaltyPrograms
     {
         var sql = @$"
                     SELECT 
-                    loyaltyPrograms.Id AS {nameof(LoyaltyProgramModel.Id)}
+                    loyaltyPrograms.LoyaltyProgramId AS {nameof(LoyaltyProgramModel.Id)}
                     FROM loyaltyPrograms
                     WHERE 
                     loyaltyPrograms.partitionKey = 'LoyaltyPrograms' AND

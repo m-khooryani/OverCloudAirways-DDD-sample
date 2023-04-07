@@ -1,39 +1,35 @@
 ﻿using Autofac;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
-using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
 
-public class CosmosDBModule : Module
+public class CosmosNewtonsoftIntegrationModule : Module
 {
     private readonly string _accountEndPoint;
     private readonly string _primaryKey;
     private readonly string _databaseId;
+    private readonly JsonSerializerSettings _jsonSerializerSettings;
 
-    public CosmosDBModule(
+    public CosmosNewtonsoftIntegrationModule(
         string accountEndpoint,
         string primaryKey,
-        string databaseId)
+        string databaseId,
+        JsonSerializerSettings jsonSerializerSettings)
     {
         _accountEndPoint = accountEndpoint;
         _primaryKey = primaryKey;
         _databaseId = databaseId;
+        _jsonSerializerSettings = jsonSerializerSettings;
     }
 
     protected override void Load(ContainerBuilder builder)
     {
         var client = new CosmosClient(_accountEndPoint, _primaryKey, new CosmosClientOptions
         {
-            Serializer = new CosmosJsonDotNetSerializer(new JsonSerializerSettings
-            {
-                Converters = new JsonConverter[]
-                {
-                    new EnumerationJsonConverter()
-                },
-                ContractResolver = new ValueObjectsConstructorResolver()
-            })
+            Serializer = new CosmosJsonDotNetSerializer(_jsonSerializerSettings)
         });
+
         var database = client.GetDatabase(_databaseId);
         builder.RegisterInstance(database)
             .As<Database>()

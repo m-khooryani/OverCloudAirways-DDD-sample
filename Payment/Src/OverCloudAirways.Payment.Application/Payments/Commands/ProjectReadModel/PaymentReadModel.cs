@@ -4,8 +4,8 @@ using OverCloudAirways.PaymentService.Domain.Payments;
 namespace OverCloudAirways.PaymentService.Application.Payments.Commands.ProjectReadModel;
 
 internal record PaymentReadModel(
-    Guid Id,
+    Guid PaymentId,
     decimal Amount,
     decimal InvoiceAmount,
     PaymentMethod Method,
-    string ReferenceNumber) : ReadModel(Id.ToString(), Id.ToString());
+    string ReferenceNumber) : ReadModel(PaymentId.ToString(), PaymentId.ToString());

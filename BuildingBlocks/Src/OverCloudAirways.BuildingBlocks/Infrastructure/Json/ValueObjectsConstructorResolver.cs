@@ -2,18 +2,13 @@
 using Newtonsoft.Json.Serialization;
 using OverCloudAirways.BuildingBlocks.Domain.Models;
 
-namespace OverCloudAirways.BuildingBlocks.Infrastructure.CosmosDB;
+namespace OverCloudAirways.BuildingBlocks.Infrastructure.Json;
 
 public class ValueObjectsConstructorResolver : DefaultContractResolver
 {
     protected override JsonObjectContract CreateObjectContract(Type objectType)
     {
         var contract = base.CreateObjectContract(objectType);
-
-        if (objectType.IsPrimitive || objectType.IsEnum) 
-        { 
-            return contract;
-        }
 
         if (!typeof(ValueObject).IsAssignableFrom(objectType))
         {
