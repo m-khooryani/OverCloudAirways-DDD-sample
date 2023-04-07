@@ -26,33 +26,33 @@ jobs:
             }
       outputs:
         build_env: ${{ steps.setup.outputs.build_env }}
-        
- build:
-  name: Build
-  needs: setup
-  runs-on: windows-latest
-  steps:
-    - uses: actions/checkout@v2
-    - uses: southpolesteve/cosmos-emulator-github-action@v1
-    - name: Setup .NET SDK 7.0.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '7.0.x'
-  
-    - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
-      uses: actions/setup-dotnet@v1
-      with:
-       dotnet-version: ${{ env.NETCORE_VERSION }}
-     
-    - run: npm install -g azurite
-    - shell: bash
-      run: azurite-table &
 
-    - name: Restore
-      run: dotnet restore
+  build:
+      name: Build
+      needs: setup
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: southpolesteve/cosmos-emulator-github-action@v1
+        - name: Setup .NET SDK 7.0.x
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: '7.0.x'
 
-    - name: Build
-      run: dotnet build --no-restore -c Release
+        - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
+          uses: actions/setup-dotnet@v1
+          with:
+           dotnet-version: ${{ env.NETCORE_VERSION }}
 
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+        - run: npm install -g azurite
+        - shell: bash
+          run: azurite-table &
+
+        - name: Restore
+          run: dotnet restore
+
+        - name: Build
+          run: dotnet build --no-restore -c Release
+
+        - name: Test
+          run: dotnet test --no-restore --verbosity normal
