@@ -8,6 +8,7 @@ using OverCloudAirways.PaymentService.Domain.Invoices;
 using OverCloudAirways.PaymentService.Domain.Orders.Events;
 using OverCloudAirways.PaymentService.Domain.Orders.Rules;
 using OverCloudAirways.PaymentService.Domain.Products;
+using OverCloudAirways.PaymentService.Domain.Promotions;
 
 namespace OverCloudAirways.PaymentService.Domain.Orders;
 
@@ -17,8 +18,10 @@ public class Order : AggregateRoot<OrderId>
     public BuyerId BuyerId { get; private set; }
     public DateTimeOffset Date { get; private set; }
     public OrderStatus Status { get; private set; }
-    public decimal TotalAmount => _orderItems.Sum(oi => oi.TotalPrice);
+    public Percentage? AppliedDiscount { get; private set; }
     public IReadOnlyCollection<PricedOrderItem> OrderItems => _orderItems.AsReadOnly();
+    public decimal TotalAmount =>
+         _orderItems.Sum(oi => oi.TotalPrice) * (100M - (AppliedDiscount?.Value ?? 0)) / 100M;
 
     private Order()
     {
@@ -85,6 +88,17 @@ public class Order : AggregateRoot<OrderId>
         return pricedOrderItems.AsReadOnly();
     }
 
+    public async Task ApplyDiscountAsync(Promotion promotion)
+    {
+        await CheckRuleAsync(new DiscountCanBeAppliedForOrderWithValidBuyerRule(BuyerId, promotion));
+        await CheckRuleAsync(new DiscountCanBeAppliedBeforeExpirationRule(promotion));
+
+        var @event = new DiscountAppliedToOrderDomainEvent(Id, promotion.DiscountPercentage);
+        Apply(@event);
+
+        await Task.CompletedTask;
+    }
+
     protected void When(OrderPlacedDomainEvent @event)
     {
         Id = @event.OrderId;
@@ -112,5 +126,10 @@ public class Order : AggregateRoot<OrderId>
     protected void When(OrderConfirmedDomainEvent _)
     {
         Status = OrderStatus.Confirmed;
+    }
+
+    protected void When(DiscountAppliedToOrderDomainEvent @event)
+    {
+        AppliedDiscount = @event.AppliedDiscount;
     }
 }

@@ -19,4 +19,6 @@ public class Percentage : ValueObject
     {
         return new Percentage(value);
     }
+
+    public static implicit operator decimal(Percentage percentage) => percentage.Value;
 }

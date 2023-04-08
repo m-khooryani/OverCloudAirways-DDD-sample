@@ -52,6 +52,8 @@ public class TypedId<TKey> : TypedId, IEquatable<TypedId<TKey>>
     {
         return Value.ToString();
     }
+
+    public static implicit operator TKey(TypedId<TKey> typedId) => typedId.Value;
 }
 
 public class TypedId
