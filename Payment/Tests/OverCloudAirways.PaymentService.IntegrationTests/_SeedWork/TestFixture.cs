@@ -250,6 +250,5 @@ public class TestFixture : IDisposable
             throw new OutboxMessageProccessingFailedException($"messageId: {message.Id}, Exception: {message.Error}");
         }
         return true;
-
     }
 }

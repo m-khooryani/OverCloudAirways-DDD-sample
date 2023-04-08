@@ -4,51 +4,35 @@ using OverCloudAirways.BuildingBlocks.Domain.Utilities;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.Json;
 
-public class TypedIdJsonConverter : JsonConverter
+public class TypedIdJsonConverter : JsonConverter<TypedId>
 {
     public TypedIdJsonConverter()
     {
     }
 
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, TypedId value, JsonSerializer serializer)
     {
-        var t = value.GetType();
-        var val = t.GetProperty("Value").GetValue(value, null);
-        writer.WriteValue(val);
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-    {
-        string s = reader?.Value?.ToString() ?? "";
-        if (string.IsNullOrWhiteSpace(s))
+        if (value == null)
         {
-            return default;
+            throw new JsonSerializationException("Expected TypedId object.");
         }
 
-        return TypedIdCreator.Create(s, objectType);
+        writer.WriteValue(value.ToString());
     }
 
-    public override bool CanConvert(Type objectType)
+    public override TypedId ReadJson(JsonReader reader, Type objectType, TypedId existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
-        return IsSubclassOfRawGeneric(objectType, typeof(TypedId<>));
-    }
-
-    public override bool CanRead
-    {
-        get { return true; }
-    }
-
-    private static bool IsSubclassOfRawGeneric(Type toCheck, Type generic)
-    {
-        while (toCheck != null && toCheck != typeof(object))
+        if (reader.TokenType == JsonToken.Null)
         {
-            var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-            if (generic == cur)
-            {
-                return true;
-            }
-            toCheck = toCheck.BaseType;
+            return null;
         }
-        return false;
+
+        if (reader.TokenType != JsonToken.String)
+        {
+            throw new JsonSerializationException($"Unexpected token type: {reader.TokenType}. Expected string.");
+        }
+
+        var value = reader.Value.ToString();
+        return (TypedId)TypedIdCreator.Create(value, objectType);
     }
 }
