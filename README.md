@@ -10,7 +10,21 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
 
 1. [Architecture and Design](#architecture-and-design)
    - [Domain-Driven Design (DDD)](#domain-driven-design-ddd)
-   - [CQRS and Event Sourcing](#cqrs-and-event-sourcing)
+      - [Ubiquitous Language](#ubiquitous-language) 
+      - [Bounded Contexts](#bounded-contexts)
+      - [Event Storming](#event-storming)
+      - [Aggregates](#aggregates)
+      - [Domain Events](#domain-events)
+      - [Business Rules](#business-rules)
+      - [Domain Services](#domain-services)
+      - [Domain Policies](#domain-policies)
+   - [CQRS](#cqrs)
+      - [Commands](#commands)
+      - [Command Validators](#command-validators)
+      - [Command Handlers](#command-handlers)
+      - [Queries](#queries)
+      - [Query Handlers](#query-handlers)
+   - [Event Sourcing]
    - [Microservices and Event-Driven Architecture](#microservices-and-event-driven-architecture)
    - [Clean Architecture and Other Patterns](#clean-architecture-and-other-patterns)
 2. [Key Features and Components](#key-features-and-components)
@@ -37,24 +51,27 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
 
 > "Domain-driven design is an approach to software development that centers the development on programming a domain model that has a rich understanding of the processes and rules of a domain." - Eric Evans, author of the book "Domain-Driven Design: Tackling Complexity in the Heart of Software"
 
-OverCloudAirways employs Domain-Driven Design (DDD) principles to build a solid foundation for the system's architecture. We chose DDD for this project because it provides a proven set of practices and patterns for tackling complexity in software systems, allowing us to create a maintainable and scalable solution that serves as a valuable learning resource for developers.
+  OverCloudAirways employs Domain-Driven Design (DDD) principles to build a solid foundation for the system's architecture. We chose DDD for this project because it provides a proven set of practices and patterns for tackling complexity in software systems, allowing us to create a maintainable and scalable solution that serves as a valuable learning resource for developers.
+  By adhering to DDD principles, OverCloudAirways aims to provide a maintainable and scalable solution that serves as a valuable learning resource for developers.
 
 In our implementation of DDD, we focus on the following key aspects:
 
-- **Ubiquitous Language**: Establishing a shared language among developers that promotes effective communication and a common understanding of the domain. Although we don't have real domain experts for this project, we strive to use consistent terminology and naming conventions that accurately represent domain concepts.
-- **Bounded Contexts**: Defining logical boundaries that separate different areas of the domain, promoting modularity and limiting the scope of domain models. In OverCloudAirways, we have identified the following Bounded Contexts:
+- #### **Ubiquitous Language**
+  Establishing a shared language among developers that promotes effective communication and a common understanding of the domain. Although we don't have real domain experts for this project, we strive to use consistent terminology and naming conventions that accurately represent domain concepts.
 
-  - **Identity**: Responsible for registering users, managing authentication, and handling user profiles.
-  - **Payment**: Handles payment processing, invoicing, and payment-related notifications.
-  - **Booking**: Takes care of flight booking processes, including seat reservation, ticket issuance, and booking confirmation.
-  - **CRM**: Manages customer relationship management features, such as customer feedback, support requests, and customer communication.
+- #### **Bounded Contexts**
+  Defining logical boundaries that separate different areas of the domain, promoting modularity and limiting the scope of domain models. In OverCloudAirways, we have identified the following Bounded Contexts:
+
+   - **Identity**: Responsible for registering users, managing authentication, and handling user profiles.
+   - **Payment**: Handles payment processing, invoicing, and payment-related notifications.
+   - **Booking**: Takes care of flight booking processes, including seat reservation, ticket issuance, and booking confirmation.
+   - **CRM**: Manages customer relationship management features, such as customer feedback, support requests, and customer communication.
 
 ![image](https://user-images.githubusercontent.com/7968282/231226243-a22d84ae-c77f-4e80-90a3-cbcddef419da.png)
 
 These Bounded Contexts work together to provide a comprehensive flight booking system that covers essential aspects of the business domain.
 
-- **Event Storming**:
-
+- #### **Event Storming**
   Event Storming is a collaborative modeling technique that brings together developers, domain experts, and other stakeholders to explore and model a domain using events, aggregates, commands, and other domain elements. This technique helps to create a shared understanding of the domain, identify potential inconsistencies, and uncover hidden complexities.
 
   In the development of the OverCloudAirways project, we used Event Storming to map out the domain, its processes, and its interactions. The image below, taken from our Miro board, demonstrates how Event Storming helped shape the project's design:
@@ -64,7 +81,7 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
   Through Event Storming, we were able to visualize the relationships between different parts of the domain and ensure that our design decisions aligned with the needs of the project.
 
 
-- **Aggregates**: 
+- #### **Aggregates**
 
   In Domain-Driven Design, an Aggregate is a cluster of domain objects (entities and value objects) that are treated as a single unit. The Aggregate Root is an entity within the aggregate that serves as the entry point for interactions with the aggregate.
 
@@ -148,7 +165,7 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
   This example demonstrates how the Aggregate Root pattern can be used to encapsulate domain logic and maintain consistency within an aggregate.
 
 
-- **Domain Events**:
+- #### **Domain Events**
 
   Domain events capture and communicate significant state changes in the domain, allowing for better decoupling between components. They represent something that has happened within the domain and can be used to trigger side effects, enforce consistency, or update read models.
 
@@ -171,8 +188,42 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
   We used the `record` keyword to define the domain event in C#. Records provide value-based equality and immutability, making them a suitable choice for modeling domain events.
 
   Domain events help to model the domain more accurately and make the system more flexible, extensible, and maintainable.
+  
+- #### **Business Rules**
+  Domain-Driven Design emphasizes the importance of encapsulating complex business logic within the domain layer. A useful technique to accomplish this is by implementing Business Rules as explicit, testable classes. This approach helps to decouple business rules from the rest of the domain model, making the code more modular, maintainable, and expressive.
+  
+  ``` csharp
+  internal class FlightBookingCanOnlyBeCancelledForFlightsHasNotYetDepartedRule : IBusinessRule
+  {
+      private readonly IAggregateRepository _repository;
+      private readonly FlightId _flightId;
+  
+      public FlightBookingCanOnlyBeCancelledForFlightsHasNotYetDepartedRule(
+          IAggregateRepository repository,
+          FlightId flightId)
+      {
+          _repository = repository;
+          _flightId = flightId;
+      }
+  
+      public string TranslationKey => "FlightBooking_Can_Only_Be_Cancelled_For_Flights_Has_Not_Yet_Departed";
+  
+      public async Task<bool> IsFollowedAsync()
+      {
+          var flight = await _repository.LoadAsync<Flight, FlightId>(_flightId);
+          return flight.Status.HasNotYetDeparted();
+      }
+  }
+  ```
+  
+  In the example above, the business rule `FlightBookingCanOnlyBeCancelledForFlightsHasNotYetDepartedRule` is encapsulated in a separate class, rather than being embedded within an if condition.(Inspired by [Modular Monolith with DDD](https://github.com/kgrzybek/modular-monolith-with-ddd)) This approach has several advantages:
 
-- **Domain Services**:
+  - Readability: Expressing the rule as a separate class with a descriptive name makes it easier for developers to understand the intent and the purpose of the rule.
+  - Testability: Encapsulating the business rule in a separate class makes it simpler to test the rule in isolation, ensuring that it behaves as expected.
+  - Reusability: By implementing the business rule as a standalone class, it can be reused across multiple aggregates or services without duplication.
+  - Domain-Specific Language (DSL): Defining the business rules as separate classes contributes to building a domain-specific language that more closely mirrors the ubiquitous language of the domain. This helps to promote a shared understanding of the domain among developers and domain experts.
+
+- #### **Domain Services**
 
   Domain services encapsulate domain-specific logic that doesn't naturally fit within aggregates or value objects. They represent behaviors or operations that require coordination between multiple domain objects or that depend on external resources, like databases.
 
@@ -228,7 +279,7 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
 
   Domain services help to separate domain logic from infrastructure concerns and ensure that domain concepts are modeled accurately. They also promote the Single Responsibility Principle (SRP) by allowing aggregates and value objects to focus on their core responsibilities.
 
-- **Domain Policies**:
+- #### **Domain Policies**:
 
   Domain Policies are a way to represent cross-cutting concerns and reactions to domain events that occur in the system. They define the relationship between a domain event and a corresponding action, usually in the form of a command.
 
@@ -272,8 +323,94 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
 
 
 
-Since we use event-sourcing in OverCloudAirways, we don't have traditional repositories. Instead, we store and retrieve the state of aggregates by replaying domain events.
+### CQRS
+  CQRS is an architectural pattern that promotes the separation of concerns by dividing a system's operations into two distinct categories: Commands and Queries. Commands are responsible for making changes to the system's state, while Queries are responsible for reading data from the system without altering its state.
 
-By adhering to DDD principles, OverCloudAirways aims to provide a maintainable and scalable solution that serves as a valuable learning resource for developers.
+The CQRS pattern brings several benefits to software systems, including improved scalability, maintainability, and flexibility. By segregating command and query responsibilities, developers can optimize each side independently to cater to the system's specific needs. This separation also makes it easier to reason about the system, as the roles and responsibilities of each component are clearly defined.
 
+In the OverCloudAirways project, we have implemented the CQRS pattern to effectively manage the complexities of our domain while ensuring high performance and a robust architecture.
 
+- #### Commands 
+  Commands are the part of the CQRS pattern responsible for changing the system's state. They represent the intent to perform an action, and typically contain the necessary data to carry out that action. Commands should be named in an imperative form, reflecting the desired outcome of the operation.
+  In the OverCloudAirways project, we have implemented several commands to handle different operations. One example is the IssueTicketCommand, which is used to issue a ticket for a specific flight and customer:
+
+  ``` csharp
+  public record IssueTicketCommand(
+      TicketId TicketId,
+      FlightId FlightId,
+      CustomerId CustomerId) : Command;
+  ```
+  This command includes the `TicketId`, `FlightId`, and `CustomerId`, which provide the necessary information to issue a ticket. When the command is handled, the appropriate action is taken to update the system's state, ensuring that a new ticket is issued and associated with the correct Flight and Customer.
+  
+- #### Command Validators
+  Command Validators are responsible for ensuring that the data provided in a command is valid and adheres to the business rules before the command is executed. This helps maintain data integrity and prevents invalid operations from being performed in the system.
+
+  In the OverCloudAirways project, we use the [FluentValidation](https://docs.fluentvalidation.net/en/latest/) library to create validators for our commands. One example is the `RegisterBuyerCommandValidator`, which validates the data in the `RegisterBuyerCommand`:
+
+  ``` csharp
+  internal class RegisterBuyerCommandValidator : AbstractValidator<RegisterBuyerCommand>
+  {
+      public RegisterBuyerCommandValidator()
+      {
+          RuleFor(x => x.BuyerId)
+              .NotEmpty();
+  
+          RuleFor(x => x.FirstName)
+              .NotEmpty()
+              .MaximumLength(100);
+  
+          RuleFor(x => x.LastName)
+              .NotEmpty()
+              .MaximumLength(100);
+  
+          RuleFor(x => x.Email)
+              .NotEmpty()
+              .EmailAddress();
+  
+          RuleFor(x => x.PhoneNumber)
+              .NotEmpty()
+              .Must(BeAValidPhoneNumber)
+              .WithMessage("Invalid phone number");
+      }
+  
+      private bool BeAValidPhoneNumber(string phoneNumber)
+      {
+          return Regex.Match(phoneNumber, @"^\d{10}$").Success;
+      }
+  }
+  ```
+  This validator checks for various conditions, such as ensuring that the `BuyerId`, `FirstName`, `LastName`, `Email`, and `PhoneNumber` are not empty, and that they meet specific requirements like maximum length and format. If any of these conditions are not met, the validator will generate an error message, preventing the command from being executed until the issues are resolved. (TODO: link to pipeline)
+
+- #### Command Handlers
+  Command Handlers are responsible for processing commands and orchestrating the necessary steps to carry out the requested operation. They act as a bridge between the command and the aggregate, coordinating interactions with the domain model to execute the operation.
+
+  In the OverCloudAirways project, we have designed Command Handlers to contain minimal code, focusing on delegating the work to the appropriate domain model. One example is the `PlaceOrderCommandHandler`, which handles the `PlaceOrderCommand`:
+
+  ``` csharp
+  class PlaceOrderCommandHandler : CommandHandler<PlaceOrderCommand>
+  {
+      private readonly IAggregateRepository _repository;
+  
+      public PlaceOrderCommandHandler(IAggregateRepository repository)
+      {
+          _repository = repository;
+      }
+  
+      public override async Task HandleAsync(PlaceOrderCommand command, CancellationToken cancellationToken)
+      {
+          var order = await Order.PlaceAsync(
+              _repository,
+              command.OrderId,
+              command.BuyerId,
+              command.OrderItems);
+  
+          _repository.Add(order);
+      }
+  }
+  ```
+  This command handler interacts with the `IAggregateRepository` to load and save the Order aggregate. It calls the `Order.PlaceAsync` method, which encapsulates the domain logic for placing an order. The resulting aggregate is then tracked by the repository, but not yet saved to a persistent storage.
+
+  We have chosen to create a custom `CommandHandler` base class instead of directly implementing [MediatR](https://github.com/jbogard/MediatR) interfaces for a few reasons:
+
+  - It allows us to encapsulate any common behavior or logic required by all command handlers in a single place.
+  - It helps maintain consistency in the structure of command handlers across the project, making it easier for developers to understand and navigate the codebase.
