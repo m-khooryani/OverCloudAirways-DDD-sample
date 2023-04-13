@@ -414,3 +414,17 @@ In the OverCloudAirways project, we have implemented the CQRS pattern to effecti
 
   - It allows us to encapsulate any common behavior or logic required by all command handlers in a single place.
   - It helps maintain consistency in the structure of command handlers across the project, making it easier for developers to understand and navigate the codebase.
+
+- #### Queries 
+  Queries are used to retrieve information from the system without modifying the state of the domain. In the OverCloudAirways project, we follow the CQRS pattern, where queries are designed to be simple and optimized for read operations. Queries can return different types of information, such as DTOs (Data Transfer Objects), which are tailored to the specific needs of a particular use case.
+
+  Here's an example of a query in the OverCloudAirways project:
+
+  ``` csharp
+  public record GetPurchaseInfoQuery(
+      PurchaseId PurchaseId,
+      CustomerId CustomerId) : Query<PurchaseDto>;
+  ```
+  
+  This query is designed to retrieve purchase information for a given PurchaseId and CustomerId. The result of the query is a PurchaseDto, which is a Data Transfer Object containing the necessary information about the purchase.
+  
