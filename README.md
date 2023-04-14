@@ -24,7 +24,11 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Command Handlers](#command-handlers)
       - [Queries](#queries)
       - [Query Handlers](#query-handlers)
-   - [Event Sourcing]
+   - [Event Sourcing](#event-sourcing)
+      - [Event Store](#event-store)
+      - [Event Streams](#event-streams)
+      - [Event Versioning](#event-versioning)
+      - [Snapshots](#snapshots)
    - [Microservices and Event-Driven Architecture](#microservices-and-event-driven-architecture)
    - [Clean Architecture and Other Patterns](#clean-architecture-and-other-patterns)
 2. [Key Features and Components](#key-features-and-components)
@@ -428,3 +432,70 @@ In the OverCloudAirways project, we have implemented the CQRS pattern to effecti
   
   This query is designed to retrieve purchase information for a given PurchaseId and CustomerId. The result of the query is a PurchaseDto, which is a Data Transfer Object containing the necessary information about the purchase.
   
+- #### Query Handlers
+  Query Handlers are responsible for executing queries and retrieving the requested data. In the OverCloudAirways project, we implement query handlers to interact with the underlying data storage and retrieve the necessary information to fulfill a query.
+
+  Here's an example of a query handler in the OverCloudAirways project:
+  
+  ``` csharp
+  internal class GetPurchaseInfoQueryHandler : QueryHandler<GetPurchaseInfoQuery, PurchaseDto>
+  {
+      private readonly ICosmosManager _cosmosManager;
+  
+      public GetPurchaseInfoQueryHandler(ICosmosManager cosmosManager)
+      {
+          _cosmosManager = cosmosManager;
+      }
+  
+      public override async Task<PurchaseDto> HandleAsync(GetPurchaseInfoQuery query, CancellationToken cancellationToken)
+      {
+          var sql = @$"
+                      SELECT 
+                      purchase.PurchaseId        AS {nameof(PurchaseDto.PurchaseId)}, 
+                      purchase.CustomerId        AS {nameof(PurchaseDto.CustomerId)}, 
+                      purchase.CustomerFirstName AS {nameof(PurchaseDto.CustomerFirstName)}, 
+                      purchase.CustomerLastName  AS {nameof(PurchaseDto.CustomerLastName)}, 
+                      purchase.Date              AS {nameof(PurchaseDto.Date)}, 
+                      purchase.Amount            AS {nameof(PurchaseDto.Amount)}
+                      FROM purchase 
+                      WHERE 
+                      purchase.id = @purchaseId AND
+                      purchase.partitionKey = @customerId
+          ";
+          var queryDefinition = new QueryDefinition(sql)
+              .WithParameter("@purchaseId", query.PurchaseId)
+              .WithParameter("@customerId", query.CustomerId);
+          var purchase = await _cosmosManager.QuerySingleAsync<PurchaseDto>(ContainersConstants.ReadModels, queryDefinition);
+  
+          return purchase;
+      }
+  }
+  ```
+  
+  In this example, the GetPurchaseInfoQueryHandler retrieves purchase information from the data store using a SQL query and the ICosmosManager to interact with Cosmos DB. The handler constructs a QueryDefinition with the necessary parameters and retrieves a single PurchaseDto that matches the given PurchaseId and CustomerId.
+  
+### Event Sourcing
+Event Sourcing is an architectural pattern that focuses on storing the changes in the application state as a sequence of events, rather than the actual state. This allows us to reconstruct the state at any point in time, enabling features like auditing, debugging, and replaying scenarios.
+
+In OverCloudAirways, we implement Event Sourcing to enable better scalability, traceability, and ease of debugging. Here are the key components and concepts in our Event Sourcing implementation:
+  
+  - #### Event Store
+    The Event Store is the data storage system that holds the event streams. It is responsible for persisting events, as well as querying and retrieving event data. In OverCloudAirways, we use Azure Cosmos DB as our Event Store.
+    
+  - #### Event Streams
+    An Event Stream is a sequence of events associated with a specific aggregate. It represents the history of state changes for a given aggregate, allowing us to recreate its state at any point in time by replaying the events. 
+    
+    We utilize the `AggregateId` as the PartitionKey for our event streams. This approach enables efficient querying and management of events related to a specific aggregate. By using the AggregateId as the PartitionKey, we can ensure that all events related to an aggregate are stored together, providing better performance when querying or replaying the event stream.
+
+    Furthermore, to guarantee the uniqueness of events in our event store, we create a combination index on the `AggregateId` and the event `Version`. This combination index enforces that each event has a unique combination of AggregateId and Version, preventing the possibility of duplicate events being stored in the event stream. It also prevents conflicts that could arise when multiple instances of the application are trying to save events concurrently for the same aggregate, ensuring consistency and data integrity.
+    
+  - #### Event Versioning
+    In the OverCloudAirways project, we handle event versioning by creating a new version of an event when the structure or content of the event changes. This helps maintain backward compatibility and allows us to evolve our system without breaking existing functionality. We use the IUpCastable interface to implement the necessary transformation logic between different versions of an event.
+    
+    TODO: add code
+    
+    The UpCast() method contains the transformation logic, which can be customized as needed.
+By implementing event versioning, we can ensure that our Event Sourcing implementation remains robust and maintainable as our system evolves over time.
+
+  - #### Snapshots
+    (NOT IMPLEMENTED YET) Snapshots are used to optimize the performance of event-sourced systems. Instead of replaying the entire event stream to reconstruct an aggregate's state, snapshots store the aggregate's state at specific points in time, allowing us to reduce the number of events that need to be replayed.
