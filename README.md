@@ -30,6 +30,9 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Event Versioning](#event-versioning)
       - [Snapshots](#snapshots)
    - [Microservices and Event-Driven Architecture](#microservices-and-event-driven-architecture)
+      - [Microservices](#microservices)
+      - [Event-Driven Architecture](#event-driven-architecture)
+      - [Event-Driven Distributed Transactions Example](#event-driven-distributed-transactions-example)
    - [Clean Architecture and Other Patterns](#clean-architecture-and-other-patterns)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
@@ -499,3 +502,38 @@ By implementing event versioning, we can ensure that our Event Sourcing implemen
 
   - #### Snapshots
     (NOT IMPLEMENTED YET) Snapshots are used to optimize the performance of event-sourced systems. Instead of replaying the entire event stream to reconstruct an aggregate's state, snapshots store the aggregate's state at specific points in time, allowing us to reduce the number of events that need to be replayed.
+
+### Microservices and Event-Driven Architecture
+Microservices and Event-Driven Architecture (EDA) play a crucial role in the OverCloudAirways project, enabling a highly scalable and decoupled system. By combining these two concepts, we can take advantage of the best aspects of each approach to create a more resilient and adaptable application.
+
+  - #### Microservices
+    Microservices are an architectural pattern that breaks down a system into small, independently deployable, and loosely coupled services. Each microservice focuses on a specific business capability and can be developed, deployed, and scaled independently. This approach enhances the overall maintainability, flexibility, and scalability of the system.
+
+    In the OverCloudAirways project, we have implemented microservices to handle various aspects of the application, such as flight booking, customer management, and payment processing. This separation of concerns allows each microservice to evolve independently, making it easier to adapt to changing business requirements and technologies.
+    
+  - #### Event-Driven Architecture
+    Event-Driven Architecture (EDA) is a pattern that promotes asynchronous communication between components through events. Components can publish events to notify others about changes in their state or business processes, and other components can subscribe to these events to react accordingly.
+
+    In our project, we use EDA to decouple microservices and ensure reliable communication between them. When a microservice needs to notify others about a change in its state or a business event, it publishes a domain event. Other interested microservices can subscribe to these events and take appropriate actions.
+
+    This approach has several benefits:
+
+      - Decoupling: Components are less dependent on each other, making it easier to evolve them independently and reducing the impact of changes.
+      - Scalability: Since communication is asynchronous, components can scale independently, and the system can handle increased loads more efficiently.
+      - Resilience: The system becomes more resilient to failures, as components can continue to function even when others are temporarily unavailable.
+
+  - #### Event-Driven Distributed Transactions Example
+    To illustrate how Microservices and EDA work together in our project, consider the following example of an event-driven distributed transaction:
+
+      - `ConfirmOrder` event is published by the `Payment` microservice.
+      - The `Payment` microservice reacts to `ConfirmOrder` event and publishes `AcceptInvoice` event.
+      - The `CRM` microservice reacts to the `AcceptInvoice` event and publishes `MakePurchase` event.
+      - The `CRM` microservice reacts to the `MakePurchase` event and publishes `CollectCustomerLoyaltyPoints` event.
+      - The `CRM` microservice reacts to the `CollectCustomerLoyaltyPoints` event and publishes `EvaluateLoyaltyProgramForCustomer` event.
+      - The `CRM` microservice reacts to the `EvaluateLoyaltyProgramForCustomer` event and publishes `LaunchPromotion` event.
+      
+      <p align="center" width="100%">
+      <img width="860" alt="image" src="https://user-images.githubusercontent.com/7968282/232315552-90d2579b-2792-46e0-bda9-700c437f24e6.png">
+      </p>
+      
+     This example demonstrates how EDA allows for asynchronous communication between microservices, enabling distributed transactions across multiple business capabilities. The event-driven nature of the transaction ensures that the system remains decoupled and can scale efficiently.
