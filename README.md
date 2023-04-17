@@ -33,7 +33,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Microservices](#microservices)
       - [Event-Driven Architecture](#event-driven-architecture)
       - [Event-Driven Distributed Transactions Example](#event-driven-distributed-transactions-example)
-   - [Clean Architecture and Other Patterns](#clean-architecture-and-other-patterns)
+   - [Clean Architecture](#clean-architecture)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
 4. [Azure Services and Technologies](#azure-services-and-technologies)
@@ -537,3 +537,33 @@ Microservices and Event-Driven Architecture (EDA) play a crucial role in the Ove
       </p>
       
      This example demonstrates how EDA allows for asynchronous communication between microservices, enabling distributed transactions across multiple business capabilities. The event-driven nature of the transaction ensures that the system remains decoupled and can scale efficiently.
+
+### Clean Architecture
+
+In the OverCloudAirways project, we have adopted the Clean Architecture principles to ensure a clear separation of concerns and maintainability. This architecture focuses on structuring the application into distinct layers, such as Domain, Application, and Infrastructure, which allows for greater flexibility and testability.
+
+Some key aspects of Clean Architecture in our project include:
+
+Decoupling the core business logic from the framework, infrastructure, and user interface concerns.
+Following the Dependency Inversion Principle to reduce coupling between components.
+Organizing the codebase into separate projects or folders for each layer, improving overall code organization and readability.
+<p align="center" width="100%">
+      <img alt="image" src="https://user-images.githubusercontent.com/7968282/232602570-fbc3d8c6-24e7-410b-b475-48ad5ab4f59c.png">
+</p>
+
+## Key Features and Components
+
+This section highlights some of the key features and components of our project that differentiate it from other solutions and showcase our architectural decisions.
+Scalability and Performance: Our solution is designed with scalability and performance in mind, using best practices and patterns to ensure that it can easily handle increasing loads and user demands.
+
+  - Serverless Architecture: We have leveraged serverless technologies to build a highly scalable and cost-efficient solution, eliminating the need to manage underlying infrastructure and allowing the system to automatically scale with demand.
+
+  - Resilience and Fault Tolerance: We have implemented strategies such as retries, and timeouts to ensure that our system can gracefully handle failures and continue operating even in the face of unexpected issues.
+
+  - Extensibility and Modularity: The modular design of our project allows for easy extensibility and customization, enabling developers to quickly add new features and functionality without impacting existing components.
+
+  - Security and Compliance: We have prioritized security and compliance throughout the development process, implementing features such as encryption, authentication, and authorization to safeguard user data and ensure regulatory adherence.
+
+  - Developer Experience: We have focused on providing a seamless and enjoyable developer experience, with clear documentation, consistent coding standards, and efficient tooling and automation.
+
+These features and components come together to create a robust, scalable, and maintainable system
