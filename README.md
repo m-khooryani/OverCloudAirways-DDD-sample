@@ -36,6 +36,15 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
    - [Clean Architecture](#clean-architecture)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
+   - [C#](#c)
+   - [Azure Functions](#azure-functions)
+   - [MediatR](#mediatr)
+   - [Polly](#polly)
+   - [Serilog](#serilog)
+   - [xUnit](#xunit)
+   - [Autofac](#autofac)
+   - [Azure Service Bus](#azure-service-bus)
+   - [Newtonsoft.Json](#newtonsoftjson)
 4. [Azure Services and Technologies](#azure-services-and-technologies)
 5. [Testing](#testing)
    - [Unit Testing](#unit-testing)
@@ -568,4 +577,31 @@ Scalability and Performance: Our solution is designed with scalability and perfo
 
   - Developer Experience: We have focused on providing a seamless and enjoyable developer experience, with clear documentation, consistent coding standards, and efficient tooling and automation.
 
-These features and components come together to create a robust, scalable, and maintainable system
+## Technologies and Libraries
+This section provides an overview of the technologies, frameworks, and libraries we used to build our solution. 
+
+  - #### [C#](https://learn.microsoft.com/en-us/dotnet/csharp/)
+    We used C# as our primary programming language due to its modern features, strong typing, and excellent support for object-oriented programming principles.
+  - #### [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started)
+    A serverless compute service that enables you to run code without managing infrastructure, allowing us to build event-driven, scalable, and cost-effective applications for the presentation layer.
+  - #### [MediatR](https://github.com/jbogard/MediatR)
+    A simple, unambitious mediator implementation in .NET that helps in implementing the Mediator pattern for in-process messaging.
+  - #### [FluentValidation](https://docs.fluentvalidation.net/en/latest/)
+    A library for building strongly-typed validation rules in a fluent and testable manner.
+  - #### [Polly](https://github.com/App-vNext/Polly)
+    A fault-handling library for .NET that allows developers to express resilience and transient fault handling policies, such as retries, circuit breakers, and timeouts.
+  - #### [Serilog](https://serilog.net/)
+    A powerful and extensible logging library for .NET applications.
+  - #### [xUnit](https://xunit.net/)
+    A popular and easy-to-use testing framework for writing unit tests in .NET applications.
+  - #### [Autofac](https://autofac.org/)
+    An open-source IoC (Inversion of Control) container for .NET, enabling dependency injection and improving maintainability and testability of the code.
+    The decision to use Autofac over [MSDI](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection) was driven by its performance, advanced features like Module registration, flexibility, and strong community support. While MSDI is a suitable choice for many applications, Autofac's capabilities make it a more attractive option for our project, which has more complex requirements and dependencies.
+  - #### [Azure Service Bus](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
+    A fully-managed enterprise integration message broker, used for decoupling applications and services and improving the overall resilience and reliability of the system.
+  - #### [Newtonsoft.Json](https://www.newtonsoft.com/json)
+    A popular high-performance JSON framework for .NET, chosen for its flexibility and feature set that provides better control over serialization and deserialization compared to [System.Text.Json](https://learn.microsoft.com/en-us/dotnet/api/system.text.json).
+    
+    Newtonsoft.Json was chosen over STJ due to its compatibility with the broader .NET ecosystem, rich feature set, ease of use, and proven maturity and stability. While STJ has its advantages, particularly in terms of performance, Newtonsoft.Json's capabilities and flexibility make it a more suitable choice for our project's requirements. 
+    
+    However, we remain open to replacing Newtonsoft.Json with STJ in the future if STJ evolves to better support our project's needs and provides comparable features and flexibility. By carefully decoupling our project from specific technologies, we have designed the system to be adaptable and capable of accommodating such changes with minimal disruption.
