@@ -37,15 +37,20 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
-   - [Azure Functions](#azure-functions)
    - [MediatR](#mediatr)
    - [Polly](#polly)
    - [Serilog](#serilog)
    - [xUnit](#xunit)
    - [Autofac](#autofac)
-   - [Azure Service Bus](#azure-service-bus)
    - [Newtonsoft.Json](#newtonsoftjson)
 4. [Azure Services and Technologies](#azure-services-and-technologies)
+   - [Azure Functions](#azure-functions)
+   - [Azure Service Bus](#azure-service-bus)
+   - [Azure Cosmos DB](#azure-cosmos-db)
+   - [Azure Key Vault](#azure-key-vault)
+   - [Azure Application Insights](#azure-application-insights)
+   - [Azure API Management](#azure-api-management)
+   - [Azure Active Directory B2C](#azure-active-directory-b2c)
 5. [Testing](#testing)
    - [Unit Testing](#unit-testing)
    - [Integration Testing](#integration-testing)
@@ -582,8 +587,6 @@ This section provides an overview of the technologies, frameworks, and libraries
 
   - #### [C#](https://learn.microsoft.com/en-us/dotnet/csharp/)
     We used C# as our primary programming language due to its modern features, strong typing, and excellent support for object-oriented programming principles.
-  - #### [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started)
-    A serverless compute service that enables you to run code without managing infrastructure, allowing us to build event-driven, scalable, and cost-effective applications for the presentation layer.
   - #### [MediatR](https://github.com/jbogard/MediatR)
     A simple, unambitious mediator implementation in .NET that helps in implementing the Mediator pattern for in-process messaging.
   - #### [FluentValidation](https://docs.fluentvalidation.net/en/latest/)
@@ -597,11 +600,27 @@ This section provides an overview of the technologies, frameworks, and libraries
   - #### [Autofac](https://autofac.org/)
     An open-source IoC (Inversion of Control) container for .NET, enabling dependency injection and improving maintainability and testability of the code.
     The decision to use Autofac over [MSDI](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection) was driven by its performance, advanced features like Module registration, flexibility, and strong community support. While MSDI is a suitable choice for many applications, Autofac's capabilities make it a more attractive option for our project, which has more complex requirements and dependencies.
-  - #### [Azure Service Bus](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
-    A fully-managed enterprise integration message broker, used for decoupling applications and services and improving the overall resilience and reliability of the system.
   - #### [Newtonsoft.Json](https://www.newtonsoft.com/json)
     A popular high-performance JSON framework for .NET, chosen for its flexibility and feature set that provides better control over serialization and deserialization compared to [System.Text.Json](https://learn.microsoft.com/en-us/dotnet/api/system.text.json).
     
     Newtonsoft.Json was chosen over STJ due to its compatibility with the broader .NET ecosystem, rich feature set, ease of use, and proven maturity and stability. While STJ has its advantages, particularly in terms of performance, Newtonsoft.Json's capabilities and flexibility make it a more suitable choice for our project's requirements. 
     
     However, we remain open to replacing Newtonsoft.Json with STJ in the future if STJ evolves to better support our project's needs and provides comparable features and flexibility. By carefully decoupling our project from specific technologies, we have designed the system to be adaptable and capable of accommodating such changes with minimal disruption.
+
+## Azure Services and Technologies
+Our project leverages several Azure services and technologies. Below is a list of the key Azure services and technologies we used in the project:
+
+  - #### [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started)
+    A serverless compute service that enables you to run code without managing infrastructure, allowing us to build event-driven, scalable, and cost-effective applications for the presentation layer.
+  - #### [Azure Service Bus](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
+    A fully-managed enterprise integration message broker, used for decoupling applications and services and improving the overall resilience and reliability of the system.
+  - #### [Azure Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction)
+    Azure Cosmos DB is a globally distributed, multi-model database service that provides seamless horizontal scaling and low-latency access to data. We have used Cosmos DB as our primary data store, leveraging its support for event sourcing and strong consistency.
+  - #### [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview)
+    Azure Key Vault is a cloud service for securely storing and accessing secrets, such as encryption keys and certificates. In our project, we use Azure Key Vault to store and manage sensitive information, such as connection strings and API keys, enhancing the security of our application.
+  - #### [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
+    Azure Application Insights is an application performance management service that provides insights into the performance and usage of our application. We use Application Insights to monitor and diagnose issues in real-time, ensuring a reliable and high-performing experience for our users.
+  - #### [Azure API Management](https://learn.microsoft.com/en-us/azure/api-management/api-management-key-concepts)
+    Azure API Management is a fully managed service that enables us to create, publish, and manage APIs for our microservices. With API Management, we can define and enforce policies, monitor usage, and gain insights into API performance, ensuring a secure and efficient APIs.
+  - #### [Azure Active Directory B2C](https://learn.microsoft.com/en-us/azure/active-directory-b2c/)
+    Azure AD B2C is a comprehensive identity management service that provides secure access to our application. It enables users to sign in with their preferred social, enterprise, or local account identities, while providing advanced features like multi-factor authentication and single sign-on.
