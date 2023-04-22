@@ -624,3 +624,152 @@ Our project leverages several Azure services and technologies. Below is a list o
     Azure API Management is a fully managed service that enables us to create, publish, and manage APIs for our microservices. With API Management, we can define and enforce policies, monitor usage, and gain insights into API performance, ensuring a secure and efficient APIs.
   - #### [Azure Active Directory B2C](https://learn.microsoft.com/en-us/azure/active-directory-b2c/)
     Azure AD B2C is a comprehensive identity management service that provides secure access to our application. It enables users to sign in with their preferred social, enterprise, or local account identities, while providing advanced features like multi-factor authentication and single sign-on.
+
+## Testing
+This section provides an overview of the testing methodologies and tools used in our solution.
+
+  - #### Unit Testing
+    Unit testing is a crucial aspect of software development, allowing developers to ensure that individual units of code behave correctly and meet their requirements. In this project, we have implemented unit tests for the domain and application layers, which are the primary layers concerning the business logic. The infrastructure and presentation layers are covered by higher-level tests, such as integration and end-to-end tests.
+
+    We have focused on testing the following aspects in our domain and application layers:
+    
+      - Domain events being published as expected
+      - Proper enforcement of business rules
+      - Correct handling of commands and policies
+      
+    Here are some examples of our unit tests:
+    
+      - Domain Layer:
+      
+        - Testing Domain Events
+        
+          In this example, we test the proper behavior of the `AcceptInvoice` method in our `Invoice` aggregate by first ensuring that an `InvoiceAcceptedDomainEvent` is published when the invoice is successfully accepted.
+      
+          ``` csharp
+          [Fact]
+          public async void AcceptInvoice_Given_Valid_Input_Should_Successfully_Accept_Invoice_And_Publish_Event()
+          {
+              // Arrange
+              var product = new ProductBuilder().Build();
+              var repository = Substitute.For<IAggregateRepository>();
+              repository.LoadAsync<Product, ProductId>(product.Id).Returns(product);
+          
+              var invoice = await new InvoiceBuilder()
+                  .ClearItems()
+                  .SetAggregateRepository(repository)
+                  .BuildAsync();
+              await invoice.PayAsync();
+          
+              // Act
+              await invoice.AcceptAsync();
+          
+              // Assert
+              Assert.Equal(InvoiceStatus.Accepted, invoice.Status);
+              AssertPublishedDomainEvent<InvoiceAcceptedDomainEvent>(invoice);
+          }
+          ```
+          
+        - Testing Business Rules
+        
+          In this example, we verify that a business error is thrown when trying to accept an `Invoice` that has not been paid.
+          
+          ``` csharp
+          [Fact]
+          public async Task AcceptInvoice_Given_NotPaidInvoice_Should_Throw_Business_Error()
+          {
+              // Arrange
+              var product = new ProductBuilder().Build();
+              var repository = Substitute.For<IAggregateRepository>();
+              repository.LoadAsync<Product, ProductId>(product.Id).Returns(product);
+          
+              var invoice = await new InvoiceBuilder()
+                  .ClearItems()
+                  .SetAggregateRepository(repository)
+                  .BuildAsync();
+          
+              // Act, Assert
+              await AssertViolatedRuleAsync<OnlyPaidInvoiceCanBeAcceptedRule>(async () =>
+              {
+                  await invoice.AcceptAsync();
+              });
+          }
+          ```
+          
+      - Application Layer:
+      
+        In this example, we test that the `EnqueueProjectingReadModelInvoiceAcceptedPolicyHandler` enqueues a `ProjectInvoiceReadModelCommand` with the correct InvoiceId when handling the `InvoiceAcceptedPolicy`.
+        
+        ``` csharp
+        [Fact]
+        public async Task EnqueueProjectingReadModelInvoiceAcceptedPolicyHandler_Should_Enqueue_ProjectInvoiceReadModelCommand()
+        {
+            // Arrange
+            var commandsScheduler = Substitute.For<ICommandsScheduler>();
+            var handler = new EnqueueProjectingReadModelInvoiceAcceptedPolicyHandler(commandsScheduler);
+            var policy = new InvoiceAcceptedPolicyBuilder().Build();
+        
+            // Act
+            await handler.Handle(policy, CancellationToken.None);
+        
+            // Assert
+            await commandsScheduler
+                .Received(1)
+                .EnqueueAsync(Arg.Is<ProjectInvoiceReadModelCommand>(c => c.InvoiceId == policy.DomainEvent.InvoiceId));
+        }
+        ```     
+        
+  - #### Integration Testing
+    Integration testing is an important part of the testing process, allowing developers to test the interactions between different components or subsystems to ensure they work correctly together. In this project, we followed [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Kamil+Grzybek%27s+approach)](https://twitter.com/kamgrzybek/status/1280770569475182592) to integration testing, focusing on the application layer as the entry point for our tests, rather than testing the presentation layer with HTTP requests.
+    
+    
+    <p align="center" width="100%">
+    <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/233802841-b3d6b1f1-555e-4015-8325-5e9e89a2a340.png">
+    </p>
+
+    According to the approach, testing at the application layer level provides a higher level of abstraction and allows for a more business-driven approach, as it enables writing tests for each use case in the system. This method can also accommodate various adapters, such as integration event handling, background job processing, and CLI commands handling.
+    
+    Here's an example of an integration test based on Kamil's approach, which ensures that making a purchase behaves as expected and all properties match the expected values:
+    
+      ``` csharp
+      [Fact]
+      public async Task MakePurchase_PurchaseShouldBeMade_AndAllPropertiesShouldMatch()
+      {
+          await _testFixture.ResetAsync();
+
+          var date = DateTimeOffset.UtcNow;
+          Clock.SetCustomDate(date);
+          var customerId = CustomerId.New();
+          var purchaseId = PurchaseId.New();
+
+          // Create Customer 
+          var createCustomerCommand = new CreateCustomerCommandBuilder()
+              .SetCustomerId(customerId)
+              .Build();
+          await _invoker.CommandAsync(createCustomerCommand);
+
+          // Make Purchase
+          var makePurchaseCommand = new MakePurchaseCommandBuilder()
+              .SetPurchaseId(purchaseId)
+              .SetCustomerId(customerId)
+              .Build();
+          await _invoker.CommandAsync(makePurchaseCommand);
+
+          // Project ReadModels
+          await _testFixture.ProcessOutboxMessagesAsync();
+
+          // Purchase Query
+          var query = new GetPurchaseInfoQuery(purchaseId, customerId);
+          var purchase = await _invoker.QueryAsync(query);
+
+          // Assert
+          Assert.NotNull(purchase);
+          Assert.Equal(purchaseId.Value, purchase.PurchaseId);
+          Assert.Equal(createCustomerCommand.CustomerId, purchase.CustomerId);
+          Assert.Equal(createCustomerCommand.FirstName, purchase.CustomerFirstName);
+          Assert.Equal(createCustomerCommand.LastName, purchase.CustomerLastName);
+          Assert.Equal(makePurchaseCommand.Amount, purchase.Amount);
+          Assert.Equal(date, purchase.Date);
+      }
+      ```  
+      
+      This test demonstrates how our system components interact at the application layer, providing confidence that they are working together correctly. Integration tests play a critical role in identifying issues that may not be evident through unit testing alone.
