@@ -55,8 +55,10 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
    - [Unit Testing](#unit-testing)
    - [Integration Testing](#integration-testing)
    - [Testing Tools and Patterns](#testing-tools-and-patterns)
+      - [xUnit](#xunit)
       - [Builder Pattern](#builder-pattern)
       - [DB Sandboxing](#db-sandboxing)
+      - [Mocking Library](#mocking-library)
       - [Shared Context](#shared-context)
 6. [CI/CD Pipeline and Deployment](#cicd-pipeline-and-deployment)
    - [GitHub Actions](#github-actions)
@@ -817,6 +819,9 @@ This section provides an overview of the testing methodologies and tools used in
 
   - #### Testing Tools and Patterns
 
+    - #### [xUnit](https://www.amazon.com/gp/product/0131495054/)
+      The project utilizes xUnit as its testing framework. xUnit is a popular and widely used open-source testing framework for .NET, designed to enable a range of testing scenarios with a clean and easy-to-understand syntax. It provides features like Fact and Theory attributes, Assert methods, and other testing utilities that enable developers to create comprehensive and robust test suites.
+
     - #### **Builder Pattern**
 
       In the project, the Builder pattern was employed to facilitate the creation of complex objects, making it easy to set up test data with default or customized values. This pattern proved helpful in maintaining the readability and simplicity of test code while allowing the fine-tuning of object properties as needed.
@@ -849,6 +854,9 @@ This section provides an overview of the testing methodologies and tools used in
       
     - #### DB Sandboxing
       A custom method `ResetAsync` was utilized to ensure database isolation for each test case. By clearing the database and resetting any custom settings, a clean and controlled environment was provided for each test run, preventing tests from interfering with one another.      
+      
+    - #### Mocking Library
+      [`NSubstitute`](https://github.com/nsubstitute/NSubstitute) is employed as the mocking library for the project. `NSubstitute` is a friendly and lightweight .NET mocking library designed for ease of use and readability. It enables developers to create mock objects for interfaces or classes, configure their behavior, and verify that expected interactions have occurred during the tests.
       
     - #### Shared Context
       A useful resource for understanding how to share setup and cleanup code across test classes is [the xUnit article](https://xunit.net/docs/shared-context) titled "Shared Context between Tests". This article explains various methods for sharing test context, including Constructor and Dispose, Class Fixtures, and Collection Fixtures, depending on the desired scope and the costs associated with the setup and cleanup code.
@@ -894,3 +902,53 @@ This section provides an overview of the testing methodologies and tools used in
         - FakeAccessor
         
           The `FakeAccessor` was designed to simulate the behavior of an actual user who originated the request. In the application, a real user accessor would retrieve the user's ID and other related information from the current request context. In the test environment, the `FakeAccessor` provided a controlled way to generate and manage fake user information. It offered methods for managing its state, allowing the test environment to have predictable and isolated user-related data.
+
+          ``` csharp
+          class FakeAccessor : IUserAccessor
+          {
+              private FakeAccessor()
+              {
+              }
+          
+              public static FakeAccessor Instance = new();
+          
+              private static Guid _userId;
+              private static void ResetUserId()
+              {
+                  _userId = Guid.NewGuid();
+              }
+              public Guid UserId => _userId;
+          
+              private static string _fullName;
+              private static void ResetFullName()
+              {
+                  _fullName = Guid.NewGuid().ToString();
+              }
+              public string FullName => _fullName;
+          
+              public string TcpConnectionId => Guid.NewGuid().ToString();
+          
+              private Guid _storedUserId;
+              private string _storedFullName;
+          
+              internal void SaveState()
+              {
+                  _storedUserId = _userId;
+                  _storedFullName = _fullName;
+          
+                  Reset();
+              }
+          
+              internal void RestoreState()
+              {
+                  _userId = _storedUserId;
+                  _fullName = _storedFullName;
+              }
+          
+              internal static void Reset()
+              {
+                  ResetUserId();
+                  ResetFullName();
+              }
+          }
+          ```
