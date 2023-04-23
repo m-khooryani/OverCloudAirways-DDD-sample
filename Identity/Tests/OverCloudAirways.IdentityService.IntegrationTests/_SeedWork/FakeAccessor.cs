@@ -30,7 +30,7 @@ class FakeAccessor : IUserAccessor
     private Guid _storedUserId;
     private string _storedFullName;
 
-    internal void Destroy()
+    internal void SaveState()
     {
         _storedUserId = _userId;
         _storedFullName = _fullName;
@@ -38,7 +38,7 @@ class FakeAccessor : IUserAccessor
         Reset();
     }
 
-    internal void Rebuild()
+    internal void RestoreState()
     {
         _userId = _storedUserId;
         _fullName = _storedFullName;
