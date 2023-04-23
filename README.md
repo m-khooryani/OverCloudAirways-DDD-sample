@@ -55,6 +55,9 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
    - [Unit Testing](#unit-testing)
    - [Integration Testing](#integration-testing)
    - [Testing Tools and Patterns](#testing-tools-and-patterns)
+      - [Builder Pattern](#builder-pattern)
+      - [DB Sandboxing](#db-sandboxing)
+      - [Shared Context](#shared-context)
 6. [CI/CD Pipeline and Deployment](#cicd-pipeline-and-deployment)
    - [GitHub Actions](#github-actions)
    - [Deployment Process](#deployment-process)
@@ -811,3 +814,83 @@ This section provides an overview of the testing methodologies and tools used in
     <p align="center" width="100%">
     <img width="526" alt="image" src="https://user-images.githubusercontent.com/7968282/233826976-dbd8e7ac-0673-4396-a166-b19c363bdab4.png">
     </p>
+
+  - #### Testing Tools and Patterns
+
+    - #### **Builder Pattern**
+
+      In the project, the Builder pattern was employed to facilitate the creation of complex objects, making it easy to set up test data with default or customized values. This pattern proved helpful in maintaining the readability and simplicity of test code while allowing the fine-tuning of object properties as needed.
+      
+      [This article](https://ardalis.com/improve-tests-with-the-builder-pattern-for-test-data/) is a valuable resource to learn more about this pattern and its application in testing.
+      ``` csharp
+      public class CustomerLoyaltyPointsCollectedDomainEventBuilder
+      {
+          private CustomerId _customerId = CustomerId.New();
+          private decimal _loyaltyPoints = 100M;
+      
+          public CustomerLoyaltyPointsCollectedDomainEvent Build()
+          {
+              return new CustomerLoyaltyPointsCollectedDomainEvent(_customerId, _loyaltyPoints);
+          }
+      
+          public CustomerLoyaltyPointsCollectedDomainEventBuilder SetCustomerId(CustomerId customerId)
+          {
+              _customerId = customerId;
+              return this;
+          }
+      
+          public CustomerLoyaltyPointsCollectedDomainEventBuilder SetLoyaltyPoints(decimal loyaltyPoints)
+          {
+              _loyaltyPoints = loyaltyPoints;
+              return this;
+          }
+      }
+      ```
+      
+    - #### DB Sandboxing
+      A custom method `ResetAsync` was utilized to ensure database isolation for each test case. By clearing the database and resetting any custom settings, a clean and controlled environment was provided for each test run, preventing tests from interfering with one another.      
+      
+    - #### Shared Context
+      A useful resource for understanding how to share setup and cleanup code across test classes is [the xUnit article](https://xunit.net/docs/shared-context) titled "Shared Context between Tests". This article explains various methods for sharing test context, including Constructor and Dispose, Class Fixtures, and Collection Fixtures, depending on the desired scope and the costs associated with the setup and cleanup code.
+      
+      Collection Fixtures, as used in the project, enable shared object instances across multiple test classes. By leveraging Collection Fixtures, test classes can share setup and cleanup code, leading to more efficient and maintainable test suites. The article provides valuable insights into the different methods for sharing test context and offers guidance on how to apply these approaches in practice.
+      ``` csharp
+      [Collection("CRM")]
+      public class PurchaseTests
+      {
+         .
+         .
+         .
+      }
+      ```
+      
+    - #### Test Doubles
+      Test doubles, such as the `Clock` and `FakeAccessor` classes, were implemented to replace real implementations with controlled versions during testing. This enabled the project to isolate specific behaviors and ensure the system under test behaved as expected.
+      
+        - Clock
+        
+          The `Clock` class provided methods to set a custom date and reset it, giving control over the current time during tests.
+          
+          ``` csharp
+          public static class Clock
+          {
+              private static DateTimeOffset? _customDate;
+          
+              public static DateTimeOffset Now => _customDate ?? DateTime.UtcNow;
+              public static DateOnly Today => DateOnly.FromDateTime(_customDate?.DateTime ?? DateTime.UtcNow);
+          
+              public static void SetCustomDate(DateTimeOffset customDate)
+              {
+                  _customDate = customDate;
+              }
+          
+              public static void Reset()
+              {
+                  _customDate = null;
+              }
+          }
+          ```
+          
+        - FakeAccessor
+        
+          The `FakeAccessor` was designed to simulate the behavior of an actual user who originated the request. In the application, a real user accessor would retrieve the user's ID and other related information from the current request context. In the test environment, the `FakeAccessor` provided a controlled way to generate and manage fake user information. It offered methods for managing its state, allowing the test environment to have predictable and isolated user-related data.
