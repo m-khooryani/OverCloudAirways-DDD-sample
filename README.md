@@ -773,3 +773,41 @@ This section provides an overview of the testing methodologies and tools used in
       ```  
       
       This test demonstrates how our system components interact at the application layer, providing confidence that they are working together correctly. Integration tests play a critical role in identifying issues that may not be evident through unit testing alone.
+
+    **Logging**
+    
+    In the project, we've implemented configurable logging within the integration testing environment to provide better insight into the test execution and help with diagnosing issues during the testing process. To achieve this, we have utilized a custom `LoggerFactory` that allows filtering log messages based on their source and log level.
+
+    Here's a snippet of the `GetLoggerFactory` method that demonstrates the configuration:
+    ``` csharp
+    private static LoggerFactory GetLoggerFactory()
+    {
+        return new LoggerFactory(new[]
+        {
+            new LogToActionLoggerProvider(
+                new Dictionary<string, LogLevel>()
+                {
+                    { "Default", LogLevel.Information },
+                    { "Microsoft", LogLevel.Warning },
+                },
+                log =>
+                {
+                    try
+                    {
+                        Output?.WriteLine(log);
+                    }
+                    catch
+                    { }
+                }
+            )
+        });
+    }
+    ```  
+    
+    In this method, we create a new `LoggerFactory` instance and configure it with a custom `LogToActionLoggerProvider`. This logger provider takes a dictionary that maps the source of the log messages to the minimum log level that should be output. For instance, in this configuration, we have set the "Default" source to output logs with a minimum log level of `Information`, while the "Microsoft" source is set to output logs with a minimum log level of `Warning`.
+    
+    By using this configurable logging setup, we can control the verbosity of the logs generated during the integration tests and selectively filter log messages based on their source and log level, making it easier to identify and diagnose issues that may arise during the test execution.
+    
+    <p align="center" width="100%">
+    <img width="526" alt="image" src="https://user-images.githubusercontent.com/7968282/233826976-dbd8e7ac-0673-4396-a166-b19c363bdab4.png">
+    </p>
