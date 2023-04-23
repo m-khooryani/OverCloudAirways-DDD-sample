@@ -89,7 +89,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.PaymentService.IntegrationEvents", "Payment\Src\OverCloudAirways.PaymentService.IntegrationEvents\OverCloudAirways.PaymentService.IntegrationEvents.csproj", "{734279C1-5C97-40F3-B9D0-F6F419F4A30D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.IntegrationEvents", "CRM\Src\OverCloudAirways.CrmService.IntegrationEvents\OverCloudAirways.CrmService.IntegrationEvents.csproj", "{1DA40FB5-244B-49CA-8DD1-316E6A75487D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.CrmService.IntegrationEvents", "CRM\Src\OverCloudAirways.CrmService.IntegrationEvents\OverCloudAirways.CrmService.IntegrationEvents.csproj", "{1DA40FB5-244B-49CA-8DD1-316E6A75487D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.BookingService.API", "Booking\Src\OverCloudAirways.BookingService.API\OverCloudAirways.BookingService.API.csproj", "{FD832C4C-9AA9-4087-BE5C-1BC58E38F562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -217,6 +219,10 @@ Global
 		{1DA40FB5-244B-49CA-8DD1-316E6A75487D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DA40FB5-244B-49CA-8DD1-316E6A75487D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DA40FB5-244B-49CA-8DD1-316E6A75487D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD832C4C-9AA9-4087-BE5C-1BC58E38F562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD832C4C-9AA9-4087-BE5C-1BC58E38F562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD832C4C-9AA9-4087-BE5C-1BC58E38F562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD832C4C-9AA9-4087-BE5C-1BC58E38F562}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,6 +267,7 @@ Global
 		{B9BD4D01-E412-4797-B263-A9C01DAC1F1C} = {AF74634C-BB86-460E-96D6-C765FDA23755}
 		{734279C1-5C97-40F3-B9D0-F6F419F4A30D} = {BAF46004-5238-4BB8-A41E-32BD2E0F59DF}
 		{1DA40FB5-244B-49CA-8DD1-316E6A75487D} = {AF74634C-BB86-460E-96D6-C765FDA23755}
+		{FD832C4C-9AA9-4087-BE5C-1BC58E38F562} = {8DE471EB-49A7-490F-9F95-08912DBA0FED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}

@@ -56,7 +56,7 @@ public class PurchaseTests
         // Assert
         Assert.NotNull(purchase);
         Assert.Equal(purchaseId.Value, purchase.PurchaseId);
-        Assert.Equal(createCustomerCommand.CustomerId.Value, purchase.CustomerId);
+        Assert.Equal(createCustomerCommand.CustomerId, purchase.CustomerId);
         Assert.Equal(createCustomerCommand.FirstName, purchase.CustomerFirstName);
         Assert.Equal(createCustomerCommand.LastName, purchase.CustomerLastName);
         Assert.Equal(makePurchaseCommand.Amount, purchase.Amount);
