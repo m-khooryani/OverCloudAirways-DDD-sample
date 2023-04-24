@@ -1,0 +1,31 @@
+name: Deploy to Azure Function App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '7.0.x' 
+
+    - name: Build and publish
+      run: |
+        dotnet build --configuration Release ./Booking/Src/OverCloudAirways.BookingService.API/OverCloudAirways.BookingService.API.csproj
+        dotnet publish --configuration Release --output ./output ./Booking/Src/OverCloudAirways.BookingService.API/OverCloudAirways.BookingService.API.csproj
+
+    - name: Deploy to Azure Function App
+      uses: Azure/functions-action@v1
+      with:
+        app-name: OverCloudAirways.BookingService.API
+        package: ./output
+        publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
