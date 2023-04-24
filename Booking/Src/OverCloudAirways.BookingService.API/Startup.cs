@@ -12,10 +12,10 @@ public class Startup : FunctionsStartup
     {
         builder.Services.AddHttpClient();
 
-        builder.Services.AddSingleton<IMyService>((s) => {
-            return new MyService();
-        });
+        //builder.Services.AddSingleton<IMyService>((s) => {
+        //    return new MyService();
+        //});
 
-        builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
+        //builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
     }
 }
