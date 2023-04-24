@@ -28,4 +28,4 @@ jobs:
       with:
         app-name: sample-appfunc
         package: ./output
-        publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
