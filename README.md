@@ -633,9 +633,9 @@ Our project leverages several Azure services and technologies. Below is a list o
 ## Testing
 This section provides an overview of the testing methodologies and tools used in our solution.
 
-<p align="center" width="100%">
-    <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235439374-6c997fcc-24c1-4edc-a3b8-d8d7a1a83e97.png">
-    </p>
+  <p align="center" width="100%">
+  <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235441386-0490d735-8238-4d3d-b2b6-2849ab4668ab.png">
+  </p>
 
   - #### Unit Testing
     Unit testing is a crucial aspect of software development, allowing developers to ensure that individual units of code behave correctly and meet their requirements. In this project, we have implemented unit tests for the domain and application layers, which are the primary layers concerning the business logic. The infrastructure and presentation layers are covered by higher-level tests, such as integration and end-to-end tests.
