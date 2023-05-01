@@ -14,7 +14,7 @@ public class Function1
         _logger = loggerFactory.CreateLogger<Function1>();
     }
 
-    [Function("Function1")]
+    [Function("Function1Identity")]
     public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
