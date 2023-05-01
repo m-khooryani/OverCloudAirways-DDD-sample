@@ -78,6 +78,10 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
 
 > "Domain-driven design is an approach to software development that centers the development on programming a domain model that has a rich understanding of the processes and rules of a domain." - Eric Evans, author of the book "Domain-Driven Design: Tackling Complexity in the Heart of Software"
 
+  <p align="center" width="100%">
+  <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235445663-12fc56e5-b4bc-47e0-9619-7682bf2550f4.png">
+  </p>
+
   OverCloudAirways employs Domain-Driven Design (DDD) principles to build a solid foundation for the system's architecture. We chose DDD for this project because it provides a proven set of practices and patterns for tackling complexity in software systems, allowing us to create a maintainable and scalable solution that serves as a valuable learning resource for developers.
   By adhering to DDD principles, OverCloudAirways aims to provide a maintainable and scalable solution that serves as a valuable learning resource for developers.
 
