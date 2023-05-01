@@ -575,6 +575,8 @@ Organizing the codebase into separate projects or folders for each layer, improv
 
 ### Composition Root
 
+![image](https://user-images.githubusercontent.com/7968282/235443476-5912683f-4e0e-4815-8b55-201c00c39c7e.png)
+
 The Composition Root is a design pattern that refers to the place in an application where all of the dependencies between components are wired together. It is typically implemented in the infrastructure layer of the application and is responsible for setting up and configuring the various components that make up the application.
 
 In the sample code, the CompositionRoot class serves as the Composition Root for the application. It has a Initialize method that takes a list of Module objects as input and registers them with an inversion of control (IoC) container using the ContainerBuilder class from the Autofac library. The Module objects define how the components in the application should be wired together and how they should be configured.
