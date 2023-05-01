@@ -28,6 +28,7 @@ public class Function1
         response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
         response.WriteString("Welcome to Azure Functions! (Identity)");
+        response.WriteString($"Config: {_configuration["FUNCTIONS_EXTENSION_VERSION"]}");
 
         return response;
     }
