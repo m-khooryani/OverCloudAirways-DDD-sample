@@ -1,16 +1,21 @@
 using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace OverCloudAirways.IdentityService.API;
 
 public class Function1
 {
+    private readonly IConfiguration _configuration;
     private readonly ILogger _logger;
 
-    public Function1(ILoggerFactory loggerFactory)
+    public Function1(
+        IConfiguration configuration,
+        ILoggerFactory loggerFactory)
     {
+        _configuration = configuration;
         _logger = loggerFactory.CreateLogger<Function1>();
     }
 
