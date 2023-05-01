@@ -18,10 +18,15 @@ jobs:
       with:
         dotnet-version: '7.0.x' 
 
-    - name: Build and publish
+    - name: Build and publish Booking Service
       run: |
         dotnet build --configuration Release ./Booking/Src/OverCloudAirways.BookingService.API/OverCloudAirways.BookingService.API.csproj
         dotnet publish --configuration Release --output ./output ./Booking/Src/OverCloudAirways.BookingService.API/OverCloudAirways.BookingService.API.csproj
+        
+    - name: Build and publish Identity Service
+      run: |
+        dotnet build --configuration Release ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
+        dotnet publish --configuration Release --output ./output ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
 
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1
