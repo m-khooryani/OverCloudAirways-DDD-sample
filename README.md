@@ -633,6 +633,10 @@ Our project leverages several Azure services and technologies. Below is a list o
 ## Testing
 This section provides an overview of the testing methodologies and tools used in our solution.
 
+<p align="center" width="100%">
+    <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235439374-6c997fcc-24c1-4edc-a3b8-d8d7a1a83e97.png">
+    </p>
+
   - #### Unit Testing
     Unit testing is a crucial aspect of software development, allowing developers to ensure that individual units of code behave correctly and meet their requirements. In this project, we have implemented unit tests for the domain and application layers, which are the primary layers concerning the business logic. The infrastructure and presentation layers are covered by higher-level tests, such as integration and end-to-end tests.
 
@@ -724,6 +728,15 @@ This section provides an overview of the testing methodologies and tools used in
         ```     
         
   - #### Integration Testing
+    Unit tests are crucial in ensuring that individual components or parts of a system function correctly in isolation. However, they don't provide insights into how these components interact with each other. To use an analogy, think of a car made up of numerous parts. While it is important to test each part separately, it is equally important to ensure that all parts work well together when assembled.
+    
+    <p align="center" width="100%">
+    <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235440221-49d34dd4-7123-4957-9a2c-3e1b6c26a635.png">
+    </p>
+    <p align="center" width="100%">
+    <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235440234-25b03c14-ae96-40b2-9b24-b3a69732e008.png">
+    </p>
+  
     Integration testing is an important part of the testing process, allowing developers to test the interactions between different components or subsystems to ensure they work correctly together. In this project, we followed [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Kamil+Grzybek%27s+approach)](https://twitter.com/kamgrzybek/status/1280770569475182592) to integration testing, focusing on the application layer as the entry point for our tests, rather than testing the presentation layer with HTTP requests.
     
     
