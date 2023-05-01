@@ -34,6 +34,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Event-Driven Architecture](#event-driven-architecture)
       - [Event-Driven Distributed Transactions Example](#event-driven-distributed-transactions-example)
    - [Clean Architecture](#clean-architecture)
+   - [Composition Root](#composition-root)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
@@ -571,6 +572,76 @@ Organizing the codebase into separate projects or folders for each layer, improv
 <p align="center" width="100%">
       <img alt="image" src="https://user-images.githubusercontent.com/7968282/232602570-fbc3d8c6-24e7-410b-b475-48ad5ab4f59c.png">
 </p>
+
+### Composition Root
+
+The Composition Root is a design pattern that refers to the place in an application where all of the dependencies between components are wired together. It is typically implemented in the infrastructure layer of the application and is responsible for setting up and configuring the various components that make up the application.
+
+In the sample code, the CompositionRoot class serves as the Composition Root for the application. It has a Initialize method that takes a list of Module objects as input and registers them with an inversion of control (IoC) container using the ContainerBuilder class from the Autofac library. The Module objects define how the components in the application should be wired together and how they should be configured.
+
+This initializes the Composition Root with the specified Module objects. The Module objects can be used to define the dependencies between components in the application and how they should be configured.
+
+One benefit of using the Composition Root design pattern is that it allows different implementations of services to be easily swapped in and out depending on the environment in which the application is running. This can be especially useful for integration tests and API environments, where different implementations of services may be needed.
+
+For example, consider an application that has a IUserRepository interface that defines the contract for a repository that stores user data. The application may have different implementations of this interface for different environments, such as a UserRepository class that uses a database to store user data, and a MockUserRepository class that stores user data in memory for use in integration tests.
+
+By using the Composition Root pattern, these different implementations can be registered with the IoC container and swapped in and out as needed. For example, the UserRepository class could be registered in the production environment, while the MockUserRepository class could be registered in the integration test environment.
+
+To do this, the different implementations of the IUserRepository interface could be defined as Module classes, and then passed to the CompositionRoot.Initialize method as needed. For example:
+
+```csharp
+// Production environment
+CompositionRoot.Initialize(new ProductionModule());
+
+// Integration test environment
+CompositionRoot.Initialize(new TestModule());
+
+```
+
+This allows the application to easily switch between different implementations of services without changing the code that depends on those services.
+
+```csharp
+
+public static class CompositionRoot
+{
+    private static IContainer _container;
+
+    public static void Initialize(params Module[] modules)
+    {
+        var containerBuilder = new ContainerBuilder();
+
+        foreach (var module in modules)
+        {
+            containerBuilder.RegisterModule(module);
+        }
+
+        _container = containerBuilder.Build();
+    }
+
+    public static ILifetimeScope BeginLifetimeScope()
+    {
+        return _container.BeginLifetimeScope();
+    }
+}
+```
+
+Usage:
+
+```csharp
+CompositionRoot.Initialize(
+    assemblyLayersModule,
+    processingModule,
+    mediatorModule,
+    unitOfWorkModule,
+    loggingModule,
+    contextAccessorModule,
+    domainServiceModule,
+    retryPolicyModule,
+    azureServiceBusModule,
+    cosmosModule);
+
+```
+
 
 ## Key Features and Components
 
