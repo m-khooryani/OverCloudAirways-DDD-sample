@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "OverCloudAirways.IdentityService.API": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7246",
+      "launchBrowser": false
+    }
+  }
+}
