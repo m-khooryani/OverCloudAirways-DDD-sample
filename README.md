@@ -695,10 +695,17 @@ Our project leverages several Azure services and technologies. Below is a list o
   - #### [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started)
     A serverless compute service that enables you to run code without managing infrastructure, allowing us to build event-driven, scalable, and cost-effective applications for the presentation layer.
   - #### [Azure Service Bus](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
+  
+    ![image](https://user-images.githubusercontent.com/7968282/235447105-b3824062-dedd-461a-a86b-881585c9fdc6.png)
+
     A fully-managed enterprise integration message broker, used for decoupling applications and services and improving the overall resilience and reliability of the system.
   - #### [Azure Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction)
     Azure Cosmos DB is a globally distributed, multi-model database service that provides seamless horizontal scaling and low-latency access to data. We have used Cosmos DB as our primary data store, leveraging its support for event sourcing and strong consistency.
   - #### [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview)
+    <p align="center" width="100%">
+    <img width="500" alt="image" src="https://user-images.githubusercontent.com/7968282/235447448-c66dab75-c165-44e7-beb5-f914a7acc718.png">
+    </p>
+
     Azure Key Vault is a cloud service for securely storing and accessing secrets, such as encryption keys and certificates. In our project, we use Azure Key Vault to store and manage sensitive information, such as connection strings and API keys, enhancing the security of our application.
   - #### [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
     Azure Application Insights is an application performance management service that provides insights into the performance and usage of our application. We use Application Insights to monitor and diagnose issues in real-time, ensuring a reliable and high-performing experience for our users.
