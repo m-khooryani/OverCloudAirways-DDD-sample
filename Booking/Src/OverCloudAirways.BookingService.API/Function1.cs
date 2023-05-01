@@ -3,28 +3,27 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
-namespace OverCloudAirways.BookingService.API
+namespace OverCloudAirways.BookingService.API;
+
+public class Function1
 {
-    public class Function1
+    private readonly ILogger _logger;
+
+    public Function1(ILoggerFactory loggerFactory)
     {
-        private readonly ILogger _logger;
+        _logger = loggerFactory.CreateLogger<Function1>();
+    }
 
-        public Function1(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<Function1>();
-        }
+    [Function("Function1")]
+    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+    {
+        _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        [Function("Function1")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
-        {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+        response.WriteString("Welcome to Azure Functions!");
 
-            response.WriteString("Welcome to Azure Functions!");
-
-            return response;
-        }
+        return response;
     }
 }
