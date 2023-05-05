@@ -357,11 +357,14 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
 
 
 ### CQRS
+
   CQRS is an architectural pattern that promotes the separation of concerns by dividing a system's operations into two distinct categories: Commands and Queries. Commands are responsible for making changes to the system's state, while Queries are responsible for reading data from the system without altering its state.
 
 The CQRS pattern brings several benefits to software systems, including improved scalability, maintainability, and flexibility. By segregating command and query responsibilities, developers can optimize each side independently to cater to the system's specific needs. This separation also makes it easier to reason about the system, as the roles and responsibilities of each component are clearly defined.
 
 In the OverCloudAirways project, we have implemented the CQRS pattern to effectively manage the complexities of our domain while ensuring high performance and a robust architecture.
+
+<img width="945" alt="image" src="https://user-images.githubusercontent.com/7968282/236449324-d278ea57-dc52-4b73-bdfd-24d86ea12c64.png">
 
 - #### Commands 
   Commands are the part of the CQRS pattern responsible for changing the system's state. They represent the intent to perform an action, and typically contain the necessary data to carry out that action. Commands should be named in an imperative form, reflecting the desired outcome of the operation.
