@@ -380,6 +380,8 @@ In the OverCloudAirways project, we have implemented the CQRS pattern to effecti
   
 - #### Command Validators
   Command Validators are responsible for ensuring that the data provided in a command is valid and adheres to the business rules before the command is executed. This helps maintain data integrity and prevents invalid operations from being performed in the system.
+  
+  ![image](https://user-images.githubusercontent.com/7968282/236455019-a8fe5a6c-9981-47e3-94c0-45cc1d599cea.png)
 
   In the OverCloudAirways project, we use the [FluentValidation](https://docs.fluentvalidation.net/en/latest/) library to create validators for our commands. One example is the `RegisterBuyerCommandValidator`, which validates the data in the `RegisterBuyerCommand`:
 
