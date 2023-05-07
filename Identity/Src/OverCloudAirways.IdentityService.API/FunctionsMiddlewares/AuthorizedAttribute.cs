@@ -3,7 +3,7 @@
 [AttributeUsage(AttributeTargets.Method)]
 public class AuthorizedAttribute : Attribute
 {
-    public IReadOnlyList<string> Roles { get; init; }
+    public IReadOnlySet<string> Roles { get; init; }
 
     public AuthorizedAttribute(string role, params string[] roles)
     {
@@ -11,6 +11,6 @@ public class AuthorizedAttribute : Attribute
         {
             role
         };
-        Roles = list;
+        Roles = list.ToHashSet();
     }
 }

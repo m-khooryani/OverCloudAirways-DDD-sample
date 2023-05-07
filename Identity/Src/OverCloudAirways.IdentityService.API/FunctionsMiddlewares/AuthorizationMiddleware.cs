@@ -11,7 +11,7 @@ namespace OverCloudAirways.IdentityService.API.FunctionsMiddlewares;
 internal class AuthorizationMiddleware : IFunctionsWorkerMiddleware
 {
     private readonly ILogger<AuthorizationMiddleware> _logger;
-    private readonly ConcurrentDictionary<string, MethodInfo> _methodInfoCache = new();
+    private readonly ConcurrentDictionary<string, AuthorizedAttribute> _authorizedAttributeCache = new();
 
     public AuthorizationMiddleware(ILogger<AuthorizationMiddleware> logger)
     {
@@ -20,46 +20,41 @@ internal class AuthorizationMiddleware : IFunctionsWorkerMiddleware
 
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
-        try
-        {
-            string functionEntryPoint = context.FunctionDefinition.EntryPoint;
-            MethodInfo methodInfo = GetMethodInfo(functionEntryPoint);
+        var functionEntryPoint = context.FunctionDefinition.EntryPoint;
+        var functionAuthorizeAttribute = GetAuthorizedAttribute(functionEntryPoint);
 
-            if (methodInfo.GetCustomAttribute(typeof(AuthorizedAttribute), false) is AuthorizedAttribute functionAuthorizeAttribute)
-            {
-                if (context.Items.TryGetValue("UserRole", out object userRole) && userRole is string role)
-                {
-                    if (!functionAuthorizeAttribute.Roles.Contains(role, StringComparer.InvariantCultureIgnoreCase))
-                    {
-                        await SetUnauthorizedResponse(context, "Forbidden Access.");
-                        return;
-                    }
-                }
-                else
-                {
-                    await SetUnauthorizedResponse(context, "Forbidden Access.");
-                    return;
-                }
-            }
-        }
-        catch (Exception ex)
+        if (functionAuthorizeAttribute != null)
         {
-            _logger.LogCritical("Unhandled exception: {exception}", ex.Message);
-            await SetUnauthorizedResponse(context, string.Empty);
-            return;
+            if (context.Items.TryGetValue("UserRole", out object userRole) && userRole is string role &&
+                functionAuthorizeAttribute.Roles.Contains(role, StringComparer.InvariantCultureIgnoreCase))
+            {
+                await next(context);
+                return;
+            }
+
+            await SetUnauthorizedResponse(context, "Forbidden Access.");
         }
-        await next(context);
+        else
+        {
+            await next(context);
+        }
     }
 
-    private MethodInfo GetMethodInfo(string functionEntryPoint)
+    private static MethodInfo GetMethodInfo(string functionEntryPoint)
     {
-        return _methodInfoCache.GetOrAdd(functionEntryPoint, entryPoint =>
+        var parts = functionEntryPoint.Split('.');
+        var typeName = string.Join('.', parts, 0, parts.Length - 1);
+        var methodName = parts[^1];
+        var assemblyType = Type.GetType(typeName);
+        return assemblyType.GetMethod(methodName);
+    }
+
+    private AuthorizedAttribute GetAuthorizedAttribute(string functionEntryPoint)
+    {
+        return _authorizedAttributeCache.GetOrAdd(functionEntryPoint, entryPoint =>
         {
-            var parts = entryPoint.Split('.');
-            var typeName = string.Join('.', parts, 0, parts.Length - 1);
-            var methodName = parts[^1];
-            var assemblyType = Type.GetType(typeName);
-            return assemblyType.GetMethod(methodName);
+            var methodInfo = GetMethodInfo(entryPoint);
+            return methodInfo.GetCustomAttribute(typeof(AuthorizedAttribute), false) as AuthorizedAttribute;
         });
     }
 

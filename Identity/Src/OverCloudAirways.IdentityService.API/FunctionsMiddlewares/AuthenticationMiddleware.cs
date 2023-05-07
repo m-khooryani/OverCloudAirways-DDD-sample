@@ -72,7 +72,7 @@ internal class AuthenticationMiddleware : IFunctionsWorkerMiddleware
         }
         catch (Exception)
         {
-            await SetUnauthenticatedResponse(context, "Authorization Failed");
+            await SetUnauthenticatedResponse(context, "Authentication Failed");
             return;
         }
 
