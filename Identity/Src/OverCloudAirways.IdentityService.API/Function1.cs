@@ -22,6 +22,7 @@ public class Function1
     [Function("Function1Identity")]
     public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
     {
+        throw new NotImplementedException();
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
         var response = req.CreateResponse(HttpStatusCode.OK);
