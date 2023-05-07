@@ -4,12 +4,14 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Reflection;
+using System.Collections.Concurrent;
 
 namespace OverCloudAirways.IdentityService.API.FunctionsMiddlewares;
 
 internal class AuthorizationMiddleware : IFunctionsWorkerMiddleware
 {
     private readonly ILogger<AuthorizationMiddleware> _logger;
+    private readonly ConcurrentDictionary<string, MethodInfo> _methodInfoCache = new();
 
     public AuthorizationMiddleware(ILogger<AuthorizationMiddleware> logger)
     {
@@ -21,13 +23,12 @@ internal class AuthorizationMiddleware : IFunctionsWorkerMiddleware
         try
         {
             string functionEntryPoint = context.FunctionDefinition.EntryPoint;
-            Type assemblyType = Type.GetType(functionEntryPoint.Substring(0, functionEntryPoint.LastIndexOf('.')));
-            MethodInfo methodInfo = assemblyType.GetMethod(functionEntryPoint.Substring(functionEntryPoint.LastIndexOf('.') + 1));
+            MethodInfo methodInfo = GetMethodInfo(functionEntryPoint);
+
             if (methodInfo.GetCustomAttribute(typeof(AuthorizedAttribute), false) is AuthorizedAttribute functionAuthorizeAttribute)
             {
-                if (context.Items.ContainsKey("UserRole") && context.Items["UserRole"] != null)
+                if (context.Items.TryGetValue("UserRole", out object userRole) && userRole is string role)
                 {
-                    var role = context.Items["UserRole"].ToString();
                     if (!functionAuthorizeAttribute.Roles.Contains(role, StringComparer.InvariantCultureIgnoreCase))
                     {
                         await SetUnauthorizedResponse(context, "Forbidden Access.");
@@ -48,6 +49,18 @@ internal class AuthorizationMiddleware : IFunctionsWorkerMiddleware
             return;
         }
         await next(context);
+    }
+
+    private MethodInfo GetMethodInfo(string functionEntryPoint)
+    {
+        return _methodInfoCache.GetOrAdd(functionEntryPoint, entryPoint =>
+        {
+            var parts = entryPoint.Split('.');
+            var typeName = string.Join('.', parts, 0, parts.Length - 1);
+            var methodName = parts[^1];
+            var assemblyType = Type.GetType(typeName);
+            return assemblyType.GetMethod(methodName);
+        });
     }
 
     private async Task SetUnauthorizedResponse(FunctionContext context, string message)

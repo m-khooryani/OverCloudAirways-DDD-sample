@@ -21,7 +21,7 @@ public class Function1
     }
 
     [Function("Function1Identity")]
-    [Authorized("Admi")]
+    [Authorized("Admin")]
     public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
     {
         throw new NotImplementedException();
