@@ -34,6 +34,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Event-Driven Architecture](#event-driven-architecture)
       - [Event-Driven Distributed Transactions Example](#event-driven-distributed-transactions-example)
    - [Clean Architecture](#clean-architecture)
+   - [Composition Root](#composition-root)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
@@ -76,6 +77,10 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
 ### Domain-Driven Design (DDD)
 
 > "Domain-driven design is an approach to software development that centers the development on programming a domain model that has a rich understanding of the processes and rules of a domain." - Eric Evans, author of the book "Domain-Driven Design: Tackling Complexity in the Heart of Software"
+
+  <p align="center" width="100%">
+  <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235445663-12fc56e5-b4bc-47e0-9619-7682bf2550f4.png">
+  </p>
 
   OverCloudAirways employs Domain-Driven Design (DDD) principles to build a solid foundation for the system's architecture. We chose DDD for this project because it provides a proven set of practices and patterns for tackling complexity in software systems, allowing us to create a maintainable and scalable solution that serves as a valuable learning resource for developers.
   By adhering to DDD principles, OverCloudAirways aims to provide a maintainable and scalable solution that serves as a valuable learning resource for developers.
@@ -352,11 +357,14 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
 
 
 ### CQRS
+
   CQRS is an architectural pattern that promotes the separation of concerns by dividing a system's operations into two distinct categories: Commands and Queries. Commands are responsible for making changes to the system's state, while Queries are responsible for reading data from the system without altering its state.
 
 The CQRS pattern brings several benefits to software systems, including improved scalability, maintainability, and flexibility. By segregating command and query responsibilities, developers can optimize each side independently to cater to the system's specific needs. This separation also makes it easier to reason about the system, as the roles and responsibilities of each component are clearly defined.
 
 In the OverCloudAirways project, we have implemented the CQRS pattern to effectively manage the complexities of our domain while ensuring high performance and a robust architecture.
+
+<img width="945" alt="image" src="https://user-images.githubusercontent.com/7968282/236449324-d278ea57-dc52-4b73-bdfd-24d86ea12c64.png">
 
 - #### Commands 
   Commands are the part of the CQRS pattern responsible for changing the system's state. They represent the intent to perform an action, and typically contain the necessary data to carry out that action. Commands should be named in an imperative form, reflecting the desired outcome of the operation.
@@ -372,6 +380,8 @@ In the OverCloudAirways project, we have implemented the CQRS pattern to effecti
   
 - #### Command Validators
   Command Validators are responsible for ensuring that the data provided in a command is valid and adheres to the business rules before the command is executed. This helps maintain data integrity and prevents invalid operations from being performed in the system.
+  
+  ![image](https://user-images.githubusercontent.com/7968282/236455019-a8fe5a6c-9981-47e3-94c0-45cc1d599cea.png)
 
   In the OverCloudAirways project, we use the [FluentValidation](https://docs.fluentvalidation.net/en/latest/) library to create validators for our commands. One example is the `RegisterBuyerCommandValidator`, which validates the data in the `RegisterBuyerCommand`:
 
@@ -572,6 +582,78 @@ Organizing the codebase into separate projects or folders for each layer, improv
       <img alt="image" src="https://user-images.githubusercontent.com/7968282/232602570-fbc3d8c6-24e7-410b-b475-48ad5ab4f59c.png">
 </p>
 
+### Composition Root
+
+![image](https://user-images.githubusercontent.com/7968282/235443476-5912683f-4e0e-4815-8b55-201c00c39c7e.png)
+
+The Composition Root is a design pattern that refers to the place in an application where all of the dependencies between components are wired together. It is typically implemented in the infrastructure layer of the application and is responsible for setting up and configuring the various components that make up the application.
+
+In the sample code, the CompositionRoot class serves as the Composition Root for the application. It has a Initialize method that takes a list of Module objects as input and registers them with an inversion of control (IoC) container using the ContainerBuilder class from the Autofac library. The Module objects define how the components in the application should be wired together and how they should be configured.
+
+This initializes the Composition Root with the specified Module objects. The Module objects can be used to define the dependencies between components in the application and how they should be configured.
+
+One benefit of using the Composition Root design pattern is that it allows different implementations of services to be easily swapped in and out depending on the environment in which the application is running. This can be especially useful for integration tests and API environments, where different implementations of services may be needed.
+
+For example, consider an application that has a IUserRepository interface that defines the contract for a repository that stores user data. The application may have different implementations of this interface for different environments, such as a UserRepository class that uses a database to store user data, and a MockUserRepository class that stores user data in memory for use in integration tests.
+
+By using the Composition Root pattern, these different implementations can be registered with the IoC container and swapped in and out as needed. For example, the UserRepository class could be registered in the production environment, while the MockUserRepository class could be registered in the integration test environment.
+
+To do this, the different implementations of the IUserRepository interface could be defined as Module classes, and then passed to the CompositionRoot.Initialize method as needed. For example:
+
+```csharp
+// Production environment
+CompositionRoot.Initialize(new ProductionModule());
+
+// Integration test environment
+CompositionRoot.Initialize(new TestModule());
+
+```
+
+This allows the application to easily switch between different implementations of services without changing the code that depends on those services.
+
+```csharp
+
+public static class CompositionRoot
+{
+    private static IContainer _container;
+
+    public static void Initialize(params Module[] modules)
+    {
+        var containerBuilder = new ContainerBuilder();
+
+        foreach (var module in modules)
+        {
+            containerBuilder.RegisterModule(module);
+        }
+
+        _container = containerBuilder.Build();
+    }
+
+    public static ILifetimeScope BeginLifetimeScope()
+    {
+        return _container.BeginLifetimeScope();
+    }
+}
+```
+
+Usage:
+
+```csharp
+CompositionRoot.Initialize(
+    assemblyLayersModule,
+    processingModule,
+    mediatorModule,
+    unitOfWorkModule,
+    loggingModule,
+    contextAccessorModule,
+    domainServiceModule,
+    retryPolicyModule,
+    azureServiceBusModule,
+    cosmosModule);
+
+```
+
+
 ## Key Features and Components
 
 This section highlights some of the key features and components of our project that differentiate it from other solutions and showcase our architectural decisions.
@@ -618,10 +700,17 @@ Our project leverages several Azure services and technologies. Below is a list o
   - #### [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-get-started)
     A serverless compute service that enables you to run code without managing infrastructure, allowing us to build event-driven, scalable, and cost-effective applications for the presentation layer.
   - #### [Azure Service Bus](https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
+  
+    ![image](https://user-images.githubusercontent.com/7968282/235447105-b3824062-dedd-461a-a86b-881585c9fdc6.png)
+
     A fully-managed enterprise integration message broker, used for decoupling applications and services and improving the overall resilience and reliability of the system.
   - #### [Azure Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction)
     Azure Cosmos DB is a globally distributed, multi-model database service that provides seamless horizontal scaling and low-latency access to data. We have used Cosmos DB as our primary data store, leveraging its support for event sourcing and strong consistency.
   - #### [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview)
+    <p align="center" width="100%">
+    <img width="500" alt="image" src="https://user-images.githubusercontent.com/7968282/235447448-c66dab75-c165-44e7-beb5-f914a7acc718.png">
+    </p>
+
     Azure Key Vault is a cloud service for securely storing and accessing secrets, such as encryption keys and certificates. In our project, we use Azure Key Vault to store and manage sensitive information, such as connection strings and API keys, enhancing the security of our application.
   - #### [Azure Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
     Azure Application Insights is an application performance management service that provides insights into the performance and usage of our application. We use Application Insights to monitor and diagnose issues in real-time, ensuring a reliable and high-performing experience for our users.
@@ -632,6 +721,10 @@ Our project leverages several Azure services and technologies. Below is a list o
 
 ## Testing
 This section provides an overview of the testing methodologies and tools used in our solution.
+
+  <p align="center" width="100%">
+  <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235441386-0490d735-8238-4d3d-b2b6-2849ab4668ab.png">
+  </p>
 
   - #### Unit Testing
     Unit testing is a crucial aspect of software development, allowing developers to ensure that individual units of code behave correctly and meet their requirements. In this project, we have implemented unit tests for the domain and application layers, which are the primary layers concerning the business logic. The infrastructure and presentation layers are covered by higher-level tests, such as integration and end-to-end tests.
@@ -724,6 +817,15 @@ This section provides an overview of the testing methodologies and tools used in
         ```     
         
   - #### Integration Testing
+    Unit tests are crucial in ensuring that individual components or parts of a system function correctly in isolation. However, they don't provide insights into how these components interact with each other. To use an analogy, think of a car made up of numerous parts. While it is important to test each part separately, it is equally important to ensure that all parts work well together when assembled.
+    
+    <p align="center" width="100%">
+    <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235440221-49d34dd4-7123-4957-9a2c-3e1b6c26a635.png">
+    </p>
+    <p align="center" width="100%">
+    <img width="449" alt="image" src="https://user-images.githubusercontent.com/7968282/235440234-25b03c14-ae96-40b2-9b24-b3a69732e008.png">
+    </p>
+  
     Integration testing is an important part of the testing process, allowing developers to test the interactions between different components or subsystems to ensure they work correctly together. In this project, we followed [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Kamil+Grzybek%27s+approach)](https://twitter.com/kamgrzybek/status/1280770569475182592) to integration testing, focusing on the application layer as the entry point for our tests, rather than testing the presentation layer with HTTP requests.
     
     
