@@ -3,6 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OverCloudAirways.IdentityService.API.FunctionsMiddlewares;
 
 namespace OverCloudAirways.IdentityService.API;
 
@@ -20,6 +21,7 @@ public class Function1
     }
 
     [Function("Function1Identity")]
+    [Authorized("Admi")]
     public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
     {
         throw new NotImplementedException();

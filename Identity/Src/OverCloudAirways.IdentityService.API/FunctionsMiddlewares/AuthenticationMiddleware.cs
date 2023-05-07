@@ -32,14 +32,14 @@ internal class AuthenticationMiddleware : IFunctionsWorkerMiddleware
         {
             if (!context.BindingContext.BindingData.ContainsKey("Headers"))
             {
-                await SetUnauthorizedResponse(context, "Authorization header not found.");
+                await SetUnauthenticatedResponse(context, "Authorization header not found.");
                 return;
             }
             var headers = JsonConvert.DeserializeObject<Dictionary<string, string>>((string)context.BindingContext.BindingData["Headers"]);
 
             if (!headers.ContainsKey("Authorization"))
             {
-                await SetUnauthorizedResponse(context, "Authorization header not found.");
+                await SetUnauthenticatedResponse(context, "Authorization header not found.");
                 return;
             }
             var authorization = AuthenticationHeaderValue.Parse(headers["Authorization"]);
@@ -52,12 +52,11 @@ internal class AuthenticationMiddleware : IFunctionsWorkerMiddleware
 
             var config = await configManager.GetConfigurationAsync();
 
+            // Note: this is a simplified token validation!
             var validationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = false,
-                //ValidIssuer = "to be added",
                 ValidateAudience = false,
-                //ValidAudience = "to be added",
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
                 ValidateIssuerSigningKey = true,
@@ -71,18 +70,18 @@ internal class AuthenticationMiddleware : IFunctionsWorkerMiddleware
                 .SingleOrDefault(x => x.Type.ToLower() == "abc");
             context.Items.Add("UserRole", role is null ? "Admin" : role.Value);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            await SetUnauthorizedResponse(context, e.Message);
+            await SetUnauthenticatedResponse(context, "Authorization Failed");
             return;
         }
 
         await next(context);
     }
 
-    private async Task SetUnauthorizedResponse(FunctionContext context, string message)
+    private async Task SetUnauthenticatedResponse(FunctionContext context, string message)
     {
-        _logger.LogWarning($"Authorization failed: {message}");
+        _logger.LogWarning($"Authentication failed: {message}");
         var httpRequestData = await context.GetHttpRequestDataAsync();
         var response = httpRequestData.CreateResponse();
 
