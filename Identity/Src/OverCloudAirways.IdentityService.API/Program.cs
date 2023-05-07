@@ -5,12 +5,14 @@ using OverCloudAirways.IdentityService.API;
 var host = new HostBuilder()
     .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
     {
-        configurationBuilder.AddEnvironmentVariables();
+        configurationBuilder
+            .AddEnvironmentVariables()
+            .AddUserSecrets<Startup>();
     })
     .ConfigureFunctionsWorkerDefaults(workerApplicationBuilder =>
     {
         workerApplicationBuilder.UseMiddleware<LoggingMiddleware>();
-        workerApplicationBuilder.UseMiddleware<AuthorizationMiddleware>();
+        workerApplicationBuilder.UseMiddleware<AuthenticationMiddleware>();
     })
     .Build();
 
