@@ -13,6 +13,7 @@ jobs:
       DOTNET_VERSION: '7.0.x'
       BOOKING_OUTPUT_DIR: './booking_output'
       IDENTITY_OUTPUT_DIR: './identity_output'
+      GRAPH_INTEGRATION_OUTPUT_DIR: './identity_output'
 
     steps:
     - name: Checkout repository
@@ -32,6 +33,11 @@ jobs:
       run: |
         dotnet build --configuration Release ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
         dotnet publish --configuration Release --output ${{ env.IDENTITY_OUTPUT_DIR }} ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
+        
+    - name: Build and publish Identity Graph Integration
+      run: |
+        dotnet build --configuration Release ./Identity/Src/OverCloudAirways.IdentityService.API.GraphIntegration/OverCloudAirways.IdentityService.API.GraphIntegration.csproj
+        dotnet publish --configuration Release --output ${{ env.GRAPH_INTEGRATION_OUTPUT_DIR }} ./Identity/Src/OverCloudAirways.IdentityService.API.GraphIntegration/OverCloudAirways.IdentityService.API.GraphIntegration.csproj
 
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1
