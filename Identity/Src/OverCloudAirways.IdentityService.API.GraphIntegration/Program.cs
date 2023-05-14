@@ -6,8 +6,7 @@ var host = new HostBuilder()
     .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
     {
         configurationBuilder
-            .AddEnvironmentVariables()
-            .AddUserSecrets<Startup>();
+            .AddEnvironmentVariables();
     })
     .ConfigureFunctionsWorkerDefaults()
     .Build();
