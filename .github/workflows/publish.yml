@@ -13,7 +13,7 @@ jobs:
       DOTNET_VERSION: '7.0.x'
       BOOKING_OUTPUT_DIR: './booking_output'
       IDENTITY_OUTPUT_DIR: './identity_output'
-      GRAPH_INTEGRATION_OUTPUT_DIR: './identity_output'
+      GRAPH_INTEGRATION_OUTPUT_DIR: './identity_graph_output'
 
     steps:
     - name: Checkout repository
@@ -52,3 +52,10 @@ jobs:
         app-name: overcloudairways-identity
         package: ${{ env.IDENTITY_OUTPUT_DIR }}
         publish-profile: ${{ secrets.OVERCLOUDAIRWAYSIDENTITYFUNCTION_PUBLISHSETTINGS }}
+        
+    - name: Deploy Identity Graph Integration to Azure Function App
+      uses: Azure/functions-action@v1
+      with:
+        app-name: overcloudairways-identity-graph-integration
+        package: ${{ env.GRAPH_INTEGRATION_OUTPUT_DIR }}
+        publish-profile: ${{ secrets.OVERCLOUDAIRWAYSIDENTITYGRAPHINTEGRATIONFUNCTION_PUBLISHSETTINGS }}
