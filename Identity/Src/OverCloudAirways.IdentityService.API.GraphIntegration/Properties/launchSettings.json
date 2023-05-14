@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "OverCloudAirways.IdentityService.API.GraphIntegration": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7060",
+      "launchBrowser": false
+    }
+  }
+}
