@@ -13,7 +13,7 @@ jobs:
       DOTNET_VERSION: '7.0.x'
       BOOKING_OUTPUT_DIR: './booking_output'
       IDENTITY_OUTPUT_DIR: './identity_output'
-      GRAPH_INTEGRATION_OUTPUT_DIR: './identity_output'
+      GRAPH_INTEGRATION_OUTPUT_DIR: './identity_graph_output'
 
     steps:
     - name: Checkout repository
