@@ -8,6 +8,11 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
+    env:
+      DOTNET_VERSION: '7.0.x'
+      BOOKING_OUTPUT_DIR: './booking_output'
+      IDENTITY_OUTPUT_DIR: './identity_output'
 
     steps:
     - name: Checkout repository
@@ -16,28 +21,28 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '7.0.x' 
+        dotnet-version: ${{ env.DOTNET_VERSION }} 
 
     - name: Build and publish Booking Service
       run: |
         dotnet build --configuration Release ./Booking/Src/OverCloudAirways.BookingService.API/OverCloudAirways.BookingService.API.csproj
-        dotnet publish --configuration Release --output ./output ./Booking/Src/OverCloudAirways.BookingService.API/OverCloudAirways.BookingService.API.csproj
+        dotnet publish --configuration Release --output ${{ env.BOOKING_OUTPUT_DIR }} ./Booking/Src/OverCloudAirways.BookingService.API/OverCloudAirways.BookingService.API.csproj
         
     - name: Build and publish Identity Service
       run: |
         dotnet build --configuration Release ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
-        dotnet publish --configuration Release --output ./output ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
+        dotnet publish --configuration Release --output ${{ env.IDENTITY_OUTPUT_DIR }} ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
 
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1
       with:
-        app-name: sample-appfunc
-        package: ./output
+        app-name: overcloudairways-booking
+        package: ${{ env.BOOKING_OUTPUT_DIR }}
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
         
     - name: Deploy Identity to Azure Function App
       uses: Azure/functions-action@v1
       with:
-        app-name: OverCloudAirwaysIdentityFunction
-        package: ./output
+        app-name: overcloudairways-identity
+        package: ${{ env.IDENTITY_OUTPUT_DIR }}
         publish-profile: ${{ secrets.OVERCLOUDAIRWAYSIDENTITYFUNCTION_PUBLISHSETTINGS }}
