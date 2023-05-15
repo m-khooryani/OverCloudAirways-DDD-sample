@@ -95,7 +95,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.BookingSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.IdentityService.API", "Identity\Src\OverCloudAirways.IdentityService.API\OverCloudAirways.IdentityService.API.csproj", "{65C3608C-39D1-4B29-AF6B-424F899AF360}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.IdentityService.API.GraphIntegration", "Identity\Src\OverCloudAirways.IdentityService.API.GraphIntegration\OverCloudAirways.IdentityService.API.GraphIntegration.csproj", "{7BE2FBF8-71AC-4858-BB8F-4D44F42BAAAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.IdentityService.API.GraphIntegration", "Identity\Src\OverCloudAirways.IdentityService.API.GraphIntegration\OverCloudAirways.IdentityService.API.GraphIntegration.csproj", "{7BE2FBF8-71AC-4858-BB8F-4D44F42BAAAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
