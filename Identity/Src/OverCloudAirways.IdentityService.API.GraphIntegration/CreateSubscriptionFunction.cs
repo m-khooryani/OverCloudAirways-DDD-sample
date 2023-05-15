@@ -33,6 +33,7 @@ namespace OverCloudAirways.IdentityService.API.GraphIntegration
             {
                 _logger.LogError("Error:");
                 _logger.LogError(ex.ToString());
+                throw;
             }
         }
 
