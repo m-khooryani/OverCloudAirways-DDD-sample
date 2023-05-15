@@ -25,7 +25,15 @@ namespace OverCloudAirways.IdentityService.API.GraphIntegration
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
-            await CreateOrExtendSubscriptionAsync();
+            try
+            {
+                await CreateOrExtendSubscriptionAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error:");
+                _logger.LogError(ex.ToString());
+            }
         }
 
         private async Task CreateOrExtendSubscriptionAsync()
