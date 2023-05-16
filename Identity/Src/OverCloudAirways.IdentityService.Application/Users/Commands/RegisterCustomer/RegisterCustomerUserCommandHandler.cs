@@ -4,18 +4,22 @@ using OverCloudAirways.IdentityService.Domain.Users;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;
 
-internal class RegisterUserCommandHandler : CommandHandler<RegisterUserCommand>
+internal class RegisterCustomerUserCommandHandler : CommandHandler<RegisterCustomerUserCommand>
 {
     private readonly IAggregateRepository _aggregateRepository;
 
-    public RegisterUserCommandHandler(IAggregateRepository aggregateRepository)
+    public RegisterCustomerUserCommandHandler(IAggregateRepository aggregateRepository)
     {
         _aggregateRepository = aggregateRepository;
     }
 
-    public override Task HandleAsync(RegisterUserCommand command, CancellationToken cancellationToken)
+    public override Task HandleAsync(RegisterCustomerUserCommand command, CancellationToken cancellationToken)
     {
-        var user = User.Register(command.UserId, command.Name);
+        var user = User.Register(
+            command.UserId, 
+            UserType.Customer,
+            command.GivenName,
+            command.Surname);
 
         _aggregateRepository.Add(user);
 

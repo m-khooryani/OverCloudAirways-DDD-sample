@@ -3,11 +3,11 @@ using OverCloudAirways.BuildingBlocks.Application.Validators;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;
 
-internal class RegisterUserCommandValidator : CommandValidator<RegisterUserCommand>
+internal class RegisterCustomerUserCommandValidator : CommandValidator<RegisterCustomerUserCommand>
 {
-    public RegisterUserCommandValidator()
+    public RegisterCustomerUserCommandValidator()
     {
-        RuleFor(cmd => cmd.Name)
+        RuleFor(cmd => cmd.GivenName)
             .NotEmpty()
             .MinimumLength(5);
     }

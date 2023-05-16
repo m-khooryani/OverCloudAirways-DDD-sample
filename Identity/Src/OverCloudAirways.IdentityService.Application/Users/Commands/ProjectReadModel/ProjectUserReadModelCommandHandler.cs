@@ -21,7 +21,7 @@ internal class ProjectUserReadModelCommandHandler : CommandHandler<ProjectUserRe
     public override async Task HandleAsync(ProjectUserReadModelCommand command, CancellationToken cancellationToken)
     {
         var aggregate = await _aggregateRepository.LoadAsync<User, UserId>(command.UserId);
-        var readModel = new UserReadModel(aggregate.Id.Value, aggregate.Name);
+        var readModel = new UserReadModel(aggregate.Id.Value, aggregate.GivenName);
 
         await _cosmosManager.UpsertAsync(ContainersConstants.User, readModel);
     }

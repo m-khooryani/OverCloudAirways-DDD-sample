@@ -1,1 +1,1 @@
-﻿public record UserDto(Guid Id, string Name);
+﻿public record UserDto(Guid Id, string GivenName);

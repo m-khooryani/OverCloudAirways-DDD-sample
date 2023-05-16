@@ -26,9 +26,10 @@ public class UserTests
         await _testFixture.ResetAsync();
 
         var userId = UserId.New();
-        var username = "admin";
+        var givenName = "admin given name";
+        var surname = "admin surname";
 
-        var registerUserCommand = new RegisterUserCommand(userId, username);
+        var registerUserCommand = new RegisterCustomerUserCommand(userId, givenName, surname);
         await _invoker.CommandAsync(registerUserCommand);
 
         // Process Registered Policy
@@ -42,6 +43,6 @@ public class UserTests
 
         Assert.NotNull(user);
         Assert.Equal(userId.Value, user.Id);
-        Assert.Equal(username, user.Name);
+        Assert.Equal(givenName, user.GivenName);
     }
 }

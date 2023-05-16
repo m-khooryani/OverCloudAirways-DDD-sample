@@ -5,17 +5,25 @@ namespace OverCloudAirways.IdentityService.Domain.Users;
 
 public class User : AggregateRoot<UserId>
 {
-    public string Name { get; private set; }
+    public UserType UserType { get; private set; }
+    public string GivenName { get; private set; }
+    public string Surname { get; private set; }
 
     private User()
     {
     }
 
-    public static User Register(UserId id, string name)
+    public static User Register(
+        UserId id,
+        UserType userType,
+        string givenName,
+        string surname)
     {
         var @event = new UserRegisteredDomainEvent(
             id,
-            name);
+            userType,
+            givenName,
+            surname);
 
         var user = new User();
         user.Apply(@event);
@@ -26,6 +34,7 @@ public class User : AggregateRoot<UserId>
     protected void When(UserRegisteredDomainEvent @event)
     {
         Id = @event.UserId;
-        Name = @event.Name;
+        UserType = @event.UserType;
+        GivenName = @event.GivenName;
     }
 }
