@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -18,13 +17,9 @@ public class NotificationFunction
 
     [Function("notifications")]
     public IActionResult Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, 
-        [FromQuery] string validationToken)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-        _logger.LogInformation("validationToken");
-        _logger.LogInformation(validationToken);
 
         return new OkResult();
     }
