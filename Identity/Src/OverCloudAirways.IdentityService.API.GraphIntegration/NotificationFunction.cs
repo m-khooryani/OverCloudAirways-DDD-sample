@@ -20,6 +20,11 @@ public class NotificationFunction
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
+        
+        foreach (var header in req.Headers)
+        {
+            _logger.LogInformation($"Header: {header.Key} = {string.Join(", ", header.Value)}");
+        }
 
         return new OkResult();
     }
