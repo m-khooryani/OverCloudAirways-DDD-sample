@@ -1,19 +1,15 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using OverCloudAirways.IdentityService.API.GraphIntegration;
 
-[assembly: FunctionsStartup(typeof(MyNamespace.Startup))]
-namespace MyNamespace;
+[assembly: FunctionsStartup(typeof(Startup))]
+namespace OverCloudAirways.IdentityService.API.GraphIntegration;
 
-public class Startup : FunctionsStartup
+internal class Startup : FunctionsStartup
 {
     public override void Configure(IFunctionsHostBuilder builder)
     {
         builder.Services.AddHttpClient();
-
-        //builder.Services.AddSingleton<IMyService>((s) => {
-        //    return new MyService();
-        //});
-
-        //builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
     }
 }
+
