@@ -11,8 +11,8 @@ var host = new HostBuilder()
         configurationBuilder
             .AddEnvironmentVariables();
     })
-    .ConfigureServices(services =>
-    {
+    //.ConfigureServices(services =>
+    //{
         //var appConfig = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         //var instrumentationKey = appConfig.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
         //var logConfig = new LoggerConfiguration()
@@ -24,7 +24,7 @@ var host = new HostBuilder()
 
         ////var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
         //services.AddLogging(o => o.AddSerilog(logConfig.CreateLogger(), dispose: true));
-    })
+    //})
     .ConfigureFunctionsWorkerDefaults()
     .Build();
 
