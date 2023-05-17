@@ -13,17 +13,17 @@ var host = new HostBuilder()
     })
     .ConfigureServices(services =>
     {
-        var appConfig = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-        var instrumentationKey = appConfig.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
-        var logConfig = new LoggerConfiguration()
-            .MinimumLevel.Information()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.ApplicationInsights(new TelemetryConfiguration(instrumentationKey), TelemetryConverter.Traces);
+        //var appConfig = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        //var instrumentationKey = appConfig.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
+        //var logConfig = new LoggerConfiguration()
+        //    .MinimumLevel.Information()
+        //    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+        //    .Enrich.FromLogContext()
+        //    .WriteTo.Console()
+        //    .WriteTo.ApplicationInsights(new TelemetryConfiguration(instrumentationKey), TelemetryConverter.Traces);
 
-        //var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
-        services.AddLogging(o => o.AddSerilog(logConfig.CreateLogger(), dispose: true));
+        ////var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+        //services.AddLogging(o => o.AddSerilog(logConfig.CreateLogger(), dispose: true));
     })
     .ConfigureFunctionsWorkerDefaults()
     .Build();
