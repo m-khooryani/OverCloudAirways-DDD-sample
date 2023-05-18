@@ -24,7 +24,8 @@ public class NotificationFunction
     public async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        _logger.LogInformation("C# HTTP trigger function processed a request."); 
+        _logger.LogInformation("Retrieving projectId: {projectId}", 123); // just a sample log
 
         if (!IsAuthorized(req))
         {
