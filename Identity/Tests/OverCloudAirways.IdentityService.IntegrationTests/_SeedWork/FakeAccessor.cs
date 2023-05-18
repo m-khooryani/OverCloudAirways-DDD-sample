@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
+﻿using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.IdentityService.IntegrationTests._SeedWork;
 
