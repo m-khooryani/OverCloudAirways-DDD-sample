@@ -21,7 +21,7 @@ internal class LoggingMiddleware : IFunctionsWorkerMiddleware
         // Log the incoming request
         var correlationId = Guid.NewGuid();
         _logger.LogInformation("starting scope: {correlationId}", correlationId);
-        using (_logger.BeginScope(correlationId))
+        using (_logger.BeginScope("{CorrelationId}", correlationId))
         {
             _logger.LogInformation($"Function '{context.FunctionId}' is starting execution at {DateTime.UtcNow}.");
             var stopwatch = Stopwatch.StartNew();
