@@ -27,6 +27,8 @@ internal static class ApplicationModules
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddSingleton<CqrsInvoker>();
+
         var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
 
         var domainAssembly = Assembly.Load("OverCloudAirways.IdentityService.Domain");
