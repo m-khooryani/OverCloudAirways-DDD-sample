@@ -8,6 +8,7 @@
 		<UserSecretsId>584cb588-e4a3-4d3b-96c3-3715ee49e358</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Azure.AppConfiguration.Functions.Worker" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.10.0" />

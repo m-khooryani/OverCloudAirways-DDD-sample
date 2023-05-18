@@ -11,7 +11,8 @@ var host = new HostBuilder()
     .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
     {
         configurationBuilder
-            .AddEnvironmentVariables();
+            .AddEnvironmentVariables()
+            .AddUserSecrets<Program>(optional: true);
     })
     .ConfigureServices(services =>
     {
@@ -23,7 +24,8 @@ var host = new HostBuilder()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.ApplicationInsights(new TelemetryConfiguration(instrumentationKey), TelemetryConverter.Traces);
+            //.WriteTo.ApplicationInsights(new TelemetryConfiguration(instrumentationKey), TelemetryConverter.Traces)
+            ;
 
         services.AddLogging(o => o.AddSerilog(logConfig.CreateLogger(), dispose: true));
 
@@ -32,8 +34,8 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(workerApplicationBuilder =>
     {
         workerApplicationBuilder.UseMiddleware<LoggingMiddleware>();
-        workerApplicationBuilder.UseMiddleware<AuthenticationMiddleware>();
-        workerApplicationBuilder.UseMiddleware<AuthorizationMiddleware>();
+        //workerApplicationBuilder.UseMiddleware<AuthenticationMiddleware>();
+        //workerApplicationBuilder.UseMiddleware<AuthorizationMiddleware>();
     })
     .Build();
 
