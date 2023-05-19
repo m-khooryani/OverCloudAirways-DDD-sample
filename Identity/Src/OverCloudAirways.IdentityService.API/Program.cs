@@ -24,8 +24,7 @@ var host = new HostBuilder()
             .MinimumLevel.Information()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()
-            .WriteTo.Console(outputTemplate: outputTemplate)
-            ;
+            .WriteTo.Console(outputTemplate: outputTemplate);
 
         if (!context.HostingEnvironment.IsDevelopment())
         {
@@ -39,7 +38,12 @@ var host = new HostBuilder()
     })
     .ConfigureFunctionsWorkerDefaults(workerApplicationBuilder =>
     {
-        workerApplicationBuilder.UseMiddleware<LoggingMiddleware>();
+        workerApplicationBuilder.UseMiddleware<StampMiddleware>();
+        workerApplicationBuilder.UseWhen<LoggingMiddleware>((context) =>
+        {
+            return context.FunctionDefinition.InputBindings.Values
+                      .First(a => a.Type.EndsWith("Trigger")).Type == "httpTrigger";
+        });
         //workerApplicationBuilder.UseMiddleware<AuthenticationMiddleware>();
         //workerApplicationBuilder.UseMiddleware<AuthorizationMiddleware>();
     })
