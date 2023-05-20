@@ -13,6 +13,8 @@
 		<PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.10.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="4.2.1" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" Version="4.0.4" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
@@ -39,5 +41,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Functions\" />
 	</ItemGroup>
 </Project>

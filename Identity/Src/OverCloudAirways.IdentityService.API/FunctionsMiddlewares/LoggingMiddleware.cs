@@ -39,7 +39,6 @@ internal class LoggingMiddleware : IFunctionsWorkerMiddleware
         }
         finally
         {
-            // Log the response
             stopwatch.Stop();
             _logger.LogInformation($"Function '{context.FunctionId}' finished execution at {DateTime.UtcNow} with duration {stopwatch.ElapsedMilliseconds} ms.");
         }
