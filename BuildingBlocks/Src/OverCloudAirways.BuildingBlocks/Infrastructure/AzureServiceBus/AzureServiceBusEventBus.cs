@@ -71,7 +71,9 @@ internal class AzureServiceBusEventBus : IEventBus
 
     async Task IEventBus.PublishAsync(string queue, OutboxMessage outboxMessage)
     {
-        var json = _jsonSerializer.Serialize(outboxMessage);
+        var outboxMessageRef = new OutboxMessageReference(outboxMessage.Id);
+
+        var json = _jsonSerializer.Serialize(outboxMessageRef);
         var message = CreateMessage(json, outboxMessage.SessionId);
         LogMessage(queue, outboxMessage.SessionId, json);
         await SendMessageAsync(queue, message);
@@ -79,9 +81,13 @@ internal class AzureServiceBusEventBus : IEventBus
 
     async Task<string> IEventBus.ScheduleAsync(string queue, OutboxMessage outboxMessage, DateTimeOffset dateTimeOffset)
     {
-        var json = _jsonSerializer.Serialize(outboxMessage);
+        var outboxMessageRef = new OutboxMessageReference(outboxMessage.Id);
+
+        var json = _jsonSerializer.Serialize(outboxMessageRef);
         var message = CreateMessage(json, outboxMessage.SessionId);
         LogMessage(queue, outboxMessage.SessionId, json);
         return await SendMessageAsync(queue, message, dateTimeOffset);
     }
+
+    private record OutboxMessageReference(Guid OutboxMessageId);
 }
