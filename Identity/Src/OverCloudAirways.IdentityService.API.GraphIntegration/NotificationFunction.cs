@@ -4,6 +4,10 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using OverCloudAirways.BuildingBlocks.Infrastructure;
+using OverCloudAirways.IdentityService.Application.Users.Commands.Register;
+using OverCloudAirways.IdentityService.Domain.Users;
 
 namespace OverCloudAirways.IdentityService.API.GraphIntegration;
 
@@ -11,32 +15,45 @@ public class NotificationFunction
 {
     private readonly ILogger _logger;
     private readonly IConfiguration _configuration;
+    private readonly CqrsInvoker _cqrsInvoker;
 
     public NotificationFunction(
         ILoggerFactory loggerFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        CqrsInvoker cqrsInvoker)
     {
         _logger = loggerFactory.CreateLogger<NotificationFunction>();
         _configuration = configuration;
+        _cqrsInvoker = cqrsInvoker;
     }
 
     [Function("notifications")]
     public async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request."); 
-        _logger.LogInformation("Retrieving projectId: {projectId}", 123); // just a sample log
-
-        if (!IsAuthorized(req))
+        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        var correlationId = Guid.NewGuid();
+        _logger.LogInformation("starting scope: {correlationId}", correlationId);
+        using (_logger.BeginScope("{CorrelationId}", correlationId))
         {
-            _logger.LogInformation("Provided credentials are invalid.");
-            return new UnauthorizedResult();
+            if (!IsAuthorized(req))
+            {
+                _logger.LogInformation("Provided credentials are invalid.");
+                return new UnauthorizedResult();
+            }
+
+            var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            _logger.LogInformation($"Request Body: {requestBody}");
+
+            var request = JsonConvert.DeserializeObject<CreateUserRequest>(requestBody);
+
+            await _cqrsInvoker.CommandAsync(new RegisterCustomerUserCommand(
+                UserId.New(),
+                request.GivenName,
+                request.Surname));
+
+            return new OkResult();
         }
-
-        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        _logger.LogInformation($"Request Body: {requestBody}");
-
-        return new OkResult();
     }
 
     private bool IsAuthorized(HttpRequestData req)
@@ -70,5 +87,11 @@ public class NotificationFunction
             }
         }
         return false;
+    }
+
+    private class CreateUserRequest
+    {
+        public string GivenName { get; init; }
+        public string Surname { get; init; }
     }
 }

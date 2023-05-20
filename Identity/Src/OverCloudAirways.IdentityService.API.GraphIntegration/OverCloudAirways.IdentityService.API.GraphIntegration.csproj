@@ -23,6 +23,10 @@
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\OverCloudAirways.IdentityService.Application\OverCloudAirways.IdentityService.Application.csproj" />
+	  <ProjectReference Include="..\OverCloudAirways.IdentityService.Infrastructure\OverCloudAirways.IdentityService.Infrastructure.csproj" />
+	</ItemGroup>
+	<ItemGroup>
 		<None Update="host.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
