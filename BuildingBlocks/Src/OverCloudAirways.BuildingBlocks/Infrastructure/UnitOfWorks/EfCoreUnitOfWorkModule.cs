@@ -53,10 +53,10 @@ public class EfCoreUnitOfWorkModule<T> : Autofac.Module
             typeof(AppendingAggregateHistoryUnitOfWorkDecorator),
             typeof(IUnitOfWork));
         builder.RegisterDecorator(
-            typeof(CreateOutboxMessagesUnitOfWorkDecorator),
+            typeof(PublishOutboxMessagesUnitOfWorkDecorator),
             typeof(IUnitOfWork));
         builder.RegisterDecorator(
-            typeof(PublishOutboxMessagesUnitOfWorkDecorator),
+            typeof(CreateOutboxMessagesUnitOfWorkDecorator),
             typeof(IUnitOfWork));
         builder.RegisterDecorator(
             typeof(LoggingUnitOfWorkDecorator),

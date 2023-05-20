@@ -30,7 +30,8 @@ internal class PublishOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
             .ChangeTracker
             .Entries<OutboxMessage>()
             .Where(x => x.State == EntityState.Added)
-            .Select(x => x.Entity);
+            .Select(x => x.Entity)
+            .ToArray();
 
         var changes = await _decorated.CommitAsync(cancellationToken);
 
