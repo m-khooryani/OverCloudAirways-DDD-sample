@@ -42,9 +42,8 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
 
     public override async Task<Unit> HandleAsync(ProcessOutboxCommand request, CancellationToken cancellationToken)
     {
-        var messageId = Guid.Parse(request.MessageId);
         var outboxMessage = await _outboxRepository
-            .LoadAsync(messageId, cancellationToken);
+            .LoadAsync(request.MessageId, cancellationToken);
 
         if (outboxMessage is null)
         {

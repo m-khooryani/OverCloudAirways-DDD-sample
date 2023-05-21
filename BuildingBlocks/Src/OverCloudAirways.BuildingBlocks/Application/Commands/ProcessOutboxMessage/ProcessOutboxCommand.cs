@@ -2,10 +2,10 @@
 
 public record ProcessOutboxCommand : Command
 {
-    public ProcessOutboxCommand(string outboxMessageId)
+    public ProcessOutboxCommand(Guid outboxMessageId)
     {
         MessageId = outboxMessageId;
     }
 
-    public string MessageId { get; }
+    public Guid MessageId { get; }
 }
