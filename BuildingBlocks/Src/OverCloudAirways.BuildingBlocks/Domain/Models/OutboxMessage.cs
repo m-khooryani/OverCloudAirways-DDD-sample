@@ -24,8 +24,8 @@ public class OutboxMessage
 
     public static OutboxMessage Create(
         IJsonSerializer jsonSerializer,
-        DateTimeOffset occurredOn, 
-        object obj, 
+        DateTimeOffset occurredOn,
+        object obj,
         Guid? userId,
         string? tcpConnectionId,
         string? sessionId = null)
@@ -35,8 +35,8 @@ public class OutboxMessage
 
     public static OutboxMessage CreateDelayed(
         IJsonSerializer jsonSerializer,
-        DateTimeOffset occurredOn, 
-        object obj, 
+        DateTimeOffset occurredOn,
+        object obj,
         Guid? userId,
         string? tcpConnectionId,
         DateTimeOffset processingDate,
@@ -54,6 +54,7 @@ public class OutboxMessage
         DateTimeOffset? processingDate,
         string? sessionId = null)
     {
+        sessionId ??= Guid.NewGuid().ToString();
         var message = new OutboxMessage();
         message.Id = Guid.NewGuid();
         message.OccurredOn = occurredOn;
