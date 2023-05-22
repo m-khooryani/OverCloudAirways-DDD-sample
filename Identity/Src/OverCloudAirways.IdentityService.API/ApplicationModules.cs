@@ -84,6 +84,11 @@ internal static class ApplicationModules
         };
 
         var jsonModule = new NewtonsoftJsonModule(jsonSettings);
+
+        // We need the same json serializer in API
+        services.AddSingleton(jsonSettings);
+        services.AddSingleton<IJsonSerializer, NewtonsoftJsonSerializer>();
+
         var cosmosDbModule = new CosmosNewtonsoftIntegrationModule(accountEndpoint!, accountKey!, DATABASE_ID, jsonSettings);
 
         CompositionRoot.Initialize(

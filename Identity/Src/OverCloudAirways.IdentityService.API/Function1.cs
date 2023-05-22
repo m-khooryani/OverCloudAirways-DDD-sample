@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -19,16 +18,12 @@ public class Function1
 
     [Function("users")]
     [Authorized("Admin")]
-    public async Task<HttpResponseData> GetUser(
+    public async Task<UserDto> GetUser(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req,
         [FromQuery] Guid userId)
     {
         var user = await _cqrsInvoker.QueryAsync(new GetUserInfoQuery(userId));
 
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-        response.WriteString(user.GivenName);
-
-        return response;
+        return user;
     }
 }

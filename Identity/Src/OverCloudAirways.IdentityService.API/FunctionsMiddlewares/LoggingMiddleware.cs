@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.Functions.Worker.Middleware;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
+﻿using System.Diagnostics;
 using System.Net;
-using System.Diagnostics;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.Functions.Worker.Middleware;
+using Microsoft.Extensions.Logging;
 
 namespace OverCloudAirways.IdentityService.API.FunctionsMiddlewares;
 

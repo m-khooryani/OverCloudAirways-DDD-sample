@@ -3,7 +3,7 @@ using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BuildingBlocks.Infrastructure.Json;
 
-internal class NewtonsoftJsonSerializer : IJsonSerializer
+public class NewtonsoftJsonSerializer : IJsonSerializer
 {
     private readonly JsonSerializerSettings _jsonSerializerSettings;
 

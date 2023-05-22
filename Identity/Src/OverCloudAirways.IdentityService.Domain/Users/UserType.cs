@@ -21,14 +21,14 @@ public abstract class UserType : Enumeration
 
     private class CustomerUserType : UserType
     {
-        public CustomerUserType() : base(1, "Scheduled")
+        public CustomerUserType() : base(1, "Customer")
         {
         }
     }
 
     private class AdminUserType : UserType
     {
-        public AdminUserType() : base(2, "Cancelled")
+        public AdminUserType() : base(2, "Admin")
         {
         }
     }

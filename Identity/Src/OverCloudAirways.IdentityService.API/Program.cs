@@ -1,4 +1,5 @@
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -44,8 +45,11 @@ var host = new HostBuilder()
         workerApplicationBuilder.UseMiddleware<StampMiddleware>();
         workerApplicationBuilder.UseWhen<LoggingMiddleware>((context) =>
         {
-            return context.FunctionDefinition.InputBindings.Values
-                      .First(a => a.Type.EndsWith("Trigger")).Type == "httpTrigger";
+            return IsHttpTrigger(context);
+        });
+        workerApplicationBuilder.UseWhen<JsonResponseMiddleware>((context) =>
+        {
+            return IsHttpTrigger(context);
         });
         //workerApplicationBuilder.UseMiddleware<AuthenticationMiddleware>();
         //workerApplicationBuilder.UseMiddleware<AuthorizationMiddleware>();
@@ -53,3 +57,8 @@ var host = new HostBuilder()
     .Build();
 
 host.Run();
+
+static bool IsHttpTrigger(FunctionContext context)
+{
+    return context.FunctionDefinition.InputBindings.Values.First(a => a.Type.EndsWith("Trigger")).Type == "httpTrigger";
+}
