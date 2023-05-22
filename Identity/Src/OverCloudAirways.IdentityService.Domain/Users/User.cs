@@ -6,6 +6,7 @@ namespace OverCloudAirways.IdentityService.Domain.Users;
 public class User : AggregateRoot<UserId>
 {
     public UserType UserType { get; private set; }
+    public string Email { get; private set; }
     public string GivenName { get; private set; }
     public string Surname { get; private set; }
 
@@ -16,12 +17,14 @@ public class User : AggregateRoot<UserId>
     public static User Register(
         UserId id,
         UserType userType,
+        string email,
         string givenName,
         string surname)
     {
         var @event = new UserRegisteredDomainEvent(
             id,
             userType,
+            email,
             givenName,
             surname);
 
@@ -35,6 +38,8 @@ public class User : AggregateRoot<UserId>
     {
         Id = @event.UserId;
         UserType = @event.UserType;
+        Email = @event.Email;
         GivenName = @event.GivenName;
+        Surname = @event.Surname;
     }
 }

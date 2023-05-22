@@ -18,6 +18,7 @@ internal class RegisterCustomerUserCommandHandler : CommandHandler<RegisterCusto
         var user = User.Register(
             command.UserId, 
             UserType.Customer,
+            command.Email,
             command.GivenName,
             command.Surname);
 

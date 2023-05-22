@@ -202,7 +202,7 @@ public class TestFixture : IDisposable
         var context = scope.Resolve<BuildingBlocksDbContext>();
         var message = await context.OutboxMessages.OrderBy(x => x.OccurredOn).LastAsync();
 
-        await Invoker.CommandAsync(new ProcessOutboxCommand(message.Id.ToString()));
+        await Invoker.CommandAsync(new ProcessOutboxCommand(message.Id));
 
         // Check for failing. exceptions are handled by retry policy
         message = await context.OutboxMessages.Where(x => x.Id == message.Id).FirstOrDefaultAsync();

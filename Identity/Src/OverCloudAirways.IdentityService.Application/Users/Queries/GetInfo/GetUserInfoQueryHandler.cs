@@ -17,8 +17,11 @@ internal class GetUserInfoQueryHandler : QueryHandler<GetUserInfoQuery, UserDto>
     {
         var sql = @$"
                     SELECT 
-                    user.id   AS {nameof(UserDto.Id)}, 
-                    user.GivenName AS {nameof(UserDto.GivenName)} 
+                    user.UserId    AS {nameof(UserDto.Id)}, 
+                    user.UserType  AS {nameof(UserDto.UserType)}, 
+                    user.Email     AS {nameof(UserDto.Email)}, 
+                    user.GivenName AS {nameof(UserDto.GivenName)},
+                    user.Surname   AS {nameof(UserDto.Surname)}
                     FROM user 
                     WHERE 
                     user.id = @userId AND 

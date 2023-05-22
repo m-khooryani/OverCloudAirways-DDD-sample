@@ -18,7 +18,7 @@ namespace OverCloudAirways.PaymentService.Domain.UnitTests.Orders;
 public class ApplyDiscountOrderTests : Test
 {
     [Fact]
-    public async void ApplyDiscount_Given_Valid_Input_Should_Successfully_Cancel_Order_And_Publish_Event()
+    public async Task ApplyDiscount_Given_Valid_Input_Should_Successfully_Cancel_Order_And_Publish_Event()
     {
         // Arrange
         var price = 200M;
@@ -53,7 +53,7 @@ public class ApplyDiscountOrderTests : Test
     }
 
     [Fact]
-    public async void ApplyDiscount_Given_Invalid_Buyer_Should_Throw_Business_Error()
+    public async Task ApplyDiscount_Given_Invalid_Buyer_Should_Throw_Business_Error()
     {
         // Arrange
         var price = 200M;
@@ -84,7 +84,7 @@ public class ApplyDiscountOrderTests : Test
     }
 
     [Fact]
-    public async void ApplyDiscount_Given_Expired_Promotion_Should_Throw_Business_Error()
+    public async Task ApplyDiscount_Given_Expired_Promotion_Should_Throw_Business_Error()
     {
         // Arrange
         var price = 200M;

@@ -28,8 +28,9 @@ public class UserTests
         var userId = UserId.New();
         var givenName = "admin given name";
         var surname = "admin surname";
+        var email = "test@domain.com";
 
-        var registerUserCommand = new RegisterCustomerUserCommand(userId, givenName, surname);
+        var registerUserCommand = new RegisterCustomerUserCommand(userId, email, givenName, surname);
         await _invoker.CommandAsync(registerUserCommand);
 
         // Process Registered Policy
@@ -43,6 +44,9 @@ public class UserTests
 
         Assert.NotNull(user);
         Assert.Equal(userId.Value, user.Id);
+        Assert.Equal(UserType.Customer, user.UserType);
+        Assert.Equal(email, user.Email);
         Assert.Equal(givenName, user.GivenName);
+        Assert.Equal(surname, user.Surname);
     }
 }

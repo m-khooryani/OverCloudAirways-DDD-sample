@@ -49,6 +49,7 @@ public class NotificationFunction
 
             await _cqrsInvoker.CommandAsync(new RegisterCustomerUserCommand(
                 UserId.New(),
+                request.Email,
                 request.GivenName,
                 request.Surname));
 
@@ -93,5 +94,6 @@ public class NotificationFunction
     {
         public string GivenName { get; init; }
         public string Surname { get; init; }
+        public string Email { get; init; }
     }
 }
