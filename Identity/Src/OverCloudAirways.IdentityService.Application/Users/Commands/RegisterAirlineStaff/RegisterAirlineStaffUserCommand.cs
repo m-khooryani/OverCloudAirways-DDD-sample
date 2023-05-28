@@ -1,9 +1,9 @@
 ﻿using OverCloudAirways.BuildingBlocks.Application.Commands;
 using OverCloudAirways.IdentityService.Domain.Users;
 
-namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;
+namespace OverCloudAirways.IdentityService.Application.Users.Commands.RegisterAirlineStaff;
 
-public record RegisterCustomerUserCommand(
+public record RegisterAirlineStaffUserCommand(
     UserId UserId,
     string Email,
     string GivenName,

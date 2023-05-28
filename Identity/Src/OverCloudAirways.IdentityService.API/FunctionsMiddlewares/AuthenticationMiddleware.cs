@@ -67,8 +67,8 @@ internal class AuthenticationMiddleware : IFunctionsWorkerMiddleware
                 .ValidateToken(bearerToken, validationParameters, out SecurityToken validatedToken);
 
             var role = claims.Claims
-                .SingleOrDefault(x => x.Type.ToLower() == "abc");
-            context.Items.Add("UserRole", role is null ? "Admin" : role.Value);
+                .SingleOrDefault(x => x.Type.ToLower() == "extension_userrole");
+            context.Items.Add("UserRole", role is null ? "Customer" : role.Value);
         }
         catch (Exception)
         {

@@ -7,6 +7,7 @@ public abstract class UserType : Enumeration
     public static readonly UserType None = new NoneUserType();
     public static readonly UserType Customer = new CustomerUserType();
     public static readonly UserType Admin = new AdminUserType();
+    public static readonly UserType AirlineStaff = new AirlineStaffUserType();
 
     private UserType(int value, string name) : base(value, name)
     {
@@ -29,6 +30,13 @@ public abstract class UserType : Enumeration
     private class AdminUserType : UserType
     {
         public AdminUserType() : base(2, "Admin")
+        {
+        }
+    }
+
+    private class AirlineStaffUserType : UserType
+    {
+        public AirlineStaffUserType() : base(3, "AirlineStaff")
         {
         }
     }

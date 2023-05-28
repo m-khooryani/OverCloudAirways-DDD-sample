@@ -2,9 +2,8 @@
 
 namespace OverCloudAirways.IdentityService.Domain.Users.Events;
 
-public record UserRegisteredDomainEvent(
+public record CustomerUserRegisteredDomainEvent(
     UserId UserId,
-    UserType UserType,
     string Email,
     string GivenName,
     string Surname,

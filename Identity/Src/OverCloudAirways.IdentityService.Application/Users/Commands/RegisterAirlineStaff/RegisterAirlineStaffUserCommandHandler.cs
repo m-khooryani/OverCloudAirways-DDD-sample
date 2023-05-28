@@ -2,21 +2,22 @@
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.IdentityService.Domain.Users;
 
-namespace OverCloudAirways.IdentityService.Application.Users.Commands.Register;
+namespace OverCloudAirways.IdentityService.Application.Users.Commands.RegisterAirlineStaff;
 
-internal class RegisterCustomerUserCommandHandler : CommandHandler<RegisterCustomerUserCommand>
+internal class RegisterAirlineStaffUserCommandHandler : CommandHandler<RegisterAirlineStaffUserCommand>
 {
     private readonly IAggregateRepository _aggregateRepository;
 
-    public RegisterCustomerUserCommandHandler(IAggregateRepository aggregateRepository)
+    public RegisterAirlineStaffUserCommandHandler(IAggregateRepository aggregateRepository)
     {
         _aggregateRepository = aggregateRepository;
     }
 
-    public override Task HandleAsync(RegisterCustomerUserCommand command, CancellationToken cancellationToken)
+    public override Task HandleAsync(RegisterAirlineStaffUserCommand command, CancellationToken cancellationToken)
     {
-        var user = User.RegisterCustomer(
-            command.UserId, 
+        var user = User.RegisterAsync(
+            command.UserId,
+            UserType.AirlineStaff,
             command.Email,
             command.GivenName,
             command.Surname,

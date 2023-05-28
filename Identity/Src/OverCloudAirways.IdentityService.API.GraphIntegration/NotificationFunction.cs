@@ -51,7 +51,8 @@ public class NotificationFunction
                 UserId.New(),
                 request.Email,
                 request.GivenName,
-                request.Surname));
+                request.Surname,
+                request.StreetAddress));
 
             return new OkResult();
         }
@@ -95,5 +96,6 @@ public class NotificationFunction
         public string GivenName { get; init; }
         public string Surname { get; init; }
         public string Email { get; init; }
+        public string StreetAddress { get; init; }
     }
 }

@@ -29,8 +29,9 @@ public class UserTests
         var givenName = "admin given name";
         var surname = "admin surname";
         var email = "test@domain.com";
+        var address = "street1";
 
-        var registerUserCommand = new RegisterCustomerUserCommand(userId, email, givenName, surname);
+        var registerUserCommand = new RegisterCustomerUserCommand(userId, email, givenName, surname, address);
         await _invoker.CommandAsync(registerUserCommand);
 
         // Process Registered Policy

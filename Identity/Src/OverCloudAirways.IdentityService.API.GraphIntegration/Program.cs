@@ -22,10 +22,13 @@ var host = new HostBuilder()
         var logConfig = new LoggerConfiguration()
             .MinimumLevel.Information()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-            .Enrich.FromLogContext()
-            .WriteTo.Console(outputTemplate: outputTemplate);
+            .Enrich.FromLogContext();
 
-        if (!context.HostingEnvironment.IsDevelopment())
+        if (context.HostingEnvironment.IsDevelopment())
+        {
+            logConfig = logConfig.WriteTo.Console(outputTemplate: outputTemplate);
+        }
+        else
         {
             logConfig = logConfig
                 .WriteTo.ApplicationInsights(new TelemetryConfiguration(instrumentationKey), TelemetryConverter.Traces, LogEventLevel.Debug);

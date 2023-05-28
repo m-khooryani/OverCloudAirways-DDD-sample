@@ -9,6 +9,6 @@ internal class RegisterCustomerUserCommandValidator : CommandValidator<RegisterC
     {
         RuleFor(cmd => cmd.GivenName)
             .NotEmpty()
-            .MinimumLength(5);
+            .MinimumLength(3);
     }
 }
