@@ -3,9 +3,9 @@ using OverCloudAirways.IdentityService.Domain.Users.Events;
 
 namespace OverCloudAirways.IdentityService.Application.Users.Policies.Registered;
 
-public class UserRegisteredPolicy : DomainEventPolicy<CustomerUserRegisteredDomainEvent>
+public class UserRegisteredPolicy : DomainEventPolicy<UserRegisteredDomainEvent>
 {
-    public UserRegisteredPolicy(CustomerUserRegisteredDomainEvent domainEvent) : base(domainEvent)
+    public UserRegisteredPolicy(UserRegisteredDomainEvent domainEvent) : base(domainEvent)
     {
     }
 }

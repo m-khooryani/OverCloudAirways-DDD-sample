@@ -1,12 +1,10 @@
-﻿using OverCloudAirways.BuildingBlocks.Application.Commands.PublishIntegrationEvent;
-using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
+﻿using OverCloudAirways.BuildingBlocks.Application.DomainEventPolicies;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.IdentityService.Domain.Users.Events;
-using OverCloudAirways.IdentityService.IntegrationEvents.Users;
 
-namespace OverCloudAirways.IdentityService.Application.Users.Policies.Registered;
+namespace OverCloudAirways.IdentityService.Application.Users.Policies.CustomerRegistered;
 
-internal class PublishUserRegisteredEventPolicyHandler : IDomainPolicyHandler<UserRegisteredPolicy, CustomerUserRegisteredDomainEvent>
+internal class PublishUserRegisteredEventPolicyHandler : IDomainPolicyHandler<CustomerUserRegisteredPolicy, CustomerUserRegisteredDomainEvent>
 {
     private readonly ICommandsScheduler _commandsScheduler;
 
@@ -15,7 +13,7 @@ internal class PublishUserRegisteredEventPolicyHandler : IDomainPolicyHandler<Us
         _commandsScheduler = commandsScheduler;
     }
 
-    public Task Handle(UserRegisteredPolicy notification, CancellationToken cancellationToken)
+    public Task Handle(CustomerUserRegisteredPolicy notification, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
         //var @event = new UserRegisteredIntegrationEvent(

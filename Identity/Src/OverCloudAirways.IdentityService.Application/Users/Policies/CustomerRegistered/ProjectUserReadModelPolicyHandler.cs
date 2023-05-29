@@ -3,9 +3,9 @@ using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.IdentityService.Application.Users.Commands.ProjectReadModel;
 using OverCloudAirways.IdentityService.Domain.Users.Events;
 
-namespace OverCloudAirways.IdentityService.Application.Users.Policies.Registered;
+namespace OverCloudAirways.IdentityService.Application.Users.Policies.CustomerRegistered;
 
-internal class ProjectUserReadModelPolicyHandler : IDomainPolicyHandler<UserRegisteredPolicy, CustomerUserRegisteredDomainEvent>
+internal class ProjectUserReadModelPolicyHandler : IDomainPolicyHandler<CustomerUserRegisteredPolicy, CustomerUserRegisteredDomainEvent>
 {
     private readonly ICommandsScheduler _commandsScheduler;
 
@@ -14,7 +14,7 @@ internal class ProjectUserReadModelPolicyHandler : IDomainPolicyHandler<UserRegi
         _commandsScheduler = commandsScheduler;
     }
 
-    public async Task Handle(UserRegisteredPolicy notification, CancellationToken cancellationToken)
+    public async Task Handle(CustomerUserRegisteredPolicy notification, CancellationToken cancellationToken)
     {
         var command = new ProjectUserReadModelCommand(notification.DomainEvent.UserId);
         await _commandsScheduler.EnqueueAsync(command);
