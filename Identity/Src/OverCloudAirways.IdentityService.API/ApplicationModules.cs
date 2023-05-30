@@ -18,6 +18,7 @@ using OverCloudAirways.BuildingBlocks.Infrastructure.Mediation;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RequestProcessing;
 using OverCloudAirways.BuildingBlocks.Infrastructure.RetryPolicy;
 using OverCloudAirways.BuildingBlocks.Infrastructure.UnitOfWorks;
+using OverCloudAirways.IdentityService.Infrastructure.DomainServices;
 
 namespace OverCloudAirways.IdentityService.API;
 
@@ -91,6 +92,11 @@ internal static class ApplicationModules
 
         var cosmosDbModule = new CosmosNewtonsoftIntegrationModule(accountEndpoint!, accountKey!, DATABASE_ID, jsonSettings);
 
+        var domainServiceModule = new DomainServiceModule(
+            configuration["ClientId"],
+            configuration["ClientSecret"],
+            configuration["TenantId"]);
+
         CompositionRoot.Initialize(
             assemblyLayersModule,
             processingModule,
@@ -101,7 +107,8 @@ internal static class ApplicationModules
             retryPolicyModule,
             azureServiceBusModule,
             jsonModule,
-            cosmosDbModule);
+            cosmosDbModule,
+            domainServiceModule);
 
         return services;
     }

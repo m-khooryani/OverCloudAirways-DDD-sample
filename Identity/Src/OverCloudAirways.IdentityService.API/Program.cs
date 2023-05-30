@@ -47,14 +47,14 @@ var host = new HostBuilder()
         {
             return IsHttpTrigger(context);
         });
-        workerApplicationBuilder.UseWhen<AuthenticationMiddleware>((context) =>
-        {
-            return IsHttpTrigger(context);
-        });
-        workerApplicationBuilder.UseWhen<AuthorizationMiddleware>((context) =>
-        {
-            return IsHttpTrigger(context);
-        });
+        //workerApplicationBuilder.UseWhen<AuthenticationMiddleware>((context) =>
+        //{
+        //    return IsHttpTrigger(context);
+        //});
+        //workerApplicationBuilder.UseWhen<AuthorizationMiddleware>((context) =>
+        //{
+        //    return IsHttpTrigger(context);
+        //});
         workerApplicationBuilder.UseWhen<JsonResponseMiddleware>((context) =>
         {
             return IsHttpTrigger(context);

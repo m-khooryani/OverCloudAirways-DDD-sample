@@ -58,6 +58,11 @@ public class User : AggregateRoot<UserId>
         return user;
     }
 
+    public async Task RegisterInGraphAsync(IGraphAPIUserRegistrationService registrationService, CancellationToken cancellationToken)
+    {
+        await registrationService.RegisterAsync(this, cancellationToken);
+    }
+
     protected void When(CustomerUserRegisteredDomainEvent @event)
     {
         Id = @event.UserId;
