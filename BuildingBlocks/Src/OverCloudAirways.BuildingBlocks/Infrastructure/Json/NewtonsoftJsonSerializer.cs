@@ -26,4 +26,9 @@ public class NewtonsoftJsonSerializer : IJsonSerializer
     {
         return JsonConvert.DeserializeObject(data, type, _jsonSerializerSettings);
     }
+
+    public T? Deserialize<T>(string data)
+    {
+        return JsonConvert.DeserializeObject<T>(data, _jsonSerializerSettings);
+    }
 }
