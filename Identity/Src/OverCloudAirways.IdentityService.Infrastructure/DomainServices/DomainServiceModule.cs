@@ -9,12 +9,21 @@ public class DomainServiceModule : Module
     private readonly string _clientId;
     private readonly string _clientSecret;
     private readonly string _tenantId;
+    private readonly string _issuer;
+    private readonly string _extensionAppClientId;
 
-    public DomainServiceModule(string clientId, string clientSecret, string tenantId)
+    public DomainServiceModule(
+        string clientId, 
+        string clientSecret,
+        string tenantId,
+        string issuer,
+        string extensionAppClientId)
     {
         _clientId = clientId;
         _clientSecret = clientSecret;
         _tenantId = tenantId;
+        _issuer = issuer;
+        _extensionAppClientId = extensionAppClientId;
     }
 
     protected override void Load(ContainerBuilder builder)
@@ -28,8 +37,11 @@ public class DomainServiceModule : Module
         {
             ClientId = _clientId,
             ClientSecret = _clientSecret,
-            TenantId = _tenantId
+            TenantId = _tenantId,
+            Issuer = _issuer,
+            ExtensionAppClientId = _extensionAppClientId
         };
+
         builder
             .RegisterInstance(configuration)
             .AsSelf()

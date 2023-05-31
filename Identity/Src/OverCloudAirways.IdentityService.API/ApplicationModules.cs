@@ -95,7 +95,9 @@ internal static class ApplicationModules
         var domainServiceModule = new DomainServiceModule(
             configuration["ClientId"],
             configuration["ClientSecret"],
-            configuration["TenantId"]);
+            configuration["TenantId"],
+            configuration["Issuer"],
+            configuration["ExtensionAppClientId"]);
 
         CompositionRoot.Initialize(
             assemblyLayersModule,

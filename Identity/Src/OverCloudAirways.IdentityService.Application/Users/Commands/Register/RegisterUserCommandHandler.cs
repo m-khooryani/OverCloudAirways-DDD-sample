@@ -17,7 +17,7 @@ internal class RegisterUserCommandHandler : CommandHandler<RegisterUserCommand>
     {
         var user = User.RegisterAsync(
             command.UserId,
-            UserType.AirlineStaff,
+            command.UserType,
             command.Email,
             command.GivenName,
             command.Surname,

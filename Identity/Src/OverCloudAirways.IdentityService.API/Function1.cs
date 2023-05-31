@@ -32,7 +32,7 @@ public class Function1
     [Function("create-user")]
     [Authorized("Admin")]
     public async Task CreateUser(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequestData req)
     {
         var registerUserCommand = new RegisterUserCommand(
             UserId.New(),
