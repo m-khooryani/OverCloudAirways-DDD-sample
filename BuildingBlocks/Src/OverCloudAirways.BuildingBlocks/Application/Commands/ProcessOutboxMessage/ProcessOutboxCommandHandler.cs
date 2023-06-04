@@ -82,6 +82,12 @@ internal class ProcessOutboxCommandHandler : CommandHandler<ProcessOutboxCommand
 
         using var scope = CompositionRoot.BeginLifetimeScope();
         var mediator = scope.Resolve<IMediator>();
+        var accessor = scope.Resolve<IUserAccessor>();
+
+        accessor.FullName = outboxMessage.FullName;
+        accessor.UserId = outboxMessage.UserId.Value;
+        accessor.TcpConnectionId = outboxMessage.TcpConnectionId;
+
         if (type.IsAssignableTo(typeof(INotification)))
         {
             await mediator.Publish((deserializedMessage as DomainEventPolicy)!, cancellationToken);

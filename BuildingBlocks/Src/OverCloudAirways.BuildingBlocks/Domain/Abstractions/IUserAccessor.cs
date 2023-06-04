@@ -2,7 +2,7 @@
 
 public interface IUserAccessor
 {
-    Guid UserId { get; }
-    string? TcpConnectionId { get; }
-    string FullName { get; }
+    Guid UserId { get; set; }
+    string? TcpConnectionId { get; set; }
+    string FullName { get; set; }
 }

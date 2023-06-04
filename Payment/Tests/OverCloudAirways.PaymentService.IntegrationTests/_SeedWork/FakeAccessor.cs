@@ -4,27 +4,25 @@ namespace OverCloudAirways.PaymentService.IntegrationTests._SeedWork;
 
 class FakeAccessor : IUserAccessor
 {
-    private FakeAccessor()
+    public FakeAccessor()
     {
     }
-
-    public static FakeAccessor Instance = new();
 
     private static Guid _userId;
     private static void ResetUserId()
     {
         _userId = Guid.NewGuid();
     }
-    public Guid UserId => _userId;
 
     private static string _fullName;
     private static void ResetFullName()
     {
         _fullName = Guid.NewGuid().ToString();
     }
-    public string FullName => _fullName;
 
-    public string TcpConnectionId => Guid.NewGuid().ToString();
+    Guid IUserAccessor.UserId { get => _userId; set => _userId = value; }
+    string? IUserAccessor.TcpConnectionId { get => Guid.NewGuid().ToString(); set => throw new NotImplementedException(); }
+    string IUserAccessor.FullName { get => _fullName; set => _fullName = value; }
 
     private Guid _storedUserId;
     private string _storedFullName;

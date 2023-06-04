@@ -32,7 +32,8 @@ internal class CommandsScheduler : ICommandsScheduler
             Clock.Now,
             command,
             _userAccessor.UserId,
-            _userAccessor.TcpConnectionId);
+            _userAccessor.TcpConnectionId,
+            _userAccessor.FullName);
 
         await AddOutboxMessageAsync(outboxMessage);
     }
@@ -44,7 +45,8 @@ internal class CommandsScheduler : ICommandsScheduler
             Clock.Now,
             command,
             _userAccessor.UserId,
-            _userAccessor.TcpConnectionId);
+            _userAccessor.TcpConnectionId,
+            _userAccessor.FullName);
 
         await AddOutboxMessageAsync(outboxMessage);
     }
@@ -56,7 +58,8 @@ internal class CommandsScheduler : ICommandsScheduler
             Clock.Now,
             integrationEvent,
             _userAccessor.UserId,
-            _userAccessor.TcpConnectionId);
+            _userAccessor.TcpConnectionId,
+            _userAccessor.FullName);
 
         await AddOutboxMessageAsync(outboxMessage);
     }
@@ -69,6 +72,7 @@ internal class CommandsScheduler : ICommandsScheduler
             command,
             _userAccessor.UserId,
             _userAccessor.TcpConnectionId,
+            _userAccessor.FullName,
             date);
 
         await AddOutboxMessageAsync(outboxMessage);

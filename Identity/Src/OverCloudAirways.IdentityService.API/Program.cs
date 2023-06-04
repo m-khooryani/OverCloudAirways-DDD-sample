@@ -3,6 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.IdentityService.API;
 using OverCloudAirways.IdentityService.API.FunctionsMiddlewares;
 using Serilog;
@@ -38,11 +39,17 @@ var host = new HostBuilder()
 
         services.AddLogging(o => o.AddSerilog(logConfig.CreateLogger(), dispose: true));
 
+        services.AddSingleton<IUserAccessor, UserAccessor>();
+
         services.RegisterApplicationComponents(appConfig);
     })
     .ConfigureFunctionsWorkerDefaults(workerApplicationBuilder =>
     {
         workerApplicationBuilder.UseMiddleware<StampMiddleware>();
+        workerApplicationBuilder.UseWhen<FunctionContextAccessorMiddleware>((context) =>
+        {
+            return IsHttpTrigger(context);
+        });
         workerApplicationBuilder.UseWhen<LoggingMiddleware>((context) =>
         {
             return IsHttpTrigger(context);

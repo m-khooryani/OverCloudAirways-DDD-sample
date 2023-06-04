@@ -15,6 +15,7 @@ public class OutboxMessage
     public string? Error { get; set; }
     public Guid? UserId { get; internal set; }
     public string? TcpConnectionId { get; internal set; }
+    public string? FullName { get; internal set; }
 
     public bool IsInstantProcessing => ProcessingDate is null;
 
@@ -28,9 +29,10 @@ public class OutboxMessage
         object obj,
         Guid? userId,
         string? tcpConnectionId,
+        string? fullName,
         string? sessionId = null)
     {
-        return Create(jsonSerializer, occurredOn, obj, userId, tcpConnectionId, null, sessionId);
+        return Create(jsonSerializer, occurredOn, obj, userId, tcpConnectionId, fullName, null, sessionId);
     }
 
     public static OutboxMessage CreateDelayed(
@@ -39,10 +41,11 @@ public class OutboxMessage
         object obj,
         Guid? userId,
         string? tcpConnectionId,
+        string? fullName,   
         DateTimeOffset processingDate,
         string? sessionId = null)
     {
-        return Create(jsonSerializer, occurredOn, obj, userId, tcpConnectionId, processingDate, sessionId);
+        return Create(jsonSerializer, occurredOn, obj, userId, tcpConnectionId, fullName, processingDate, sessionId);
     }
 
     private static OutboxMessage Create(
@@ -51,6 +54,7 @@ public class OutboxMessage
         object obj,
         Guid? userId,
         string? tcpConnectionId,
+        string? fullName,
         DateTimeOffset? processingDate,
         string? sessionId = null)
     {
@@ -65,6 +69,7 @@ public class OutboxMessage
         message.SessionId = sessionId;
         message.UserId = userId;
         message.TcpConnectionId = tcpConnectionId;
+        message.FullName = fullName;
         message.ProcessingDate = processingDate;
 
         return message;

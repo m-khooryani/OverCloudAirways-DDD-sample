@@ -61,7 +61,9 @@ internal static class ApplicationModules
 
         var unitOfWorkModule = new EfCoreUnitOfWorkModule<BuildingBlocksDbContext>(dbContextOptionsBuilder, infrastructureAssembly);
         var loggingModule = new LoggingModule(loggerFactory, "identity");
-        var contextAccessorModule = new ContextAccessorModule(FakeAccessor.Instance);
+        var accessor = services.BuildServiceProvider()
+            .GetRequiredService<IUserAccessor>();
+        var contextAccessorModule = new ContextAccessorModule(accessor);
         var retryPolicyModule = new RetryPolicyModule(new PollyConfig()
         {
             SleepDurations = Array.Empty<TimeSpan>()
@@ -113,53 +115,5 @@ internal static class ApplicationModules
             domainServiceModule);
 
         return services;
-    }
-}
-
-class FakeAccessor : IUserAccessor
-{
-    private FakeAccessor()
-    {
-    }
-
-    public static FakeAccessor Instance = new();
-
-    private static Guid _userId;
-    private static void ResetUserId()
-    {
-        _userId = Guid.NewGuid();
-    }
-    public Guid UserId => _userId;
-
-    private static string _fullName;
-    private static void ResetFullName()
-    {
-        _fullName = Guid.NewGuid().ToString();
-    }
-    public string FullName => _fullName;
-
-    public string TcpConnectionId => Guid.NewGuid().ToString();
-
-    private Guid _storedUserId;
-    private string _storedFullName;
-
-    internal void SaveState()
-    {
-        _storedUserId = _userId;
-        _storedFullName = _fullName;
-
-        Reset();
-    }
-
-    internal void RestoreState()
-    {
-        _userId = _storedUserId;
-        _fullName = _storedFullName;
-    }
-
-    internal static void Reset()
-    {
-        ResetUserId();
-        ResetFullName();
     }
 }

@@ -14,9 +14,9 @@ public class ContextAccessorModule : Module
 
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterInstance(_accessor)
+        builder.RegisterType(_accessor.GetType())
             .AsImplementedInterfaces()
             .As<IUserAccessor>()
-            .SingleInstance();
+            .InstancePerLifetimeScope();
     }
 }

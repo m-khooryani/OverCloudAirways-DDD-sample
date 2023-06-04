@@ -95,7 +95,7 @@ public class TestFixture : IDisposable
             });
         var unitOfWorkModule = new EfCoreUnitOfWorkModule<BuildingBlocksDbContext>(contextOptionsBuilder, infrastructureAssembly);
         var loggingModule = new LoggingModule(GetLoggerFactory(), "integrationTest");
-        var contextAccessorModule = new ContextAccessorModule(FakeAccessor.Instance);
+        var contextAccessorModule = new ContextAccessorModule(new FakeAccessor());
         var retryPolicyModule = new RetryPolicyModule(new PollyConfig()
         {
             SleepDurations = Array.Empty<TimeSpan>()

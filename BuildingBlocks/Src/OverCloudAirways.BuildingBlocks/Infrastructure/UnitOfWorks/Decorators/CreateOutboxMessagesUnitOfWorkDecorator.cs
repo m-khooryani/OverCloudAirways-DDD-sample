@@ -61,6 +61,7 @@ internal class CreateOutboxMessagesUnitOfWorkDecorator : IUnitOfWork
                 domainPolicy, 
                 _userAccessor.UserId,
                 _userAccessor.TcpConnectionId,
+                _userAccessor.FullName,
                 aggregate.Id.ToString());
             await _repository.AddAsync(outboxMessage);
         }
