@@ -683,7 +683,7 @@ In distributed data systems, maintaining data consistency across multiple micros
     ```
     Here, if an error occurs after sending the email but before the user data is saved (e.g., the database is temporarily down), the email service will have sent a welcome email to a user who isn't registered in our system. This leads to inconsistency and confusion.
     
-    - Sending Email After User Registration Commit:
+  - Sending Email After User Registration Commit:
 
     In contrast, let's see what happens when we commit the user registration before sending the welcome email.
     ```csharp
