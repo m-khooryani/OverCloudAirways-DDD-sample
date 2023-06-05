@@ -35,6 +35,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Event-Driven Distributed Transactions Example](#event-driven-distributed-transactions-example)
    - [Clean Architecture](#clean-architecture)
    - [Composition Root](#composition-root)
+   - [Outbox Pattern](#outbox-pattern)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
@@ -652,6 +653,109 @@ CompositionRoot.Initialize(
     cosmosModule);
 
 ```
+
+### Outbox Pattern
+
+The Outbox Pattern is a reliable approach to manage distributed data, particularly for systems employing event-driven architecture. It is a solution that guarantees the atomicity of database transactions and corresponding event publishing. Essentially, it ensures that data changes within a transaction are saved to a database and related events are published in an atomic operation, thereby reducing the risk of data inconsistencies and lost messages.
+
+In its most basic form, the Outbox Pattern involves storing outbound messages or events into an intermediate 'Outbox' database table as part of the same local transaction that affects the business entities. After the transaction has been committed, the events in the Outbox table are then published to the message broker.
+
+<p align="center" width="100%">
+      <img alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/753b8eee-ebd7-49c8-ae64-a9d13bdfeecf">
+</p>
+
+In distributed data systems, maintaining data consistency across multiple microservices is a challenging task. The issues become more prominent when we attempt to directly publish events to the message broker either before or after committing changes to the database. Let's understand this with an example of registering a user and sending a welcome email.
+
+  - Sending Email Before User Registration Commit:
+
+    In this scenario, we try to send the welcome email before committing the user registration details to the database.
+    ```csharp
+    try 
+    {
+        EmailService.SendWelcomeEmail(user);  // Sending welcome email
+        DatabaseService.RegisterUser(user);  // Registering user in the database
+    }
+    catch (Exception e)
+    {
+        // Handle exception
+    }
+
+    ```
+    Here, if an error occurs after sending the email but before the user data is saved (e.g., the database is temporarily down), the email service will have sent a welcome email to a user who isn't registered in our system. This leads to inconsistency and confusion.
+    
+    - Sending Email After User Registration Commit:
+
+    In contrast, let's see what happens when we commit the user registration before sending the welcome email.
+    ```csharp
+    try
+    {
+        DatabaseService.RegisterUser(user);  // Registering user in the database
+        EmailService.SendWelcomeEmail(user);  // Sending welcome email
+    }
+    catch (Exception e)
+    {
+        // Handle exception
+    }
+
+    ```
+    If an error occurs after registering the user but before sending the welcome email (maybe the email service is temporarily unavailable), the user will be registered, but they won't receive a welcome email. This might lead to a poor user experience and potential loss of user engagement.
+
+Both scenarios highlight the possible issues in distributed systems without using the Outbox Pattern. 
+
+The Outbox Pattern comes as a solution to the problems we discussed earlier. It combines the operations of committing data and publishing events into a single atomic operation to ensure data consistency across all services in the distributed system.
+
+Here's how it works, following our user registration and welcome email example:
+```csharp
+try 
+{
+    using (var transaction = new TransactionScope())
+    {
+        DatabaseService.RegisterUser(user);  // Registering user in the database
+
+        OutboxMessage outboxMessage = new OutboxMessage
+        {
+            // Details about the message, such as type, destination, and data
+            Type = "WelcomeEmail",
+            Destination = user.Email,
+            Data = $"Welcome, {user.Name}!"
+        };
+
+        DatabaseService.AddToOutbox(outboxMessage);  // Adding outbox message to the database
+
+        transaction.Complete();  // Committing the transaction
+    }
+}
+catch (Exception e)
+{
+    // Handle exception
+}
+
+```
+
+In this code, we begin a transaction. Within this transaction, we register the user and also add a message to the 'Outbox' table in the database. This message contains the details of the welcome email that needs to be sent. Then we commit the transaction, making sure that both the user registration and the outbox message addition are done atomically.
+
+Once this transaction is committed, a separate process (typically a background job or a separate microservice) takes over(Polling Mechanism):
+```csharp
+public void ProcessOutboxMessages()
+{
+    var messagesToProcess = DatabaseService.GetUnprocessedOutboxMessages();
+
+    foreach (var message in messagesToProcess)
+    {
+        // Publish the message to the message broker
+        MessageBroker.Publish(message);
+
+        // Mark the message as processed
+        DatabaseService.MarkAsProcessed(message);
+    }
+}
+
+```
+This process fetches unprocessed messages from the 'Outbox' table and publishes them to the message broker. Once published, the message is marked as processed in the 'Outbox' table.
+
+The Outbox Pattern ensures that the system maintains consistency by making sure that if a user registration is committed, the corresponding welcome email message will also be committed. The actual publishing of the message is taken care of by a separate process, which makes sure all committed messages are eventually published.
+
+The process can be made more robust with retries, dead-letter queues, and error monitoring to handle any issues with message publishing. This pattern significantly reduces the chances of message loss and data inconsistency.
 
 
 ## Key Features and Components
