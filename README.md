@@ -36,6 +36,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
    - [Clean Architecture](#clean-architecture)
    - [Composition Root](#composition-root)
    - [Outbox Pattern](#outbox-pattern)
+   - [Unit of Work Pattern](#unit-of-work)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
@@ -757,6 +758,47 @@ The Outbox Pattern ensures that the system maintains consistency by making sure 
 
 The process can be made more robust with retries, dead-letter queues, and error monitoring to handle any issues with message publishing. This pattern significantly reduces the chances of message loss and data inconsistency.
 
+### Unit of Work Pattern
+In software development, especially when working with databases, it's often crucial to ensure that a group of operations is executed as a single unit. This necessity led to the creation of the Unit of Work (UoW) design pattern. The UoW pattern is a key component of Domain-Driven Design (DDD).
+
+The UoW pattern organizes business logic into atomic, consistent, isolated, and durable (ACID) transactions, ensuring all operations either complete successfully or fail together, leaving the system in a consistent state.
+
+<p align="center" width="50%">
+      <img alt="image" src="https://user-images.githubusercontent.com/7968282/243746303-0db6a33b-8f68-4839-87ae-80740d85fe39.png">
+</p>
+
+Decorators play a significant role in augmenting the functionality of the Unit of Work (UoW) without changing its definition. They wrap the UoW with additional behavior, thus adhering to the Open-Closed Principle - open for extension, closed for modification.
+
+In the context of a UoW, decorators can be used to add logging, validation, performance tracking, or any other cross-cutting concern that needs to be applied. Let's consider how decorators can be registered and used in C# with Autofac as the Dependency Injection (DI) container:
+
+```csharp
+builder.RegisterType<UnitOfWork>()
+    .As<IUnitOfWork>()
+    .InstancePerLifetimeScope();
+builder.RegisterDecorator(
+    typeof(AppendingAggregateHistoryUnitOfWorkDecorator),
+    typeof(IUnitOfWork));
+builder.RegisterDecorator(
+    typeof(PublishOutboxMessagesUnitOfWorkDecorator),
+    typeof(IUnitOfWork));
+builder.RegisterDecorator(
+    typeof(CreateOutboxMessagesUnitOfWorkDecorator),
+    typeof(IUnitOfWork));
+builder.RegisterDecorator(
+    typeof(LoggingUnitOfWorkDecorator),
+    typeof(IUnitOfWork));
+
+```
+In this code, the UnitOfWork class implements the IUnitOfWork interface. We use Autofac's RegisterDecorator method to add additional behavior to the UnitOfWork:
+
+  - AppendingAggregateHistoryUnitOfWorkDecorator: This could be used to append the aggregate history of entities involved in the unit of work.
+  - PublishOutboxMessagesUnitOfWorkDecorator: This could be responsible for publishing messages stored in the outbox once the unit of work is successfully completed.
+  - CreateOutboxMessagesUnitOfWorkDecorator: This might create outbox messages during the processing of the unit of work.
+  - LoggingUnitOfWorkDecorator: This decorator can add logging functionality to track the progress and result of the unit of work.
+
+Each decorator is a layer that wraps the original UnitOfWork, adding its own specific functionality while maintaining the fundamental operations defined by IUnitOfWork.
+
+The UoW pattern is typically tightly coupled with the database transactions. For instance, we've implemented the UoW pattern in our applications with Cosmos DB. As of the time of this writing, the provider for EF Core does not support transactions across multiple documents in Cosmos DB, a feature we hope will be introduced in the future. Consequently, when using the UoW pattern, it's essential to ensure your database technology supports the necessary transaction capabilities.
 
 ## Key Features and Components
 
