@@ -763,8 +763,8 @@ In software development, especially when working with databases, it's often cruc
 
 The UoW pattern organizes business logic into atomic, consistent, isolated, and durable (ACID) transactions, ensuring all operations either complete successfully or fail together, leaving the system in a consistent state.
 
-<p align="center" width="50%">
-      <img alt="image" src="https://user-images.githubusercontent.com/7968282/243746303-0db6a33b-8f68-4839-87ae-80740d85fe39.png">
+<p align="center" width="100%">
+      <img  width="600" alt="image" src="https://user-images.githubusercontent.com/7968282/243746303-0db6a33b-8f68-4839-87ae-80740d85fe39.png">
 </p>
 
 Decorators play a significant role in augmenting the functionality of the Unit of Work (UoW) without changing its definition. They wrap the UoW with additional behavior, thus adhering to the Open-Closed Principle - open for extension, closed for modification.
@@ -789,6 +789,7 @@ builder.RegisterDecorator(
     typeof(IUnitOfWork));
 
 ```
+
 In this code, the UnitOfWork class implements the IUnitOfWork interface. We use Autofac's RegisterDecorator method to add additional behavior to the UnitOfWork:
 
   - AppendingAggregateHistoryUnitOfWorkDecorator: This could be used to append the aggregate history of entities involved in the unit of work.
@@ -797,6 +798,10 @@ In this code, the UnitOfWork class implements the IUnitOfWork interface. We use 
   - LoggingUnitOfWorkDecorator: This decorator can add logging functionality to track the progress and result of the unit of work.
 
 Each decorator is a layer that wraps the original UnitOfWork, adding its own specific functionality while maintaining the fundamental operations defined by IUnitOfWork.
+
+<p align="center" width="100%">
+      <img  width="550" alt="image" src="https://user-images.githubusercontent.com/7968282/243790060-4560ca93-52b4-4989-8412-6399f9c3c0a0.png">
+</p>
 
 The UoW pattern is typically tightly coupled with the database transactions. For instance, we've implemented the UoW pattern in our applications with Cosmos DB. As of the time of this writing, the provider for EF Core does not support transactions across multiple documents in Cosmos DB, a feature we hope will be introduced in the future. Consequently, when using the UoW pattern, it's essential to ensure your database technology supports the necessary transaction capabilities.
 
