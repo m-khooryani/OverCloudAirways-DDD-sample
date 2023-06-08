@@ -1304,3 +1304,20 @@ The full details of the MIT License for this project can be found in the LICENSE
   - Limitations: The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
 
 Please be sure to review the license terms before contributing to the project or using any part of the software in your own projects.
+
+## Acknowledgments
+This section is dedicated to acknowledging all those who have made a significant contribution to the OverCloudAirways project, whether by sharing knowledge, contributing code, providing feedback, or supporting the project in any other meaningful way.
+
+  - The Open Source Community: The OverCloudAirways project wouldn't have been possible without the collective knowledge, tools, and resources shared by the open source community. A huge thank you goes to all the developers, authors, and contributors of the various open source projects and libraries that this project depends upon.
+
+  - Contributors: A sincere thank you to all the contributors who have spent their valuable time and effort to make this project better. Your contributions, ranging from code enhancements, bug fixes, documentation improvements, to new feature suggestions, have played an invaluable role in shaping and improving OverCloudAirways.
+  
+  - Sponsors: Special appreciation goes to the sponsors who have generously supported the project. A big thank you to [2MNordic](2mnordic.com), for their substantial contribution in terms of cloud resources and Azure costs. Their sponsorship has significantly helped the project in its cloud operations.
+  
+<p align="center" width="100%">
+  <img width="130" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/02dd9af7-0733-4aca-b5f2-efaf779e0051">
+</p>
+
+  - Supporters: Lastly, the project team extends its gratitude to all those who have shown their support in various ways - from giving a star on the project's GitHub repository, sharing it on social media, blogging about it, or simply spreading the word about OverCloudAirways within their networks. Your support is highly appreciated and motivates the team to continue improving the project.
+
+This project stands on the shoulders of giants and the team acknowledges the effort and dedication of all those who have played a part in its journey. The project team looks forward to a future of continuous learning, improvement, and collaboration.
