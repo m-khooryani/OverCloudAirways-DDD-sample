@@ -41,7 +41,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
    - [Clean Architecture](#clean-architecture)
    - [Composition Root](#composition-root)
    - [Outbox Pattern](#outbox-pattern)
-   - [Unit of Work Pattern](#unit-of-work)
+   - [Unit of Work Pattern](#unit-of-work-pattern)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
@@ -69,15 +69,11 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Mocking Library](#mocking-library)
       - [Shared Context](#shared-context)
 6. [CI/CD Pipeline and Deployment](#cicd-pipeline-and-deployment)
-   - [GitHub Actions](#github-actions)
-   - [Deployment Process](#deployment-process)
-   - [Configuration and Environment Variables](#configuration-and-environment-variables)
-7. [Event-Storming and DDD](#event-storming-and-ddd)
-8. [Contributing and Collaboration](#contributing-and-collaboration)
-9. [Changelog and Versioning](#changelog-and-versioning)
-10. [License](#license)
-11. [Acknowledgments](#acknowledgments)
-12. [Contact Information](#contact-information)
+7. [Contributing and Collaboration](#contributing-and-collaboration)
+8. [Changelog and Versioning](#changelog-and-versioning)
+9. [License](#license)
+10. [Acknowledgments](#acknowledgments)
+11. [Contact Information](#contact-information)
 
 ## Architecture and Design
 
@@ -1235,3 +1231,34 @@ This section provides an overview of the testing methodologies and tools used in
               }
           }
           ```
+          
+## CI/CD Pipeline and Deployment
+[To be completed...]
+
+## Contributing and Collaboration
+
+  - Contributing to OverCloudAirways
+  
+    The contribution to OverCloudAirways is highly encouraged and appreciated. Whether you are an experienced developer or a newcomer, your input can greatly enhance the project. Contributions can be made in various ways: by providing suggestions, reporting bugs, improving documentation, submitting pull requests, or even just by using the software and providing feedback.
+
+  - Code of Conduct
+  
+    All contributors are expected to adhere to the project's Code of Conduct. This ensures a welcoming environment for everyone involved. 
+
+  - Collaboration and Communication
+  
+    Open communication is key to the success of OverCloudAirways. Contributors are encouraged to communicate freely and openly about their work, ideas, and any challenges they face. This project utilizes various communication channels, such as GitHub issues and pull requests, to facilitate effective collaboration.
+
+  - Quality Standards
+  
+    To maintain a high standard of quality, all contributions are expected to meet certain criteria. This includes adherence to coding standards, proper documentation of code, and thorough testing. Code reviews are conducted to ensure these standards are met before any changes are merged into the project.
+
+  - Getting Started with Contributing
+  
+    If you are new to contributing, don't worry, we've got you covered. The project provides comprehensive guides and resources to help you get started. This includes setting up the development environment, understanding the codebase, and submitting your first pull request. So dive in and contribute to the development of OverCloudAirways!
+    
+<p align="center" width="100%">
+  <img width="526" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/b78fa696-635a-42c3-b932-6f2b3264b270">
+</p>
+
+Remember, every contribution counts and helps in shaping and enhancing OverCloudAirways. Your effort, no matter how small, can make a significant impact. Let's collaborate and learn together!
