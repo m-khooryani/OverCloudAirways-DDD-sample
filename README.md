@@ -1262,3 +1262,30 @@ This section provides an overview of the testing methodologies and tools used in
 </p>
 
 Remember, every contribution counts and helps in shaping and enhancing OverCloudAirways. Your effort, no matter how small, can make a significant impact. Let's collaborate and learn together!
+
+## Changelog and Versioning
+Software evolves over time, and keeping a record of all these changes is crucial to maintain a transparent development environment and facilitate tracking, reverting, or understanding the impact of certain modifications. This record, typically referred to as a 'changelog', includes detailed logs of all alterations in the system. Each new release of the software should be accompanied by a detailed changelog.
+
+Each new version is thoroughly documented in the project's changelog, providing developers and users with a clear understanding of what has changed, why, and how it may impact them. This includes comprehensive details about new features, bug fixes, performance improvements, and possible breaking changes.
+
+Note: Any substantial pull request should include an update to the changelog, detailing the changes introduced. This helps maintain an accurate and up-to-date log of the system's evolution.
+
+``` shell
+## [1.1.0] - YYYY-MM-DD
+### Initialized
+- New feature enabling ...
+
+### Added
+- Improvement of ... 
+
+### Fixed
+- Bug fix of ...
+
+### Removed
+- Deprecation of ...
+
+## [1.0.0] - YYYY-MM-DD
+### Initialized
+- Initial release of ...
+
+``` 
