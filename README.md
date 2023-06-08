@@ -33,6 +33,11 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
       - [Microservices](#microservices)
       - [Event-Driven Architecture](#event-driven-architecture)
       - [Event-Driven Distributed Transactions Example](#event-driven-distributed-transactions-example)
+   - [Authentication and Authorization](#authentication-and-authorization)
+      - [Choosing Azure AD B2C](#choosing-azure-ad-b2c)
+      - [Role Based Access Control](#role-based-access-control)
+      - [Secure Communication](#secure-communication)
+      - [Handling Authentication in Microservices Architecture](#handling-authentication-in-microservices-architecture)
    - [Clean Architecture](#clean-architecture)
    - [Composition Root](#composition-root)
    - [Outbox Pattern](#outbox-pattern)
@@ -570,6 +575,31 @@ Microservices and Event-Driven Architecture (EDA) play a crucial role in the Ove
       </p>
       
      This example demonstrates how EDA allows for asynchronous communication between microservices, enabling distributed transactions across multiple business capabilities. The event-driven nature of the transaction ensures that the system remains decoupled and can scale efficiently.
+
+### Authentication and Authorization
+
+Authentication and authorization are two crucial aspects of security in any application. Authentication is the process of verifying the identity of a user, while authorization involves checking the permissions of an authenticated user, determining what they are allowed to do within the application.
+
+  - #### Choosing Azure AD B2C
+    For OverCloudAirways, Azure AD B2C was chosen as the identity management solution. This choice was driven by the robust features of Azure AD B2C, including its capability to handle customer identities at scale, integration with various identity providers, and robust security features such as multi-factor authentication. Moreover, Azure AD B2C's flexibility to customize the user experience, and its comprehensive developer APIs, made it a suitable choice for this project.
+    <p align="center" width="100%">
+      <img width="210" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/5441fcbb-2b65-4ae8-993f-8e7f55abe142">
+    </p>
+  - #### Role Based Access Control
+    Role-based access control (RBAC) was implemented using Azure AD B2C to manage user permissions based on their roles. Roles such as 'Administrator', 'Airline Staff', and 'Customer' were defined, each with a distinct set of permissions. These roles are assigned to users during the sign-up process or by an administrator, and are used in the application to decide what operations a user can perform.
+    <p align="center" width="100%">
+      <img width="605" alt="image" src="https://user-images.githubusercontent.com/7968282/244481866-3853c9d8-3905-4b78-8fec-939620fd427b.png">
+    </p>
+  - #### Secure Communication
+    Azure AD B2C uses OpenID Connect and OAuth 2.0 protocols to provide tokens for secure communication. After a successful authentication, a user receives an ID token and an access token. These tokens contain claims about the user, which can include their identity, role, and other information. The application uses these tokens to authenticate the user and authorize their actions.
+    <p align="center" width="100%">
+      <img width="431" alt="image" src="https://user-images.githubusercontent.com/7968282/244483055-3b9fef48-6df0-4975-8510-285b2b0ad3dc.png">
+    </p>
+    
+    <img width="953" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/78e02287-311e-431e-966e-a8685ede5853">
+
+  - #### Handling Authentication in Microservices Architecture
+    In a microservices architecture, like the one used in OverCloudAirways, ensuring secure and consistent authentication can be a challenge. With Azure AD B2C, each microservice can independently verify a user's token, ensuring that the user is who they claim to be. Additionally, user permissions defined through roles in Azure AD B2C can be used to ensure that the user is authorized to access specific services or operations.
 
 ### Clean Architecture
 
