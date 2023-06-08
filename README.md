@@ -1289,3 +1289,18 @@ Note: Any substantial pull request should include an update to the changelog, de
 - Initial release of ...
 
 ``` 
+
+## License
+The OverCloudAirways project is licensed under the terms of the MIT License. This permissive license is short and to the point. It lets people do anything they want with the code as long as they provide attribution back to you and don’t hold you liable.
+
+MIT License is a popular choice among open-source projects due to its simplicity and flexibility. It allows contributors to freely use, copy, modify, merge, publish, distribute, sublicense, and even sell the software provided they include the original copyright notice and disclaimer. This encourages wide dissemination and use of the code, which aligns with the primary goal of OverCloudAirways - to provide a collaborative learning platform for developers to explore, study, and improve their skills.
+
+The full details of the MIT License for this project can be found in the LICENSE file in the project's root directory. It typically includes the following sections:
+
+  - Permission Notice: A brief note granting permissions to use, copy, modify, merge, publish, distribute, sublicense, and/or sell the Software.
+
+  - Conditions: The only condition is the inclusion of the copyright notice and this permission notice in all copies or substantial portions of the software.
+
+  - Limitations: The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
+
+Please be sure to review the license terms before contributing to the project or using any part of the software in your own projects.
