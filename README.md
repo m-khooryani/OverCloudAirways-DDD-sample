@@ -73,7 +73,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
 8. [Changelog and Versioning](#changelog-and-versioning)
 9. [License](#license)
 10. [Acknowledgments](#acknowledgments)
-11. [Contact Information](#contact-information)
+11. [Further Learning and Useful Resources](#further-learning-and-useful-resources)
 
 ## Architecture and Design
 
@@ -1321,3 +1321,14 @@ This section is dedicated to acknowledging all those who have made a significant
   - Supporters: Lastly, the project team extends its gratitude to all those who have shown their support in various ways - from giving a star on the project's GitHub repository, sharing it on social media, blogging about it, or simply spreading the word about OverCloudAirways within their networks. Your support is highly appreciated and motivates the team to continue improving the project.
 
 This project stands on the shoulders of giants and the team acknowledges the effort and dedication of all those who have played a part in its journey. The project team looks forward to a future of continuous learning, improvement, and collaboration.
+
+## Further Learning and Useful Resources
+In this section, we provide a list of learning resources and references that are related to the concepts, technologies, and methodologies used in this project. Whether you're a beginner or an experienced developer, these resources can help you deepen your understanding and expand your knowledge base.
+
+### Domain-Driven Design
+  - [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) book, Eric Evans
+  - [Implementing Domain-Driven Design](https://www.amazon.com/Implementing-Domain-Driven-Design-Vaughn-Vernon/dp/0321834577) book, Vaughn Vernon
+
+### Azure
+  - [Microsoft Learn - Azure](https://learn.microsoft.com/en-us/training/azure/)
+  - [Azure for Architects](https://www.amazon.com/Azure-Architects-scalable-high-availability-applications/dp/1839215860)
