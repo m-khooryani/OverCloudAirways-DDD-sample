@@ -42,6 +42,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
    - [Composition Root](#composition-root)
    - [Outbox Pattern](#outbox-pattern)
    - [Unit of Work Pattern](#unit-of-work-pattern)
+   - [Enumeration](#enumeration)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
@@ -848,6 +849,66 @@ Each decorator is a layer that wraps the original UnitOfWork, adding its own spe
 </p>
 
 The UoW pattern is typically tightly coupled with the database transactions. For instance, we've implemented the UoW pattern in our applications with Cosmos DB. As of the time of this writing, the provider for EF Core does not support transactions across multiple documents in Cosmos DB, a feature we hope will be introduced in the future. Consequently, when using the UoW pattern, it's essential to ensure your database technology supports the necessary transaction capabilities.
+
+### Enumeration
+> "Enumeration or Enum types are an integral part of C# language. They have been around since the inception of language. Unfortunately, the Enum types also have some limitations. Enum types are not object-oriented. When we have to use Enums for control flow statements, behavior around Enums gets scattered across the application. We cannot inherit or extend the Enum types. These issues can especially be a deal-breaker in Domain-Driven Design (DDD)."
+
+For a more detailed understanding, I recommend referring to [this insightful article](https://ankitvijay.net/2020/06/12/series-enumeration-classes-ddd-and-beyond/).
+
+```csharp
+public abstract class FlightStatus : Enumeration
+{
+    public static readonly FlightStatus None = new NoneFlightStatus();
+    public static readonly FlightStatus Scheduled = new ScheduledFlightStatus();
+    public static readonly FlightStatus Cancelled = new CancelledFlightStatus();
+    public static readonly FlightStatus Departed = new DepartedFlightStatus();
+    public static readonly FlightStatus Arrived = new ArrivedFlightStatus();
+
+    private FlightStatus(int value, string name) : base(value, name)
+    {
+    }
+
+    internal bool HasNotYetDeparted()
+    {
+        return this != None && this == Scheduled;
+    }
+
+    private class NoneFlightStatus : FlightStatus
+    {
+        public NoneFlightStatus() : base(0, "None")
+        {
+        }
+    }
+
+    private class ScheduledFlightStatus : FlightStatus
+    {
+        public ScheduledFlightStatus() : base(1, "Scheduled")
+        {
+        }
+    }
+
+    private class CancelledFlightStatus : FlightStatus
+    {
+        public CancelledFlightStatus() : base(2, "Cancelled")
+        {
+        }
+    }
+
+    private class DepartedFlightStatus : FlightStatus
+    {
+        public DepartedFlightStatus() : base(3, "Departed")
+        {
+        }
+    }
+
+    private class ArrivedFlightStatus : FlightStatus
+    {
+        public ArrivedFlightStatus() : base(4, "Arrived")
+        {
+        }
+    }
+}
+```
 
 ## Key Features and Components
 
