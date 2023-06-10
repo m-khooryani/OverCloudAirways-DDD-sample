@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Domain.Utilities;
+using OverCloudAirways.PaymentService.Application.Invoices.Commands.Issue;
 using OverCloudAirways.PaymentService.Application.Orders.Commands.Expire;
 using OverCloudAirways.PaymentService.Application.Orders.Commands.ProjectReadModel;
 using OverCloudAirways.PaymentService.Application.Orders.Policies.Placed;
@@ -27,6 +28,25 @@ public class OrderPlacedPolicyTests
         await commandsScheduler
             .Received(1)
             .EnqueueAsync(Arg.Is<ProjectOrderReadModelCommand>(c => c.OrderId == policy.DomainEvent.OrderId));
+    }
+
+    [Fact]
+    public async Task EnqueueIssuingInvoicePolicyHandler_Should_Enqueue_IssueInvoiceCommand()
+    {
+        // Arrange
+        var commandsScheduler = Substitute.For<ICommandsScheduler>();
+        var handler = new EnqueueIssuingInvoicePolicyHandler(commandsScheduler);
+        var policy = new OrderPlacedPolicyBuilder().Build();
+
+        // Act
+        await handler.Handle(policy, CancellationToken.None);
+
+        // Assert
+        await commandsScheduler
+            .Received(1)
+            .EnqueueAsync(Arg.Is<IssueInvoiceCommand>(c => 
+                c.OrderId == policy.DomainEvent.OrderId &&
+                !string.IsNullOrWhiteSpace(c.InvoiceId.ToString())));
     }
 
     [Fact]

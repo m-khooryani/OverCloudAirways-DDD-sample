@@ -21,7 +21,7 @@ class FakeAccessor : IUserAccessor
     }
 
     Guid IUserAccessor.UserId { get => _userId; set => _userId = value; }
-    string? IUserAccessor.TcpConnectionId { get => Guid.NewGuid().ToString(); set => throw new NotImplementedException(); }
+    string? IUserAccessor.TcpConnectionId { get => Guid.NewGuid().ToString(); set => _ = value; }
     string IUserAccessor.FullName { get => _fullName; set => _fullName = value; }
 
     private Guid _storedUserId;
