@@ -43,8 +43,8 @@ jobs:
 
     - name: Build and publish CRM Service
       run: |
-        dotnet build --configuration Release ./Crm/Src/OverCloudAirways.CrmService.API/OverCloudAirways.CrmService.API.csproj
-        dotnet publish --configuration Release --output ${{ env.CRM_OUTPUT_DIR }} ./Crm/Src/OverCloudAirways.CrmService.API/OverCloudAirways.CrmService.API.csproj
+        dotnet build --configuration Release ./CRM/Src/OverCloudAirways.CrmService.API/OverCloudAirways.CrmService.API.csproj
+        dotnet publish --configuration Release --output ${{ env.CRM_OUTPUT_DIR }} ./CRM/Src/OverCloudAirways.CrmService.API/OverCloudAirways.CrmService.API.csproj
 
     - name: Build and publish Payment Service
       run: |
