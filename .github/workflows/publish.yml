@@ -14,6 +14,8 @@ jobs:
       BOOKING_OUTPUT_DIR: './booking_output'
       IDENTITY_OUTPUT_DIR: './identity_output'
       GRAPH_INTEGRATION_OUTPUT_DIR: './identity_graph_output'
+      CRM_OUTPUT_DIR: './crm_output'
+      PAYMENT_OUTPUT_DIR: './payment_output'
 
     steps:
     - name: Checkout repository
@@ -39,6 +41,16 @@ jobs:
         dotnet build --configuration Release ./Identity/Src/OverCloudAirways.IdentityService.API.GraphIntegration/OverCloudAirways.IdentityService.API.GraphIntegration.csproj
         dotnet publish --configuration Release --output ${{ env.GRAPH_INTEGRATION_OUTPUT_DIR }} ./Identity/Src/OverCloudAirways.IdentityService.API.GraphIntegration/OverCloudAirways.IdentityService.API.GraphIntegration.csproj
 
+    - name: Build and publish CRM Service
+      run: |
+        dotnet build --configuration Release ./Crm/Src/OverCloudAirways.CrmService.API/OverCloudAirways.CrmService.API.csproj
+        dotnet publish --configuration Release --output ${{ env.CRM_OUTPUT_DIR }} ./Crm/Src/OverCloudAirways.CrmService.API/OverCloudAirways.CrmService.API.csproj
+
+    - name: Build and publish Payment Service
+      run: |
+        dotnet build --configuration Release ./Payment/Src/OverCloudAirways.PaymentService.API/OverCloudAirways.PaymentService.API.csproj
+        dotnet publish --configuration Release --output ${{ env.PAYMENT_OUTPUT_DIR }} ./Payment/Src/OverCloudAirways.PaymentService.API/OverCloudAirways.PaymentService.API.csproj
+
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1
       with:
@@ -59,3 +71,17 @@ jobs:
         app-name: overcloudairways-identity-graph-integration
         package: ${{ env.GRAPH_INTEGRATION_OUTPUT_DIR }}
         publish-profile: ${{ secrets.OVERCLOUDAIRWAYSIDENTITYGRAPHINTEGRATIONFUNCTION_PUBLISHSETTINGS }}
+        
+    - name: Deploy CRM to Azure Function App
+      uses: Azure/functions-action@v1
+      with:
+        app-name: overcloudairways-crm
+        package: ${{ env.CRM_OUTPUT_DIR }}
+        publish-profile: ${{ secrets.OVERCLOUDAIRWAYSCRMPUBLISHSETTINGS }}
+        
+    - name: Deploy Payment to Azure Function App
+      uses: Azure/functions-action@v1
+      with:
+        app-name: overcloudairways-payment
+        package: ${{ env.PAYMENT_OUTPUT_DIR }}
+        publish-profile: ${{ secrets.OVERCLOUDAIRWAYSPAYMENTPUBLISHSETTINGS }}
