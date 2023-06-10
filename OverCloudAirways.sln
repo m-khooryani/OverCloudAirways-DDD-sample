@@ -99,6 +99,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverCloudAirways.IdentitySe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.PaymentService.API", "Payment\Src\OverCloudAirways.PaymentService.API\OverCloudAirways.PaymentService.API.csproj", "{C11AE0D3-FEF9-424D-BEA0-BDFAB9A12D75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverCloudAirways.CrmService.API", "CRM\Src\OverCloudAirways.CrmService.API\OverCloudAirways.CrmService.API.csproj", "{B616060C-C639-4906-9A5F-C9FAEB323E4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,6 +243,10 @@ Global
 		{C11AE0D3-FEF9-424D-BEA0-BDFAB9A12D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C11AE0D3-FEF9-424D-BEA0-BDFAB9A12D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C11AE0D3-FEF9-424D-BEA0-BDFAB9A12D75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B616060C-C639-4906-9A5F-C9FAEB323E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B616060C-C639-4906-9A5F-C9FAEB323E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B616060C-C639-4906-9A5F-C9FAEB323E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B616060C-C639-4906-9A5F-C9FAEB323E4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -289,6 +295,7 @@ Global
 		{65C3608C-39D1-4B29-AF6B-424F899AF360} = {03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE}
 		{7BE2FBF8-71AC-4858-BB8F-4D44F42BAAAC} = {03CD059B-8EC3-45B8-A3C3-2B4E3D5097DE}
 		{C11AE0D3-FEF9-424D-BEA0-BDFAB9A12D75} = {BAF46004-5238-4BB8-A41E-32BD2E0F59DF}
+		{B616060C-C639-4906-9A5F-C9FAEB323E4C} = {AF74634C-BB86-460E-96D6-C765FDA23755}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9A8DA7-D45E-4AEE-9712-F1C62D32213B}

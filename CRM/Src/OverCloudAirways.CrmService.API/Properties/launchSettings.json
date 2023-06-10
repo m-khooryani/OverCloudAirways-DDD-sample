@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "OverCloudAirways.CrmService.API": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7061",
+      "launchBrowser": false
+    }
+  }
+}
