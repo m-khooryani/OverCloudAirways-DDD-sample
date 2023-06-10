@@ -111,7 +111,27 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
   In the development of the OverCloudAirways project, we used Event Storming to map out the domain, its processes, and its interactions. The image below, taken from our Miro board, demonstrates how Event Storming helped shape the project's design:
 
   ![Event Storming Miro board](path-to-your-image)
-  <img width="1181" alt="image" src="https://user-images.githubusercontent.com/7968282/233003514-c847cefa-30f1-4744-99fb-363a99c37114.png">
+  
+  Overview:
+  <img width="1462" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/60ab5963-a66f-4e18-8807-7b0116ac4e9c">
+  
+  [Download High Quality Image](https://github.com/m-khooryani/OverCloudAirways/assets/7968282/092f831c-a2d7-4fee-9eb7-90cc87ca39ce)
+  
+  Identity:
+  
+  <img width="881" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/a3315e2b-7c1e-418d-afe3-d63fa3a5318b">
+
+  Booking:
+  
+  <img width="1641" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/35040d25-c1aa-4558-8479-52b101eedd70">
+  
+  Payment:
+  
+  <img width="1721" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/8390da09-f97a-4824-975f-a687a98a9016">
+
+  CRM:
+  
+  <img width="936" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/2897e382-50f2-42cf-b06d-d175b4455051">
 
 
   Through Event Storming, we were able to visualize the relationships between different parts of the domain and ensure that our design decisions aligned with the needs of the project.
