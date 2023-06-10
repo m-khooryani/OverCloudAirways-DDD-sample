@@ -110,8 +110,6 @@ These Bounded Contexts work together to provide a comprehensive flight booking s
 
   In the development of the OverCloudAirways project, we used Event Storming to map out the domain, its processes, and its interactions. The image below, taken from our Miro board, demonstrates how Event Storming helped shape the project's design:
 
-  ![Event Storming Miro board](path-to-your-image)
-  
   Overview:
   <img width="1462" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/60ab5963-a66f-4e18-8807-7b0116ac4e9c">
   
