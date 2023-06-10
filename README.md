@@ -1251,7 +1251,65 @@ This section provides an overview of the testing methodologies and tools used in
           ```
           
 ## CI/CD Pipeline and Deployment
-[To be completed...]
+The project is set up with a continuous integration (CI) and continuous deployment (CD) pipeline using GitHub Actions. This ensures the code is built, tested, and deployed to the Azure environment whenever there's a new commit to the master branch.
+
+<p align="center" width="100%">
+  <img width="958" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/2eda4dac-64f7-42c7-a3c1-9436c6608bff">
+</p>
+
+  - #### Continuous Integration
+    The CI pipeline is defined in the build.yml file. This pipeline is triggered on every pull request. Here are the main steps of the CI pipeline:
+    
+      - Environment Setup: We determine the environment (either DEV or PROD) based on the branch that triggered the workflow.
+      - Build: The code is checked out and the required .NET SDK is set up. The project is then built using dotnet build.
+      - Test: We run unit tests using dotnet test.
+
+      ``` yml
+      jobs:
+        setup:
+            name: Choose Secrets Environment Job
+            runs-on: windows-latest
+            # Other setup steps...
+        build:
+            name: Build
+            needs: setup
+            runs-on: windows-latest
+            steps:
+              # Other setup steps...
+              - name: Build
+                run: dotnet build --no-restore -c Release
+              - name: Test
+                run: dotnet test --no-restore --verbosity normal
+      ```
+
+  - #### Continuous Deployment
+    The CD pipeline is defined in the publish.yml file. This pipeline is triggered on every push to the master branch. Here are the main steps of the CD pipeline:
+
+      - Build and Publish: We build and publish each service in the solution individually using dotnet publish.
+      - Deploy: We deploy each service to its respective Azure Function App using the Azure/functions-action@v1 action.
+
+      ``` yml
+      jobs:
+        build-and-deploy:
+          runs-on: ubuntu-latest
+          steps:
+          # Other setup steps...
+          - name: Build and publish Identity Service
+            run: |
+              dotnet build --configuration Release ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
+              dotnet publish --configuration Release --output ${{ env.IDENTITY_OUTPUT_DIR }} ./Identity/Src/OverCloudAirways.IdentityService.API/OverCloudAirways.IdentityService.API.csproj
+          - name: Deploy Identity to Azure Function App
+            uses: Azure/functions-action@v1
+            with:
+              app-name: overcloudairways-identity
+              package: ${{ env.IDENTITY_OUTPUT_DIR }}
+              publish-profile: ${{ secrets.OVERCLOUDAIRWAYSIDENTITYFUNCTION_PUBLISHSETTINGS }}
+      ```
+
+  - #### Azure Environment
+    The services are hosted on Azure Function Apps. Each service has its own Function App. The deployment uses the publish profile of the Function App, which can be obtained from the Azure portal.
+    <img width="746" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/caa32800-d0a9-492f-a038-3bab380f1863">
+
 
 ## Contributing and Collaboration
 
