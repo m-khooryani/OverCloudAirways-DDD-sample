@@ -77,11 +77,11 @@ jobs:
       with:
         app-name: overcloudairways-crm
         package: ${{ env.CRM_OUTPUT_DIR }}
-        publish-profile: ${{ secrets.OVERCLOUDAIRWAYSCRMPUBLISHSETTINGS }}
+        publish-profile: ${{ secrets.OVERCLOUDAIRWAYSCRMFUNCTION_PUBLISHSETTINGS }}
         
     - name: Deploy Payment to Azure Function App
       uses: Azure/functions-action@v1
       with:
         app-name: overcloudairways-payment
         package: ${{ env.PAYMENT_OUTPUT_DIR }}
-        publish-profile: ${{ secrets.OVERCLOUDAIRWAYSPAYMENTPUBLISHSETTINGS }}
+        publish-profile: ${{ secrets.OVERCLOUDAIRWAYSPAYMENTFUNCTION_PUBLISHSETTINGS }}
