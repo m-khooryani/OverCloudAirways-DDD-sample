@@ -43,6 +43,7 @@ OverCloudAirways showcases _serverless_ technologies and core architectural patt
    - [Outbox Pattern](#outbox-pattern)
    - [Unit of Work Pattern](#unit-of-work-pattern)
    - [Enumeration](#enumeration)
+   - [Middlewares](#middlewares)
 2. [Key Features and Components](#key-features-and-components)
 3. [Technologies and Libraries](#technologies-and-libraries)
    - [C#](#c)
@@ -936,6 +937,67 @@ public class Flight : AggregateRoot<FlightId>
 ```
 
 Furthermore, there is a [very good article](https://andrewlock.net/series/using-strongly-typed-entity-ids-to-avoid-primitive-obsession/) around this topic.
+
+### Middlewares
+Middleware components in OverCloudAirways are used to handle requests and responses during the execution pipeline of our Azure Functions. They offer a convenient way to encapsulate common logic that applies to many or all requests. Here are the main middlewares used:
+
+<p align="center" width="100%">
+  <img  width="245" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/117041ba-c8a3-4170-8aa0-b961a4a5ba7e">
+</p>
+
+  - StampMiddleware
+
+    This middleware is used to stamp each request with a unique request id. The request id is then available throughout the lifetime of the request which can be helpful for tracking and debugging purposes.
+    
+  - FunctionContextAccessorMiddleware
+
+    This middleware is used to set the current `FunctionContext` for the lifetime of the request. It's primarily used to allow other middlewares, services, and consumers to access the context of the current Azure Function request.
+    
+  - LoggingMiddleware
+
+    This middleware is responsible for logging incoming requests and outgoing responses. This helps in debugging, performance tracking, and understanding the usage patterns of the APIs.
+    
+  - AuthenticationMiddleware
+
+    This middleware handles the authentication of incoming requests. It checks for the presence of valid credentials and sets the identity of the user on the current context.
+    
+  - AuthorizationMiddleware
+
+    This middleware is responsible for authorizing the authenticated user's access to the resources. It checks the user's roles and permissions against the requirements of the request.
+    
+  - JsonResponseMiddleware
+
+    This middleware handles the transformation of the responses to a JSON format. It ensures that the responses sent by the APIs are always in a consistent format.
+    
+Some of these middlewares only apply to HTTP Triggered functions, hence the use of `UseWhen` with `IsHttpTrigger` condition. If there are any middlewares that need to be applied for all kinds of triggers, they can be registered without the `UseWhen` condition.
+
+Here's how these middlewares are registered in the Azure Function worker pipeline:
+```csharp
+.ConfigureFunctionsWorkerDefaults(workerApplicationBuilder =>
+{
+    workerApplicationBuilder.UseMiddleware<StampMiddleware>();
+    workerApplicationBuilder.UseWhen<FunctionContextAccessorMiddleware>((context) =>
+    {
+        return IsHttpTrigger(context);
+    });
+    workerApplicationBuilder.UseWhen<LoggingMiddleware>((context) =>
+    {
+        return IsHttpTrigger(context);
+    });
+    workerApplicationBuilder.UseWhen<AuthenticationMiddleware>((context) =>
+    {
+        return IsHttpTrigger(context);
+    });
+    workerApplicationBuilder.UseWhen<AuthorizationMiddleware>((context) =>
+    {
+        return IsHttpTrigger(context);
+    });
+    workerApplicationBuilder.UseWhen<JsonResponseMiddleware>((context) =>
+    {
+        return IsHttpTrigger(context);
+    });
+})
+```
 
 ## Key Features and Components
 
