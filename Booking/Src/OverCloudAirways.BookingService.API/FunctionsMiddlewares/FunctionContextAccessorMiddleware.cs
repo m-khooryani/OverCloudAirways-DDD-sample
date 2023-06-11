@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker.Middleware;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 
 namespace OverCloudAirways.BookingService.API.FunctionsMiddlewares;
-
 public class FunctionContextAccessorMiddleware : IFunctionsWorkerMiddleware
 {
     private UserAccessor FunctionContextAccessor { get; }
