@@ -910,6 +910,33 @@ public abstract class FlightStatus : Enumeration
 }
 ```
 
+### Primitive Obsession
+"Primitive Obsession" is a code smell where developers use primitive types to represent domain ideas. In OverCloudAirways, we actively avoid this anti-pattern by encapsulating related primitive data within value objects to better reflect the domain context. This approach provides several benefits:
+
+  - Better Domain Representation: Custom types can more accurately represent business concepts. For instance, instead of using a string to represent a flight number, we have a `FlightNumber` type, which better conveys its purpose and can include validation and behavior.
+
+  - Increased Type Safety: By using custom types instead of primitives, we ensure type safety and minimize potential runtime errors caused by incorrect data types.
+
+  - Improved Readability and Maintainability: Custom types make our code self-explanatory and easier to maintain. A developer can look at the types of the properties and quickly understand the structure of the data an object can hold.
+
+  - Enhanced Tooling Support: Strong types provide better IntelliSense support in IDEs like Visual Studio, offering benefits like autocompletion and type checking.
+
+  - Robust Testing: Custom types improve test reliability by minimizing type-related bugs.
+
+Here's an example of how we avoid primitive obsession in our `Flight` class:
+
+```csharp
+public class Flight : AggregateRoot<FlightId>
+{
+    public FlightNumber Number { get; private set; }
+    // Other properties...
+
+    // Constructor and methods...
+}
+```
+
+Furthermore, there is a [very good article](https://andrewlock.net/series/using-strongly-typed-entity-ids-to-avoid-primitive-obsession/) around this topic.
+
 ## Key Features and Components
 
 This section highlights some of the key features and components of our project that differentiate it from other solutions and showcase our architectural decisions.
