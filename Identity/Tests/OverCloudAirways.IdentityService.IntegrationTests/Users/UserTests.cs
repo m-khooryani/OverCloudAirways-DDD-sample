@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace OverCloudAirways.IdentityService.IntegrationTests.Users;
 
-[Collection("Database collection")]
+[Collection("Identity")]
 public class UserTests
 {
     private readonly CqrsInvoker _invoker = TestFixture.Invoker;
@@ -35,9 +35,7 @@ public class UserTests
         await _invoker.CommandAsync(registerUserCommand);
 
         // Process Registered Policy
-        await _testFixture.ProcessLastOutboxMessageAsync();
-        // Process Project Read-Model
-        await _testFixture.ProcessLastOutboxMessageAsync();
+        await _testFixture.ProcessOutboxMessagesAsync();
 
         // ReadUser Query
         var query = new GetUserInfoQuery(userId.Value);

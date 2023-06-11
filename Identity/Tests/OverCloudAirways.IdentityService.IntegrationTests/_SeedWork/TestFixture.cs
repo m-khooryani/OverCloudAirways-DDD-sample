@@ -98,13 +98,13 @@ public class TestFixture : IDisposable
             SleepDurations = Array.Empty<TimeSpan>()
         });
         var serviceBusConfig = Substitute.For<ServiceBusConfig>();
-        var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig);
+        var azureServiceBusModule = new AzureServiceBusModule(serviceBusConfig, Substitute.For<IServiceBusSenderFactory>());
 
         var jsonSettings = new JsonSerializerSettings()
         {
             Converters =
             {
-                new EnumerationJsonConverter(), 
+                new EnumerationJsonConverter(),
                 new TypedIdJsonConverter()
             },
             ContractResolver = new ValueObjectsConstructorResolver()
@@ -134,7 +134,7 @@ public class TestFixture : IDisposable
                 new Dictionary<string, LogLevel>()
                 {
                     { "Default", LogLevel.Debug },
-                    { "Microsoft", LogLevel.Trace },
+                    { "Microsoft", LogLevel.Warning },
                 },
                 log =>
                 {
@@ -193,11 +193,42 @@ public class TestFixture : IDisposable
         await context.SaveChangesAsync();
     }
 
-    internal async Task ProcessLastOutboxMessageAsync()
+    internal async Task ProcessOutboxMessagesAsync()
+    {
+        bool messageProcessed;
+        do
+        {
+            messageProcessed = await ProcessEarliestOutboxMessageAsync();
+        }
+        while (messageProcessed);
+    }
+
+    internal async Task<bool> ProcessLastOutboxMessageAsync()
+    {
+        return await ProcessOutboxMessageAsync(true);
+    }
+
+    internal async Task<bool> ProcessEarliestOutboxMessageAsync()
+    {
+        return await ProcessOutboxMessageAsync(false);
+    }
+
+    internal async Task<bool> ProcessOutboxMessageAsync(bool processLast)
     {
         await using var scope = CompositionRoot.BeginLifetimeScope();
         var context = scope.Resolve<BuildingBlocksDbContext>();
-        var message = await context.OutboxMessages.OrderBy(x => x.OccurredOn).LastAsync();
+
+        var messageQuery = context.OutboxMessages
+            .AsEnumerable()
+            .Where(m => !m.ProcessingDate.HasValue || m.ProcessingDate <= Clock.Now)
+            .OrderBy(x => x.OccurredOn);
+
+        var message = processLast ? messageQuery.LastOrDefault() : messageQuery.FirstOrDefault();
+
+        if (message is null)
+        {
+            return false;
+        }
 
         await Invoker.CommandAsync(new ProcessOutboxCommand(message.Id));
 
@@ -208,5 +239,6 @@ public class TestFixture : IDisposable
             await context.Entry(message).ReloadAsync();
             throw new OutboxMessageProccessingFailedException($"messageId: {message.Id}, Exception: {message.Error}");
         }
+        return true;
     }
 }
