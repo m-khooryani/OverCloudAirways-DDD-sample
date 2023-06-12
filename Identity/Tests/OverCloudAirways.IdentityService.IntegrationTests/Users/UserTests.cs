@@ -21,7 +21,7 @@ public class UserTests
     }
 
     [Fact]
-    public async Task Test1()
+    public async Task RegisterUser_UserShouldBeRegistered_AndAllPropertiesShouldMatch()
     {
         await _testFixture.ResetAsync();
 
