@@ -1,19 +1,19 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using OverCloudAirways.BookingService.API.FunctionsMiddlewares;
-using OverCloudAirways.BookingService.Application.Tickets.Commands.Issue;
-using OverCloudAirways.BookingService.Domain.Tickets;
+using OverCloudAirways.BookingService.Application.Airports.Commands.Create;
+using OverCloudAirways.BookingService.Domain.Airports;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
 using OverCloudAirways.BuildingBlocks.Infrastructure;
 
-namespace OverCloudAirways.BookingService.API.Functions.Tickets;
+namespace OverCloudAirways.BookingService.API.Functions.Airports;
 
-public class TicketFunctions
+public class AirportFunctions
 {
     private readonly CqrsInvoker _cqrsInvoker;
     private readonly IJsonSerializer _jsonSerializer;
 
-    public TicketFunctions(
+    public AirportFunctions(
         CqrsInvoker cqrsInvoker,
         IJsonSerializer jsonSerializer)
     {
@@ -21,18 +21,20 @@ public class TicketFunctions
         _jsonSerializer = jsonSerializer;
     }
 
-    [Function("issue-ticket")]
+    [Function("create-airport")]
     [Authorized("AirlineStaff")]
-    public async Task IssueTicket(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "tickets")] HttpRequestData req)
+    public async Task CreateUser(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "airports")] HttpRequestData req)
     {
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        var request = _jsonSerializer.Deserialize<IssueTicketRequest>(requestBody);
+        var request = _jsonSerializer.Deserialize<CreateAirportRequest>(requestBody);
 
-        var command = new IssueTicketCommand(
-            TicketId.New(),
-            request.FlightId,
-            request.CustomerId);
+        var command = new CreateAirportCommand(
+            AirportId.New(),
+            request.Code,
+            request.Name,
+            request.Location,
+            request.Terminals);
         await _cqrsInvoker.CommandAsync(command);
     }
 }
