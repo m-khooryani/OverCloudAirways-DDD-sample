@@ -39,9 +39,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Configuration\" />
-		<Folder Include="Functions\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\OverCloudAirways.BookingService.Application\OverCloudAirways.BookingService.Application.csproj" />
 	  <ProjectReference Include="..\OverCloudAirways.BookingService.Domain\OverCloudAirways.BookingService.Domain.csproj" />
 	</ItemGroup>
 </Project>
