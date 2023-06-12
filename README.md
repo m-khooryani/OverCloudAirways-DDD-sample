@@ -1431,6 +1431,8 @@ The project is set up with a continuous integration (CI) and continuous deployme
               - name: Test
                 run: dotnet test --no-restore --verbosity normal
       ```
+      
+      <img width="589" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/aaae7ccb-9db1-4a89-91e9-d14923851cc1">
 
   - #### Continuous Deployment
     The CD pipeline is defined in the publish.yml file. This pipeline is triggered on every push to the master branch. Here are the main steps of the CD pipeline:
@@ -1455,6 +1457,8 @@ The project is set up with a continuous integration (CI) and continuous deployme
               package: ${{ env.IDENTITY_OUTPUT_DIR }}
               publish-profile: ${{ secrets.OVERCLOUDAIRWAYSIDENTITYFUNCTION_PUBLISHSETTINGS }}
       ```
+      
+      <img width="590" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/db68c3d2-2897-4f8a-9db5-42a3ff4e4d99">
 
   - #### Azure Environment
     The services are hosted on Azure Function Apps. Each service has its own Function App. The deployment uses the publish profile of the Function App, which can be obtained from the Azure portal.
