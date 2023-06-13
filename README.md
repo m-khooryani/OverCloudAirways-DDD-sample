@@ -1431,6 +1431,8 @@ The project is set up with a continuous integration (CI) and continuous deployme
               - name: Test
                 run: dotnet test --no-restore --verbosity normal
       ```
+      
+      <img width="589" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/aaae7ccb-9db1-4a89-91e9-d14923851cc1">
 
   - #### Continuous Deployment
     The CD pipeline is defined in the publish.yml file. This pipeline is triggered on every push to the master branch. Here are the main steps of the CD pipeline:
@@ -1455,6 +1457,8 @@ The project is set up with a continuous integration (CI) and continuous deployme
               package: ${{ env.IDENTITY_OUTPUT_DIR }}
               publish-profile: ${{ secrets.OVERCLOUDAIRWAYSIDENTITYFUNCTION_PUBLISHSETTINGS }}
       ```
+      
+      <img width="590" alt="image" src="https://github.com/m-khooryani/OverCloudAirways/assets/7968282/db68c3d2-2897-4f8a-9db5-42a3ff4e4d99">
 
   - #### Azure Environment
     The services are hosted on Azure Function Apps. Each service has its own Function App. The deployment uses the publish profile of the Function App, which can be obtained from the Azure portal.
@@ -1497,22 +1501,9 @@ Each new version is thoroughly documented in the project's changelog, providing 
 Note: Any substantial pull request should include an update to the changelog, detailing the changes introduced. This helps maintain an accurate and up-to-date log of the system's evolution.
 
 ``` shell
-## [1.1.0] - YYYY-MM-DD
+## [23.01.21] -
 ### Initialized
-- New feature enabling ...
-
-### Added
-- Improvement of ... 
-
-### Fixed
-- Bug fix of ...
-
-### Removed
-- Deprecation of ...
-
-## [1.0.0] - YYYY-MM-DD
-### Initialized
-- Initial release of ...
+- The project started
 
 ``` 
 
@@ -1554,7 +1545,13 @@ In this section, we provide a list of learning resources and references that are
 ### Domain-Driven Design
   - [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) book, Eric Evans
   - [Implementing Domain-Driven Design](https://www.amazon.com/Implementing-Domain-Driven-Design-Vaughn-Vernon/dp/0321834577) book, Vaughn Vernon
+  - [Domain-Driven Design Distilled](https://www.amazon.com/Domain-Driven-Design-Distilled-Vaughn-Vernon/dp/0134434420) book, Vaughn Vernon
+  - [Learning Domain-Driven Design](https://www.amazon.se/Learning-Domain-Driven-Design-Aligning-Architecture/dp/1098100131/) book, Vladik Khononov 
 
 ### Azure
   - [Microsoft Learn - Azure](https://learn.microsoft.com/en-us/training/azure/)
   - [Azure for Architects](https://www.amazon.com/Azure-Architects-scalable-high-availability-applications/dp/1839215860)
+
+### Testing
+  - [Unit Testing Principles, Practices, and Patterns](https://www.amazon.com/Unit-Testing-Principles-Practices-Patterns/dp/1617296279)
+  - [xUnit Test Patterns: Refactoring Test Code](https://www.amazon.com/xUnit-Test-Patterns-Refactoring-Code/dp/0131495054)
