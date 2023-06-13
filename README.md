@@ -1555,3 +1555,7 @@ In this section, we provide a list of learning resources and references that are
 ### Testing
   - [Unit Testing Principles, Practices, and Patterns](https://www.amazon.com/Unit-Testing-Principles-Practices-Patterns/dp/1617296279)
   - [xUnit Test Patterns: Refactoring Test Code](https://www.amazon.com/xUnit-Test-Patterns-Refactoring-Code/dp/0131495054)
+
+### Blogs/ Channels
+  - [David Guida blog](https://www.davidguida.net/)
+  - [Milan Jovanović youtube channel](https://www.youtube.com/@MilanJovanovicTech) 
