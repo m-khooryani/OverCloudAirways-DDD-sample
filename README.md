@@ -1,4 +1,4 @@
-# OverCloudAirways: A Collaborative Learning Platform for a DDD application
+# OverCloudAirways: A Learning project for a DDD application
 
 Welcome to **OverCloudAirways**! This project serves as a collaborative learning platform for developers interested in exploring cutting-edge technologies, architectural patterns, and best practices in software development. Inspired by flight booking systems, the primary focus is on providing a comprehensive sample for developers to study, contribute, and learn from.
 
