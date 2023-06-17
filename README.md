@@ -1501,6 +1501,10 @@ Each new version is thoroughly documented in the project's changelog, providing 
 Note: Any substantial pull request should include an update to the changelog, detailing the changes introduced. This helps maintain an accurate and up-to-date log of the system's evolution.
 
 ``` shell
+## [23.06.17] -
+### Functions Added
+- Booking Function Added
+
 ## [23.01.21] -
 ### Initialized
 - The project started
