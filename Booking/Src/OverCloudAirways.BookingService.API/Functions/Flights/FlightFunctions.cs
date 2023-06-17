@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using OverCloudAirways.BookingService.API.Functions.Flights.Requests;
 using OverCloudAirways.BookingService.API.FunctionsMiddlewares;
+using OverCloudAirways.BookingService.Application.Flights.Commands.Cancel;
 using OverCloudAirways.BookingService.Application.Flights.Commands.Schedule;
 using OverCloudAirways.BookingService.Domain.Flights;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
@@ -24,7 +25,7 @@ public class FlightFunctions
 
     [Function("schedule-flight")]
     [Authorized("AirlineStaff")]
-    public async Task IssueTicket(
+    public async Task ScheduleFlightAsync(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "flights")] HttpRequestData req)
     {
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -42,6 +43,18 @@ public class FlightFunctions
             request.AircraftId,
             request.AvailableSeats,
             request.MaximumLuggageWeight);
+        await _cqrsInvoker.CommandAsync(command);
+    }
+
+    [Function("cancel-flight")]
+    [Authorized("AirlineStaff")]
+    public async Task CancelFlightAsync(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "flights/cancel")] HttpRequestData req)
+    {
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var request = _jsonSerializer.Deserialize<CancelFlightRequest>(requestBody);
+
+        var command = new CancelFlightCommand(request.FlightId);
         await _cqrsInvoker.CommandAsync(command);
     }
 }
