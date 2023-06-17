@@ -5,6 +5,7 @@ using OverCloudAirways.BookingService.API.FunctionsMiddlewares;
 using OverCloudAirways.BookingService.Application.Flights.Commands.Cancel;
 using OverCloudAirways.BookingService.Application.Flights.Commands.ChangeCapacity;
 using OverCloudAirways.BookingService.Application.Flights.Commands.ChangeStatus;
+using OverCloudAirways.BookingService.Application.Flights.Commands.ReplaceAircraft;
 using OverCloudAirways.BookingService.Application.Flights.Commands.ReserveSeats;
 using OverCloudAirways.BookingService.Application.Flights.Commands.Schedule;
 using OverCloudAirways.BookingService.Domain.Flights;
@@ -100,6 +101,20 @@ public class FlightFunctions
         var command = new ReserveFlightSeatsCommand(
             request.FlightId,
             request.Passengers);
+        await _cqrsInvoker.CommandAsync(command);
+    }
+
+    [Function("replace-flight-aircraft")]
+    [Authorized("Customer")]
+    public async Task ReplaceFlightAircraftAsync(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "flights/replace-aircraft")] HttpRequestData req)
+    {
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var request = _jsonSerializer.Deserialize<ReplaceFlightAircraftRequest>(requestBody);
+
+        var command = new ReplaceFlightAircraftCommand(
+            request.FlightId,
+            request.AircraftId);
         await _cqrsInvoker.CommandAsync(command);
     }
 }
