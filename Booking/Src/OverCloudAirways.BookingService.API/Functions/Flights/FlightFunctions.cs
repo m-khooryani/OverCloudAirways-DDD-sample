@@ -105,7 +105,7 @@ public class FlightFunctions
     }
 
     [Function("replace-flight-aircraft")]
-    [Authorized("Customer")]
+    [Authorized("AirlineStaff")]
     public async Task ReplaceFlightAircraftAsync(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "flights/replace-aircraft")] HttpRequestData req)
     {
