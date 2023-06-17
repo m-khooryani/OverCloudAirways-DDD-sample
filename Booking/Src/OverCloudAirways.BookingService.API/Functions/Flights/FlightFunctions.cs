@@ -4,6 +4,7 @@ using OverCloudAirways.BookingService.API.Functions.Flights.Requests;
 using OverCloudAirways.BookingService.API.FunctionsMiddlewares;
 using OverCloudAirways.BookingService.Application.Flights.Commands.Cancel;
 using OverCloudAirways.BookingService.Application.Flights.Commands.ChangeCapacity;
+using OverCloudAirways.BookingService.Application.Flights.Commands.ChangeStatus;
 using OverCloudAirways.BookingService.Application.Flights.Commands.Schedule;
 using OverCloudAirways.BookingService.Domain.Flights;
 using OverCloudAirways.BuildingBlocks.Domain.Abstractions;
@@ -70,6 +71,20 @@ public class FlightFunctions
         var command = new ChangeFlightCapacityCommand(
             request.FlightId,
             request.Capacity);
+        await _cqrsInvoker.CommandAsync(command);
+    }
+
+    [Function("change-flight-status")]
+    [Authorized("AirlineStaff")]
+    public async Task ChangeFlightStatusAsync(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "flights/change-status")] HttpRequestData req)
+    {
+        var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var request = _jsonSerializer.Deserialize<ChangeFlightStatusRequest>(requestBody);
+
+        var command = new ChangeFlightStatusCommand(
+            request.FlightId,
+            request.Status);
         await _cqrsInvoker.CommandAsync(command);
     }
 }
